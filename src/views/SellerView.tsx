@@ -46,8 +46,8 @@ export function SellerView() {
         title={sellerMode === 'before' ? `Before ${product.name}` : `With ${product.name}`}
         subtitle={
           sellerMode === 'before'
-            ? `The same buyer research, as ${vendor.name}'s usual tools see it.`
-            : 'Every agent question, live, as a named account.'
+            ? `The same buyer research, as ${vendor.inSentence}'s usual tools see it.`
+            : `The seller's dashboard: every agent question, live, as a named account.`
         }
         actions={<BeforeAfterToggle mode={sellerMode} onChange={demo.setSellerMode} />}
       />
@@ -319,7 +319,7 @@ function AfterView({ events, streamFeed, isShown, isFresh, happened, newEventSte
                 <div className="mt-3 rounded-xl border border-accent/30 bg-accent-soft/70 p-3">
                   <div className="flex items-center gap-1.5 text-sm font-semibold text-accent-strong">
                     <Sparkles aria-hidden className="size-4" />
-                    Next best action for {seller.firstName}
+                    Next best action for {seller.firstName} (sales rep)
                   </div>
                   <p className="mt-1 text-[0.9375rem] leading-snug font-medium text-ink">{account.nextBestAction.text}</p>
                   <p className="mt-1 text-sm text-ink-2">{account.nextBestAction.due}</p>
@@ -492,7 +492,7 @@ function EmptyAfter({ onStart, onJump }: { onStart: () => void; onJump: () => vo
       <div className="max-w-xl text-center">
         <p className="text-lg font-semibold text-ink">No agent activity yet.</p>
         <p className="mt-1 text-md text-muted">
-          When a buyer's agent reads {vendor.name}'s pages, asks a question or requests a quote, it shows up here as it happens.
+          When a buyer's agent reads {vendor.inSentence}'s pages, asks a question or requests a quote, it shows up here as it happens.
         </p>
         <div className="mt-4 flex justify-center gap-2">
           <button type="button" onClick={onStart} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-strong">
@@ -501,7 +501,7 @@ function EmptyAfter({ onStart, onJump }: { onStart: () => void; onJump: () => vo
           </button>
           <button type="button" onClick={onJump} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-line-strong px-4 py-2 font-medium text-ink-2 hover:bg-sunken">
             <SkipForward aria-hidden className="size-4" />
-            Show what {vendor.name} sees
+            Show what {vendor.inSentence} sees
           </button>
         </div>
       </div>

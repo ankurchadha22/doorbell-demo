@@ -20,7 +20,7 @@ export const steps: Step[] = [
 export const acts: Record<Step['act'], string> = {
   0: `${product.name} concept demo`,
   1: "Act 1 · What the buyer's agent does",
-  2: `Act 2 · What ${vendor.name} sees`,
+  2: `Act 2 · What ${vendor.inSentence} sees`,
   3: 'Act 3 · Insight and controls',
   4: 'Closing',
 }

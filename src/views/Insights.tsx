@@ -16,7 +16,7 @@ export function Insights() {
 
   return (
     <div className="scroll-quiet h-full overflow-y-auto px-6 pt-5 pb-6">
-      <PageHeader eyebrow={acts[3]} title={`What buyers' agents ask ${vendor.name}`} subtitle={insightsPeriod} />
+      <PageHeader eyebrow={acts[3]} title={`What buyers' agents ask ${vendor.inSentence}`} subtitle={insightsPeriod} />
 
       <div className="mt-5 grid grid-cols-3 gap-4">
         <Card title="Agent interactions by door">

@@ -11,24 +11,30 @@ export const product = {
   mcpExplainer: 'MCP: the standard way AI agents plug into tools.',
 }
 
+// The companies are named by their role, so the audience never has to remember who is who.
+
+/** The software company that uses Doorbell. */
 export const vendor = {
-  name: 'Vantly',
-  initial: 'V',
+  /** For labels, chips and table headers. */
+  name: 'Seller',
+  /** For running text, mid-sentence and at the start of a sentence. */
+  inSentence: 'the seller',
+  sentenceStart: 'The seller',
   category: 'business-intelligence and embedded-analytics tool',
-  site: 'vantly.example',
-  docs: 'docs.vantly.example',
-  aiPages: 'vantly.example/ai',
-  mcpUrl: 'vantly.doorbell.example/mcp',
-  /** What buyers' agents see: the vendor's own desk, powered by Doorbell. */
-  deskName: "Vantly's AI desk",
+  site: 'seller.example',
+  docs: 'docs.seller.example',
+  aiPages: 'seller.example/ai',
+  mcpUrl: 'seller.doorbell.example/mcp',
+  /** What buyers' agents see: the seller's own desk, powered by Doorbell. */
+  deskName: "Seller's AI desk",
 }
 
 export const competitors = [
-  { name: 'Gridlake', site: 'gridlake.example' },
-  { name: 'Chartwell', site: 'chartwell.example' },
+  { name: 'Competitor 1', site: 'competitor1.example' },
+  { name: 'Competitor 2', site: 'competitor2.example' },
 ] as const
 
-export const [gridlake, chartwell] = competitors
+export const [competitor1, competitor2] = competitors
 
 export const buyer = {
   company: 'Tidewater Labs',
@@ -43,10 +49,12 @@ export const buyer = {
   budget: 25_000,
 }
 
+/** The seller's sales rep, who handles anything the desk can't approve. */
 export const seller = {
   name: 'Jordan Ellis',
   firstName: 'Jordan',
   title: 'Account Executive',
+  role: "the seller's sales rep",
   initials: 'JE',
 }
 

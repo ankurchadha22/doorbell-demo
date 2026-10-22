@@ -1,7 +1,7 @@
-// Act 2: what Vantly sees. Every item names the story step at which it happens (`stepId`),
+// Act 2: what the seller sees. Every item names the story step at which it happens (`stepId`),
 // so the seller view stays in sync with the buyer's agent on the same step.
 
-import { buyer, chartwell, gridlake, product, seller, vendor } from './config'
+import { buyer, competitor2, competitor1, product, seller } from './config'
 import { money, quote } from './policies'
 import type { Door, FeedEvent, StageId, Step } from './types'
 
@@ -29,7 +29,7 @@ export const before = {
 export const feedEvents: FeedEvent[] = [
   {
     id: 'e-read',
-    stepId: 'b-vantly-site',
+    stepId: 'b-seller-site',
     time: '14:02',
     kind: 'website',
     text: 'Agent read your AI-ready pages: pricing, integrations, security',
@@ -37,7 +37,7 @@ export const feedEvents: FeedEvent[] = [
   },
   {
     id: 'e-connect',
-    stepId: 'b-vantly-site',
+    stepId: 'b-seller-site',
     time: '14:02',
     kind: 'mcp',
     text: 'Agent connected to your desk',
@@ -104,7 +104,7 @@ export const feedEvents: FeedEvent[] = [
     time: '14:08',
     kind: 'escalation',
     text: 'Non-standard term requested: unlimited AI-assistant queries, 3-year deal',
-    detail: `Outside policy. Assigned to ${seller.name}.`,
+    detail: `Outside policy. Assigned to ${seller.name}, your sales rep.`,
   },
 ]
 
@@ -123,7 +123,7 @@ export const account = {
     basis: 'Shared with consent at the quote step',
   },
   stageUpdates: [
-    { stepId: 'b-vantly-site', stage: 'shortlist' },
+    { stepId: 'b-seller-site', stage: 'shortlist' },
     { stepId: 'b-quote-ask', stage: 'quote' },
     { stepId: 'b-paths', stage: 'how-to-buy' },
     { stepId: 'b-negotiate', stage: 'how-to-buy', flagged: 'negotiate' },
@@ -137,8 +137,8 @@ export const account = {
     { stepId: 'b-negotiate', door: 'mcp', text: 'Unlimited AI-assistant queries on a 3-year deal?', outcome: 'Escalated' },
   ] as { stepId: string; door: Door; text: string; outcome: string }[],
   alsoEvaluating: {
-    stepId: 'b-vantly-site',
-    names: [gridlake.name, chartwell.name],
+    stepId: 'b-seller-site',
+    names: [competitor1.name, competitor2.name],
     basis: "Inferred from the agent's questions and stated shortlist",
   },
   quote: { stepId: 'b-quote-shared', text: `${money(quote.annual)}/yr`, detail: quote.id },
@@ -176,7 +176,7 @@ export const crmRecord = {
   fields: [
     { label: 'Account', value: `${buyer.company} (${buyer.companyDomain})` },
     { label: 'Contact', value: `${buyer.person}, ${buyer.title}` },
-    { label: 'Opportunity', value: `${vendor.name} ${quote.plan} + embedding` },
+    { label: 'Opportunity', value: `${quote.plan} plan + embedding` },
     { label: 'Amount', value: `${money(quote.annual)} / yr` },
     { label: 'Owner', value: seller.name },
   ],
@@ -236,7 +236,7 @@ export const sellerSteps: Step[] = [
     id: 's-alert',
     act: 2,
     screen: 'seller',
-    label: `Alert to ${seller.firstName}`,
+    label: `Alert to ${seller.firstName}, the sales rep`,
     dwellMs: 7500,
     seller: { mode: 'after', show: ['feed', 'account', 'questions', 'next-action', 'alert'] },
   },

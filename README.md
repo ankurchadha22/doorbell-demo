@@ -6,8 +6,8 @@ This is a scripted demo for a hackathon, not a product. Every screen runs on fix
 
 The story, in three acts:
 
-1. **What the buyer's agent does.** Maya, Head of Operations at a 40-person fintech, asks her AI agent to shortlist BI tools. The agent compares using independent sources, then verifies facts with each vendor. Only Vantly uses Doorbell: the agent gets cited answers over MCP, an exact quote through an agent-fillable form (after Maya agrees to share her work email), and a clear "how to buy" comparison. A request for non-standard terms is escalated to a human rep.
-2. **What Vantly sees.** Before Doorbell: zero visits, anonymous log lines, no CRM record. After: a live feed, a named account with the exact questions, buying stage, deal value, next best action, a rep alert and a CRM record.
+1. **What the buyer's agent does.** Maya, Head of Operations at a 40-person fintech, asks her AI agent to shortlist BI tools. The agent compares using independent sources, then verifies facts with each vendor. Only the seller uses Doorbell: the agent gets cited answers over MCP, an exact quote through an agent-fillable form (after Maya agrees to share her work email), and a clear "how to buy" comparison. A request for non-standard terms is escalated to a human rep.
+2. **What the seller sees.** Before Doorbell: zero visits, anonymous log lines, no CRM record. After: a live feed, a named account with the exact questions, buying stage, deal value, next best action, a rep alert and a CRM record.
 3. **Insight and controls.** What agents ask across all buyers, the questions the desk couldn't answer, the policies that limit what the desk may say, and setup.
 
 ## Run it
@@ -75,7 +75,7 @@ Everything you see comes from typed files in [src/data/](src/data/). Components 
 How the pieces fit:
 
 - Each step in the ordered list says which screen it belongs to, how long auto-play stays on it (`dwellMs`), and what appears.
-- Seller-side items name the buyer step at which they happen (`stepId`), so the seller view stays in sync: open the Seller view mid-way through Act 1 and you'll see exactly what Vantly has seen so far.
+- Seller-side items name the buyer step at which they happen (`stepId`), so the seller view stays in sync: open the Seller view mid-way through Act 1 and you'll see exactly what the seller has seen so far.
 - Act 2 steps list which seller sections are revealed (`seller.show`), for pacing on stage.
 - A typo in a `stepId` throws at load, and `npm run build` catches type errors.
 

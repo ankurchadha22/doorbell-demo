@@ -1,4 +1,4 @@
-// Vantly's prices and the rules that limit what the desk may say or commit to.
+// The seller's prices and the rules that limit what the desk may say or commit to.
 // The buyer script, the seller view and the Policies page all read from here.
 
 import { buyer, vendor } from './config'

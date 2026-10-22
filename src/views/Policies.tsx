@@ -1,7 +1,6 @@
 import { FileLock2, ListChecks, Tag, UserRoundCog } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { PageHeader } from '../components/PageHeader'
-import { vendor } from '../data/config'
 import { alwaysEscalate, answerRules, gatedDocs, priceBands } from '../data/policies'
 import { acts } from '../data/story'
 
@@ -11,7 +10,7 @@ export function Policies() {
       <PageHeader
         eyebrow={acts[3]}
         title="What the desk may do on its own"
-        subtitle={`Anything outside these rules goes to a person on ${vendor.name}'s team.`}
+        subtitle="Anything outside these rules goes to a person on your team."
       />
 
       <div className="mt-5 grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-4">

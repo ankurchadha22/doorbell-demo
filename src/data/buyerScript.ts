@@ -1,7 +1,7 @@
 // Act 1: what the buyer's agent does. Each step appends chat items and timeline entries.
 // Edit the story here; the Buyer view renders whatever this file says.
 
-import { buyer, chartwell, gridlake, independentSources as src, product, seller, vendor } from './config'
+import { buyer, competitor2, competitor1, independentSources as src, product, seller, vendor } from './config'
 import { money, quote } from './policies'
 import type { StageId, Step } from './types'
 
@@ -53,7 +53,7 @@ export const buyerSteps: Step[] = [
       { id: 't-r4', at: '0:06', title: 'Read forum thread: “BI on Stripe + QuickBooks data, small team”', detail: src.forum, door: 'website', source: 'independent' },
       { id: 't-r5', at: '0:08', title: 'Read benchmark: dashboard speed on Stripe data, 6 tools', detail: src.benchmark, door: 'website', source: 'independent' },
       { id: 't-r6', at: '0:09', title: 'Read benchmark notes: embedded dashboards, 6 tools', detail: src.benchmark, door: 'website', source: 'independent' },
-      { id: 't-r7', at: '0:11', title: `Read review comparison: ${vendor.name}, ${gridlake.name}, ${chartwell.name}`, detail: src.reviews, door: 'website', source: 'independent' },
+      { id: 't-r7', at: '0:11', title: `Read review comparison: ${vendor.name}, ${competitor1.name}, ${competitor2.name}`, detail: src.reviews, door: 'website', source: 'independent' },
     ],
   },
   {
@@ -67,16 +67,16 @@ export const buyerSteps: Step[] = [
       {
         kind: 'shortlist',
         id: 'c-shortlist',
-        vendors: [vendor.name, gridlake.name, chartwell.name],
+        vendors: [vendor.name, competitor1.name, competitor2.name],
         note: 'Independent reviewers rate all three well for small teams. Next, I’ll verify the details you care about with each vendor.',
       },
     ],
     timeline: [
-      { id: 't-short', at: '0:12', title: `Shortlist: ${vendor.name}, ${gridlake.name}, ${chartwell.name}`, detail: 'Based on 7 independent sources' },
+      { id: 't-short', at: '0:12', title: `Shortlist: ${vendor.name}, ${competitor1.name}, ${competitor2.name}`, detail: 'Based on 7 independent sources' },
     ],
   },
   {
-    id: 'b-vantly-site',
+    id: 'b-seller-site',
     act: 1,
     screen: 'buyer',
     label: `${vendor.name}: AI-readable site, then MCP`,
@@ -86,13 +86,13 @@ export const buyerSteps: Step[] = [
       {
         kind: 'agent',
         id: 'c-connect',
-        text: `${vendor.name} publishes pages written for agents and an AI desk I can connect to over MCP. I'm using it to check facts, not to compare.`,
+        text: `${vendor.sentenceStart} publishes pages written for agents and an AI desk I can connect to over MCP. I'm using it to check facts, not to compare.`,
         note: product.mcpExplainer,
       },
     ],
     timeline: [
-      { id: 't-v1', at: '0:14', title: `Read ${vendor.name}'s AI-readable pages: pricing, integrations, security`, detail: vendor.aiPages, door: 'website', source: 'vendor' },
-      { id: 't-v2', at: '0:15', title: `Connected to ${vendor.deskName}`, detail: product.mcpExplainer, door: 'mcp', source: 'vendor', status: 'ok', statusLabel: 'Connected' },
+      { id: 't-v1', at: '0:14', title: `Read ${vendor.inSentence}'s AI-readable pages: pricing, integrations, security`, detail: vendor.aiPages, door: 'website', source: 'vendor' },
+      { id: 't-v2', at: '0:15', title: `Connected to ${vendor.inSentence}'s AI desk`, detail: product.mcpExplainer, door: 'mcp', source: 'vendor', status: 'ok', statusLabel: 'Connected' },
     ],
   },
   {
@@ -169,17 +169,17 @@ export const buyerSteps: Step[] = [
     ],
   },
   {
-    id: 'b-gridlake',
+    id: 'b-competitor-1',
     act: 1,
     screen: 'buyer',
-    label: `${gridlake.name}: ordinary website`,
+    label: `${competitor1.name}: ordinary website`,
     dwellMs: 4000,
     stage: 'shortlist',
     chat: [
       {
         kind: 'check',
-        id: 'c-grid',
-        vendor: gridlake.name,
+        id: 'c-comp1',
+        vendor: competitor1.name,
         door: 'website',
         source: 'vendor',
         question: `What does it cost for ${buyer.size} users with embedding?`,
@@ -189,21 +189,21 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-grid', at: '0:20', title: `Read ${gridlake.name} pricing page`, detail: '“Contact sales for pricing.”', door: 'website', source: 'vendor', status: 'warn', statusLabel: 'Pricing unavailable to agent' },
+      { id: 't-comp1', at: '0:20', title: `Read ${competitor1.name}'s pricing page`, detail: '“Contact sales for pricing.”', door: 'website', source: 'vendor', status: 'warn', statusLabel: 'Pricing unavailable to agent' },
     ],
   },
   {
-    id: 'b-chartwell',
+    id: 'b-competitor-2',
     act: 1,
     screen: 'buyer',
-    label: `${chartwell.name}: search snippet only`,
+    label: `${competitor2.name}: search snippet only`,
     dwellMs: 4000,
     stage: 'shortlist',
     chat: [
       {
         kind: 'check',
-        id: 'c-chart',
-        vendor: chartwell.name,
+        id: 'c-comp2',
+        vendor: competitor2.name,
         door: 'website',
         source: 'vendor',
         question: 'Can we embed dashboards so each customer sees only their own data?',
@@ -212,7 +212,7 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-chart', at: '0:21', title: `Found only a search snippet for ${chartwell.name}`, detail: 'Embedding details unclear', door: 'website', source: 'vendor', status: 'unverified', statusLabel: 'Unverified' },
+      { id: 't-comp2', at: '0:21', title: `Found only a search snippet for ${competitor2.name}`, detail: 'Embedding details unclear', door: 'website', source: 'vendor', status: 'unverified', statusLabel: 'Unverified' },
     ],
   },
   {
@@ -227,11 +227,11 @@ export const buyerSteps: Step[] = [
       {
         kind: 'agent',
         id: 'c-quote-ask',
-        text: `${vendor.name} can give an exact quote if you share your work email with ${vendor.name}. ${gridlake.name} and ${chartwell.name} require a sales call.`,
+        text: `${vendor.sentenceStart} can give an exact quote if you share your work email with them. ${competitor1.name} and ${competitor2.name} require a sales call.`,
       },
     ],
     timeline: [
-      { id: 't-qa', at: '0:23', title: `${vendor.name} quote form needs a work email`, detail: `Asked ${buyer.firstName} before sharing anything`, door: 'form', source: 'vendor', status: 'identity', statusLabel: 'Waiting for approval' },
+      { id: 't-qa', at: '0:23', title: `${vendor.sentenceStart}'s quote form needs a work email`, detail: `Asked ${buyer.firstName} before sharing anything`, door: 'form', source: 'vendor', status: 'identity', statusLabel: 'Waiting for approval' },
     ],
   },
   {
@@ -243,11 +243,11 @@ export const buyerSteps: Step[] = [
     stage: 'quote',
     consent: 'shared',
     chat: [
-      { kind: 'consent-result', id: 'c-shared', text: `You shared ${buyer.email} with ${vendor.name}.` },
+      { kind: 'consent-result', id: 'c-shared', text: `You shared ${buyer.email} with ${vendor.inSentence}.` },
       {
         kind: 'quote',
         id: 'c-quote',
-        title: `Quote from ${vendor.name}`,
+        title: `Quote from ${vendor.inSentence}`,
         lines: [
           { label: 'Plan', value: `${quote.plan} + embedding` },
           { label: 'Users', value: String(quote.seats) },
@@ -258,7 +258,7 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-form', at: '0:31', title: `Submitted ${vendor.name}'s quote form`, detail: `${quote.seats} users, ${quote.plan} plan + embedding. Work email shared with consent.`, door: 'form', source: 'vendor', status: 'identity', statusLabel: 'Email shared' },
+      { id: 't-form', at: '0:31', title: `Submitted ${vendor.inSentence}'s quote form`, detail: `${quote.seats} users, ${quote.plan} plan + embedding. Work email shared with consent.`, door: 'form', source: 'vendor', status: 'identity', statusLabel: 'Email shared' },
       { id: 't-quote', at: '0:32', title: `Quote received: ${money(quote.annual)}/yr`, detail: quote.id, door: 'form', source: 'vendor', status: 'ok', statusLabel: 'Exact price' },
     ],
   },
@@ -269,7 +269,7 @@ export const buyerSteps: Step[] = [
     label: 'Choose how to buy',
     dwellMs: 6500,
     stage: 'how-to-buy',
-    chat: [{ kind: 'paths', id: 'c-paths', intro: `${vendor.name} offers three ways to buy. Here's how they compare:` }],
+    chat: [{ kind: 'paths', id: 'c-paths', intro: `${vendor.sentenceStart} offers three ways to buy. Here's how they compare:` }],
     timeline: [
       { id: 't-paths', at: '0:34', title: 'Asked: what purchase options are available?', detail: 'Card, annual contract, cloud marketplace', door: 'mcp', source: 'vendor', status: 'ok', statusLabel: '3 paths' },
     ],
@@ -287,12 +287,12 @@ export const buyerSteps: Step[] = [
         kind: 'desk-reply',
         id: 'c-neg-reply',
         from: vendor.deskName,
-        text: `This request is outside the terms I can approve. I've passed it to ${seller.name}, your ${vendor.name} rep, who'll reply within one business day.`,
+        text: `This request is outside the terms I can approve. I've passed it to ${seller.name}, our sales rep, who'll reply within one business day.`,
       },
     ],
     timeline: [
       { id: 't-neg', at: '0:58', title: 'Requested: unlimited AI-assistant queries, 3-year deal', door: 'mcp', source: 'vendor' },
-      { id: 't-esc', at: '0:59', title: 'Escalated to human', detail: `Passed to ${seller.name}, ${seller.title}`, door: 'mcp', source: 'vendor', status: 'escalated', statusLabel: 'Escalated to human' },
+      { id: 't-esc', at: '0:59', title: 'Escalated to human', detail: `Passed to ${seller.name}, ${seller.role}`, door: 'mcp', source: 'vendor', status: 'escalated', statusLabel: 'Escalated to human' },
     ],
   },
   {
@@ -307,7 +307,7 @@ export const buyerSteps: Step[] = [
         kind: 'final',
         id: 'c-final',
         intro: "Here's where your shortlist stands:",
-        recommendation: `${vendor.name} is the only option I could fully verify, and it fits your budget at ${money(quote.annual)}/yr. ${gridlake.name} and ${chartwell.name} may also fit, but each needs a sales call to confirm pricing and embedding. ${seller.name} at ${vendor.name} will reply on the 3-year request within one business day.`,
+        recommendation: `${vendor.sentenceStart} is the only option I could fully verify, and it fits your budget at ${money(quote.annual)}/yr. ${competitor1.name} and ${competitor2.name} may also fit, but each needs a sales call to confirm pricing and embedding. ${seller.name}, ${seller.role}, will reply on the 3-year request within one business day.`,
       },
     ],
   },
@@ -322,7 +322,7 @@ export const finalComparison: {
   vendors: string[]
   rows: { label: string; cells: { text: string; tone: CellTone }[] }[]
 } = {
-  vendors: [vendor.name, gridlake.name, chartwell.name],
+  vendors: [vendor.name, competitor1.name, competitor2.name],
   rows: [
     {
       label: 'Independent reviews',

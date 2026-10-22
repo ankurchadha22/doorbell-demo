@@ -5,17 +5,17 @@ The brief said to pick sensible defaults and record them here. Grouped by area; 
 ## Things to check before presenting
 
 - **The RESONEO statistic could not be verified.** A web search found the IDC "8 in 10" figure via a MarketScale article ("80% of B2B tech buyers now use AI agents…"), but found no source for the RESONEO "93% of ChatGPT's quick answers opened no web page" study. It is shown exactly as the brief specified. Confirm the source before you present, or remove it in `src/data/config.ts` (`stats`).
-- **Fictional names checked.** A web search found no BI or analytics product named Vantly, Gridlake or Chartwell. The closest real name is Chartio, a discontinued BI tool; "Chartwell" is distinct enough, so no rename. Tidewater Labs, Maya Chen and Jordan Ellis are generic. All names live in `src/data/config.ts`.
+- **Companies are named by their role** (your request): Seller, Competitor 1 and Competitor 2, so the audience never has to track made-up brand names. Running text says "the seller". The people keep names but are introduced by role: Maya Chen is the buyer (at Tidewater Labs), Jordan Ellis is the seller's sales rep. All names still live in `src/data/config.ts`.
 - **The ask in the closing talk track is a placeholder** (the talk track is kept outside this repository), because the brief didn't say what you're asking for.
 
 ## Story and content
 
-- **Renamed from Agent Desk to Doorbell** (your choice, from four options). A quick web search found an existing AI customer-support product called AgentDesk. Buyers' agents see the vendor's desk as "Vantly's AI desk", powered by Doorbell. The logo is a doorbell button with two sound waves, drawn in the demo's existing green so the violet MCP badge stays distinct; the mark is in `brand/doorbell-mark.svg`.
+- **Renamed from Agent Desk to Doorbell** (your choice, from four options). A quick web search found an existing AI customer-support product called AgentDesk. Buyers' agents see the vendor's desk as "the seller's AI desk", powered by Doorbell. The logo is a doorbell button with two sound waves, drawn in the demo's existing green so the violet MCP badge stays distinct; the mark is in `brand/doorbell-mark.svg`.
 
 - **Plain-English example (changed at your request after the first build).** Maya needs Stripe and QuickBooks connections instead of Snowflake and Postgres; "row-level security per customer" is now "each customer sees only their own data"; the headline content gap is "Is there a free trial?" instead of "HIPAA BAA available?". SOC 2 and everything else stay. Stripe and QuickBooks appear as text only, the same way the brief names Salesforce and HubSpot.
 
 - **Pricing is derived, not typed in.** Growth is $40 per user per month plus a $400/month embedding add-on: 40 users = $2,000/month by card, $24,000/year list, $21,600/year with the 10% annual discount. A 3-year deal ($64,800) is over the $50k multi-year limit, so the negotiation request breaks two policies at once. All of this lives in `src/data/policies.ts`; the chat, quote, seller view and policy page read it from there.
-- **The agent touches all three doors.** Besides MCP (questions) and Form (quote), the agent first reads Vantly's AI-readable pages (Website door), which is also how it discovers the MCP connection.
+- **The agent touches all three doors.** Besides MCP (questions) and Form (quote), the agent first reads the seller's AI-readable pages (Website door), which is also how it discovers the MCP connection.
 - **Independent sources are fictional and generic**: `reviews.example`, `opsforum.example`, `databench.example`. No real review site is named.
 - **"Also evaluating" comes from context the agent states when it connects** ("comparing 3 BI tools"), and is labeled "Inferred, not confirmed" in the seller view.
 - **Before identification, the seller view shows an "Unidentified agent session"**. Earlier questions are linked to Tidewater Labs at the quote step, when Maya shares her email. You can see this live by opening the Seller view during Act 1.
@@ -38,7 +38,7 @@ The brief said to pick sensible defaults and record them here. Grouped by area; 
 - **Space and focus**: presenter buttons drop focus after a mouse click, and Space is left to a focused button, so one press never counts twice.
 - **Consent is inline in the chat** (the way agent apps ask for permission) rather than a floating modal, so the agent's question stays visible above it. "Not now" works: the agent says nothing was shared and offers "Share my email after all", which continues the story.
 - **Auto-play runs about 3:08** (title 6 s, Act 1 77 s, Act 2 61 s, Act 3 31 s, closing 12 s). Per-step dwell times are in the data files (`dwellMs`).
-- **Free navigation** never changes the step; presenter actions (`→`, `←`, act jumps, Reset, progress dots) move the screen to the step's route. Screens opened before the story starts show an empty state with "Start the buyer's story" and "Show the full conversation" / "Show what Vantly sees".
+- **Free navigation** never changes the step; presenter actions (`→`, `←`, act jumps, Reset, progress dots) move the screen to the step's route. Screens opened before the story starts show an empty state with "Start the buyer's story" and "Show the full conversation" / "Show what the seller sees".
 - **Reset** returns to step 1, stops auto-play and remounts every screen, which clears local edits (added answers, policy switches, consent choice).
 
 ## Design

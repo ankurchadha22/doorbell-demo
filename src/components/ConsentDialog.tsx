@@ -35,10 +35,10 @@ export function ConsentDialog({ open, confirmed, onShare, onNotNow }: Props) {
                 Share your work email?
               </h2>
               <p id="consent-body" className="mt-0.5 text-md text-ink-2">
-                Share <span className="font-semibold text-ink">{buyer.email}</span> with {vendor.name} to receive a quote?
+                Share <span className="font-semibold text-ink">{buyer.email}</span> with {vendor.inSentence} to receive a quote?
               </p>
               <p className="mt-1 text-sm text-muted">
-                Only {vendor.name} receives it. Your agent uses it to fill in {vendor.name}'s quote form.
+                Only {vendor.inSentence} receives it. Your agent uses it to fill in {vendor.inSentence}'s quote form.
               </p>
             </div>
           </div>

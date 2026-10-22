@@ -1,6 +1,6 @@
 import { Bot, ChartColumn, LayoutDashboard, Presentation, Settings2, ShieldCheck, Flag } from 'lucide-react'
 import { NavLink } from 'react-router'
-import { buyer, product, vendor } from '../data/config'
+import { product, vendor } from '../data/config'
 import { routes } from '../data/story'
 import { Logo } from './Logo'
 
@@ -18,7 +18,7 @@ export function SideNav() {
         <Logo />
         <div className="leading-tight">
           <div className="font-semibold tracking-tight">{product.name}</div>
-          <div className="text-sm text-muted">Workspace: {vendor.name}</div>
+          <div className="text-sm text-muted">{vendor.name}'s workspace</div>
         </div>
       </div>
 
@@ -31,9 +31,9 @@ export function SideNav() {
           </NavLink>
         </li>
       </ul>
-      <p className="mt-1 px-2.5 text-sm leading-snug text-muted">{buyer.person}'s AI agent</p>
+      <p className="mt-1 px-2.5 text-sm leading-snug text-muted">The buyer's AI agent</p>
 
-      <div className="mt-6 px-2.5 text-sm font-medium text-muted">{vendor.name}'s desk</div>
+      <div className="mt-6 px-2.5 text-sm font-medium text-muted">Seller side</div>
       <ul className="mt-1.5 space-y-0.5">
         <li>
           <NavLink to={routes.seller} className={item}>

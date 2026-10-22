@@ -81,7 +81,7 @@ export function BuyerView() {
       <PageHeader
         eyebrow={acts[1]}
         title={`${buyer.firstName} asks her AI agent to find a BI tool`}
-        subtitle={`${buyer.person}, ${buyer.title} at ${buyer.company} (${buyer.size} people, ${buyer.industry})`}
+        subtitle={`The buyer: ${buyer.person}, ${buyer.title} at ${buyer.company} (${buyer.size} people, ${buyer.industry})`}
       />
       <StageTracker current={stage} />
 
@@ -105,7 +105,7 @@ export function BuyerView() {
               {cur.consent === 'ask' && declined && (
                 <AgentTurn>
                   <p className="text-md leading-relaxed text-ink">
-                    Okay, I haven't shared anything. Without your email, {vendor.name} can only show public list prices.
+                    Okay, I haven't shared anything. Without your email, {vendor.inSentence} can only show public list prices.
                   </p>
                   <button
                     type="button"
