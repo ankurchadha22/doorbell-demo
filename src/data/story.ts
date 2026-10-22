@@ -2,12 +2,12 @@
 // Both the buyer and seller views derive their state from the index into this array.
 
 import { buyerSteps } from './buyerScript'
-import { vendor } from './config'
+import { product, vendor } from './config'
 import { sellerSteps } from './sellerEvents'
 import type { Screen, Step } from './types'
 
 export const steps: Step[] = [
-  { id: 'title', act: 0, screen: 'title', label: 'Title', dwellMs: 6000 },
+  { id: 'title', act: 0, screen: 'title', label: 'Press Next or → to start', dwellMs: 6000 },
   ...buyerSteps,
   ...sellerSteps,
   { id: 'i-insights', act: 3, screen: 'insights', label: 'Insights: what agents ask', dwellMs: 9000 },
@@ -18,7 +18,7 @@ export const steps: Step[] = [
 ]
 
 export const acts: Record<Step['act'], string> = {
-  0: 'Title',
+  0: `${product.name} concept demo`,
   1: "Act 1 · What the buyer's agent does",
   2: `Act 2 · What ${vendor.name} sees`,
   3: 'Act 3 · Insight and controls',
