@@ -5,7 +5,8 @@ The brief said to pick sensible defaults and record them here. Grouped by area; 
 ## Things to check before presenting
 
 - **The RESONEO statistic could not be verified.** A web search found the IDC "8 in 10" figure via a MarketScale article ("80% of B2B tech buyers now use AI agents…"), but found no source for the RESONEO "93% of ChatGPT's quick answers opened no web page" study. It is shown exactly as the brief specified. Confirm the source before you present, or remove it in `src/data/config.ts` (`stats`).
-- **Companies are named by their role** (your request): Seller, Competitor 1 and Competitor 2, so the audience never has to track made-up brand names. Running text says "the seller". The people keep names but are introduced by role: Maya Chen is the buyer (at Tidewater Labs), Jordan Ellis is the seller's sales rep. All names still live in `src/data/config.ts`.
+- **Companies are named by their role** (your request): Seller, Competitor 1 and Competitor 2, so the audience never has to track made-up brand names. Running text says "the seller". The people keep names but are introduced by role: Maya Chen is the buyer (at MIT Capital), Jordan Ellis is the seller's sales rep. All names still live in `src/data/config.ts`.
+- **The buyer's company is "MIT Capital"** (your choice). Note: a real student venture group called MIT Capital Partners exists at MIT, and MIT restricts use of its name by outside ventures. The demo still describes MIT Capital as a fictional 40-person fintech.
 - **The ask in the closing talk track is a placeholder** (the talk track is kept outside this repository), because the brief didn't say what you're asking for.
 
 ## Story and content
@@ -18,7 +19,7 @@ The brief said to pick sensible defaults and record them here. Grouped by area; 
 - **The agent touches all three doors.** Besides MCP (questions) and Form (quote), the agent first reads the seller's AI-readable pages (Website door), which is also how it discovers the MCP connection.
 - **Independent sources are fictional and generic**: `reviews.example`, `opsforum.example`, `databench.example`. No real review site is named.
 - **"Also evaluating" comes from context the agent states when it connects** ("comparing 3 BI tools"), and is labeled "Inferred, not confirmed" in the seller view.
-- **Before identification, the seller view shows an "Unidentified agent session"**. Earlier questions are linked to Tidewater Labs at the quote step, when Maya shares her email. You can see this live by opening the Seller view during Act 1.
+- **Before identification, the seller view shows an "Unidentified agent session"**. Earlier questions are linked to MIT Capital at the quote step, when Maya shares her email. You can see this live by opening the Seller view during Act 1.
 - **Seller stage**: after the escalation, the account sits at "Choose how to buy" with "Negotiate (human)" flagged, as the brief asked, while the buyer's own tracker shows "Negotiate (human)" as the current stage.
 - **Final comparison wording**: "Verified" (vendor confirmed with a cited document), "Vendor claim" (on their website, not checked), "Unknown", "Unverified". A one-line legend sits under the table. The recommendation stays neutral and mentions that the others "may also fit".
 - **Policy content beyond the brief**: added "Never compare against named competitors", "Never promise roadmap features or dates" (answer rules), "Any discount above the auto-approve limit" (escalation), and two rows of gated documents ("Exact quote" needs a verified work email; public pages are open). They make the page realistic and match the story.

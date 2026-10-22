@@ -37,14 +37,14 @@ export const competitors = [
 export const [competitor1, competitor2] = competitors
 
 export const buyer = {
-  company: 'Tidewater Labs',
-  companyDomain: 'tidewaterlabs.example',
+  company: 'MIT Capital',
+  companyDomain: 'mitcapital.example',
   size: 40,
   industry: 'fintech',
   person: 'Maya Chen',
   firstName: 'Maya',
   title: 'Head of Operations',
-  email: 'maya@tidewaterlabs.example',
+  email: 'maya@mitcapital.example',
   initials: 'MC',
   budget: 25_000,
 }

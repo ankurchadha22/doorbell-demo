@@ -33,7 +33,7 @@ export const pricing = {
 const growth = pricing.plans[1]
 const seats = buyer.size
 
-/** The quote Tidewater Labs receives: Growth plan, 40 users, with embedding. */
+/** The quote the buyer receives: Growth plan, 40 users, with embedding. */
 export const quote = {
   id: 'Q-2026-1042',
   plan: growth.name,
