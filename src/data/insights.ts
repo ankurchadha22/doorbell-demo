@@ -15,6 +15,7 @@ export const usageByChannel: { channel: Channel; label: string; value: number; u
   { channel: 'page', label: 'Page reads', value: 1284, unit: 'page reads' },
   { channel: 'facts', label: 'Facts panel reads', value: 412, unit: 'reads' },
   { channel: 'ask', label: 'Ask box questions', value: 96, unit: 'questions' },
+  { channel: 'mcp', label: 'MCP questions', value: 58, unit: 'questions' },
 ]
 
 export const agentTypes = [

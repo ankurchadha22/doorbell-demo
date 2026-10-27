@@ -8,7 +8,7 @@ import { acts } from '../data/story'
 import type { Channel } from '../data/types'
 import { useDemo } from '../presenter/useStep'
 
-const channelFill: Record<Channel, string> = { page: 'bg-web', facts: 'bg-form', ask: 'bg-mcp' }
+const channelFill: Record<Channel, string> = { page: 'bg-web', facts: 'bg-form', ask: 'bg-ask', mcp: 'bg-mcp' }
 
 export function Insights() {
   const { current } = useDemo()
@@ -46,7 +46,7 @@ export function Insights() {
             }))}
             labelWidth="6.5rem"
           />
-          <p className="mt-3 text-sm text-muted">Most agents read pages. The facts panel and ask box are where they get exact answers.</p>
+          <p className="mt-3 text-sm text-muted">Most agents read pages. Exact answers come from the facts panel and ask box; deeper and gated ones over MCP.</p>
         </Card>
 
         <Card title="Agents seen">

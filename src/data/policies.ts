@@ -53,6 +53,13 @@ export const factsPanel = [
   { topic: 'Security', text: 'SOC 2 Type II, report under NDA' },
 ]
 
+/** Documents agents can request over MCP, and what it takes to get them. */
+export const gatedDocs = [
+  { doc: 'SOC 2 Type II report', requirement: 'NDA link sent automatically; opens once signed' },
+  { doc: 'Security questionnaire', requirement: 'Sent to a person' },
+  { doc: 'Public pricing, docs and integrations', requirement: 'Open to every agent' },
+]
+
 export const alwaysEscalate = [
   'Any question without an approved answer',
   'Discounts beyond the published annual discount',
@@ -61,7 +68,7 @@ export const alwaysEscalate = [
 ]
 
 export const answerRules = [
-  'Answer only from approved facts, and cite the source.',
+  'Answer only from approved facts and docs, and cite the source.',
   'Everything agents see is visible to people too. No hidden instructions.',
   'If unsure, say so and pass the question to a person.',
   'Never compare against named competitors.',

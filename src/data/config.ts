@@ -7,6 +7,7 @@ export const product = {
   subtitle:
     'One line of code shows which AI agents visited your website, who sent them, what they were looking for and what they couldn’t find.',
   demoLabel: 'Concept demo · simulated data',
+  mcpExplainer: 'MCP: the standard way AI agents plug into tools.',
 }
 
 // The companies are named by their role, so the audience never has to remember who is who.
@@ -21,6 +22,8 @@ export const vendor = {
   category: 'business-intelligence and embedded-analytics tool',
   site: 'seller.example',
   docs: 'docs.seller.example',
+  /** The MCP connection agents find in the facts panel, for deeper or gated questions. */
+  mcpUrl: 'seller.doorbell.example/mcp',
 }
 
 export const competitors = [
@@ -35,10 +38,10 @@ export const buyer = {
   companyDomain: 'mitcapital.example',
   size: 40,
   industry: 'fintech',
-  person: 'Maya Chen',
-  firstName: 'Maya',
+  person: 'Julie Sharp',
+  firstName: 'Julie',
   title: 'Head of Operations',
-  initials: 'MC',
+  initials: 'JS',
   budget: 25_000,
 }
 
@@ -79,5 +82,5 @@ export const businessModel = 'Vendors pay a monthly subscription based on agent 
 export const roadmap = [
   { id: 'tag', when: 'Today', name: 'Website tag', text: 'Works with any AI browser that visits your site.' },
   { id: 'webmcp', when: 'Next', name: 'WebMCP', text: 'Agents on your site use tools the page offers. Chrome is testing it now.' },
-  { id: 'mcp', when: 'Later', name: 'MCP', text: "A buyer's AI assistant reaches you from anywhere." },
+  { id: 'mcp', when: 'Later', name: 'MCP', text: "Deeper and gated questions from any AI assistant. Agents find the connection in your facts panel." },
 ]

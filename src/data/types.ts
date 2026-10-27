@@ -2,8 +2,8 @@
 
 export type Screen = 'title' | 'buyer' | 'seller' | 'insights' | 'policies' | 'setup' | 'closing'
 
-/** Where on a website the agent found something: an ordinary page, Doorbell's facts panel or its ask box. */
-export type Channel = 'page' | 'facts' | 'ask'
+/** How the agent got something from a vendor: an ordinary page, Doorbell's facts panel, its ask box or an MCP connection. */
+export type Channel = 'page' | 'facts' | 'ask' | 'mcp'
 
 /** Who published the information the agent read. */
 export type Source = 'independent' | 'vendor'
@@ -19,7 +19,7 @@ export interface Citation {
 
 export type ChatItem =
   | { kind: 'user'; id: string; text: string; typed?: boolean }
-  | { kind: 'agent'; id: string; text: string }
+  | { kind: 'agent'; id: string; text: string; note?: string }
   | {
       kind: 'check'
       id: string

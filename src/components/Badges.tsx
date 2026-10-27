@@ -9,6 +9,7 @@ import {
   ListChecks,
   Lock,
   MessageCircleQuestion,
+  Plug,
   Radar,
   UserRoundCog,
   Users,
@@ -18,7 +19,8 @@ import type { Channel, FeedKind, Source, Status } from '../data/types'
 const channelStyle: Record<Channel, { label: string; Icon: typeof Globe; cls: string }> = {
   page: { label: 'Web page', Icon: FileText, cls: 'bg-web-soft text-web' },
   facts: { label: 'Facts panel', Icon: ListChecks, cls: 'bg-form-soft text-form' },
-  ask: { label: 'Ask box', Icon: MessageCircleQuestion, cls: 'bg-mcp-soft text-mcp' },
+  ask: { label: 'Ask box', Icon: MessageCircleQuestion, cls: 'bg-ask-soft text-ask' },
+  mcp: { label: 'MCP', Icon: Plug, cls: 'bg-mcp-soft text-mcp' },
 }
 
 const kindStyle: Record<FeedKind, { label: string; Icon: typeof Globe; cls: string }> = {
@@ -32,7 +34,7 @@ const kindStyle: Record<FeedKind, { label: string; Icon: typeof Globe; cls: stri
 const chip =
   'inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-semibold leading-tight whitespace-nowrap'
 
-/** Where on a website the agent found something: a page, the facts panel or the ask box. */
+/** How the agent got something: a page, the facts panel, the ask box or MCP. */
 export function ChannelBadge({ channel }: { channel: Channel }) {
   const { label, Icon, cls } = channelStyle[channel]
   return (

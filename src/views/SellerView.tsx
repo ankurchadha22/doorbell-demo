@@ -233,7 +233,7 @@ interface AfterProps {
 function AfterView({ events, streamFeed, isShown, isFresh, happened, newEventStep, overlayButtons }: AfterProps) {
   const identified = happened(account.identifiedAt)
   const checked = account.checked.filter((c) => happened(c.stepId))
-  const visitDone = happened(account.stuck.stepId)
+  const visitDone = happened(account.leftAt)
 
   return (
     <div className="grid h-full grid-cols-[19.5rem_minmax(0,1fr)] gap-4">
@@ -277,7 +277,7 @@ function AfterView({ events, streamFeed, isShown, isFresh, happened, newEventSte
             <Chip>{account.agentKind}</Chip>
             <Chip>{visitDone ? '4 min 12 s on site' : 'On site now'}</Chip>
             <Chip>{visitDone ? '6 pages read' : 'Reading pages'}</Chip>
-            {visitDone && <Chip>1 question asked</Chip>}
+            {visitDone && <Chip>3 questions asked</Chip>}
           </div>
         </Panel>
 

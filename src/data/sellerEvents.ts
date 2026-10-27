@@ -53,7 +53,7 @@ export const feedEvents: FeedEvent[] = [
   {
     id: 'e-price',
     stepId: 'b-facts-2',
-    time: '14:05',
+    time: '14:04',
     kind: 'facts',
     text: `Priced ${estimate.plan} + embedding for ${estimate.seats} users`,
     detail: `${money(estimate.annual)}/yr on annual terms`,
@@ -61,14 +61,14 @@ export const feedEvents: FeedEvent[] = [
   {
     id: 'e-trust',
     stepId: 'b-facts-2',
-    time: '14:05',
+    time: '14:04',
     kind: 'page',
     text: 'Opened the trust center: SOC 2 Type II',
   },
   {
     id: 'e-search',
     stepId: 'b-ask',
-    time: '14:06',
+    time: '14:04',
     kind: 'page',
     text: 'Searched the site for “free trial”',
     detail: 'No results',
@@ -76,18 +76,42 @@ export const feedEvents: FeedEvent[] = [
   {
     id: 'e-ask',
     stepId: 'b-ask',
-    time: '14:06',
+    time: '14:05',
     kind: 'escalation',
     text: 'Ask box: “Is there a free trial?”',
     detail: `No approved answer. Sent to ${seller.name}, your sales rep.`,
   },
   {
+    id: 'e-mcp-connect',
+    stepId: 'b-mcp-connect',
+    time: '14:05',
+    kind: 'mcp',
+    text: 'Agent connected over MCP',
+    detail: 'Found the connection in your facts panel',
+  },
+  {
+    id: 'e-mcp-q',
+    stepId: 'b-mcp',
+    time: '14:05',
+    kind: 'mcp',
+    text: 'Asked about own branding and customer sign-in',
+    detail: 'Answered with a citation',
+  },
+  {
+    id: 'e-mcp-doc',
+    stepId: 'b-mcp',
+    time: '14:06',
+    kind: 'mcp',
+    text: 'Requested the SOC 2 Type II report',
+    detail: 'Gated: NDA link sent. The report opens once they sign.',
+  },
+  {
     id: 'e-left',
-    stepId: 'b-ask',
+    stepId: 'b-mcp',
     time: '14:06',
     kind: 'left',
     text: 'Agent left after 4 min 12 s',
-    detail: '6 pages read, 1 question asked',
+    detail: '6 pages read, 3 questions asked',
   },
 ]
 
@@ -104,22 +128,25 @@ export const account = {
     basis: `The agent ran in a browser on ${buyer.company}'s network. Visits that can't be matched stay anonymous.`,
   },
   agentKind: 'AI browser agent',
+  /** The step at which the agent leaves the site. */
+  leftAt: 'b-mcp',
   mission: {
     stepId: 'b-facts-2',
-    text: `Comparing BI tools for about ${buyer.size} users. Needs Stripe and QuickBooks, and embedded dashboards where each customer sees only their own data.`,
+    text: `Comparing BI tools for about ${buyer.size} users. Needs Stripe and QuickBooks, branded embedded dashboards and a SOC 2 report.`,
     basis: 'Inferred from the pages it read, what it priced and what it asked.',
   },
   checked: [
     { stepId: 'b-facts-1', text: 'Stripe + QuickBooks connections', found: true, note: 'Facts panel' },
-    { stepId: 'b-facts-1', text: 'Embedding, each customer sees only their own data', found: true, note: 'Facts panel' },
-    { stepId: 'b-facts-2', text: `Price: ${estimate.plan} + embedding, ${estimate.seats} users`, found: true, note: `${money(estimate.annual)}/yr` },
-    { stepId: 'b-facts-2', text: 'SOC 2 Type II', found: true, note: 'Report needs NDA' },
+    { stepId: 'b-facts-1', text: 'Embedding, separate data per customer', found: true, note: 'Facts panel' },
+    { stepId: 'b-facts-2', text: `Price for ${estimate.seats} users`, found: true, note: `${money(estimate.annual)}/yr` },
     { stepId: 'b-ask', text: 'Free trial', found: false, note: 'Not found' },
+    { stepId: 'b-mcp', text: 'Own branding and sign-in', found: true, note: 'MCP' },
+    { stepId: 'b-mcp', text: 'SOC 2 Type II report', found: true, note: 'NDA link sent' },
   ],
   stuck: {
     stepId: 'b-ask',
     text: 'Couldn’t find whether there’s a free trial.',
-    detail: 'It searched the site, asked in the ask box, got no approved answer and left 24 seconds later.',
+    detail: 'It searched the site and asked in the ask box. There was no approved answer, so the question went to a person.',
   },
   value: {
     stepId: 'b-facts-2',
@@ -127,27 +154,27 @@ export const account = {
     unit: 'per year, as priced',
   },
   nextBestAction: {
-    stepId: 'b-ask',
+    stepId: 'b-mcp',
     owner: seller.name,
-    text: `Add a free-trial answer so the next agent gets one. Then reach out to ${buyer.company}: they priced ${estimate.plan} with embedding for about ${estimate.seats} users.`,
+    text: `Add a free-trial answer so the next agent gets one. Then reach out to ${buyer.company}: they priced ${estimate.plan} with embedding for about ${estimate.seats} users and asked for the SOC 2 report.`,
   },
 }
 
 /* ---------- After: rep alert and CRM ---------- */
 
 export const repAlert = {
-  stepId: 'b-ask',
+  stepId: 'b-mcp',
   channel: 'sales-alerts',
   from: product.name,
   to: seller.name,
   time: '14:06',
   worksWith: 'Slack or Teams',
-  text: `🔔 An AI agent from ${buyer.company} (about ${buyer.size} people, ${buyer.industry}) spent 4 minutes on ${vendor.site}. It priced ${estimate.plan} + embedding for ${estimate.seats} users and checked SOC 2. It couldn't find whether there's a free trial.`,
+  text: `🔔 An AI agent from ${buyer.company} (about ${buyer.size} people, ${buyer.industry}) spent 4 minutes on ${vendor.site}. It priced ${estimate.plan} + embedding for ${estimate.seats} users and requested the SOC 2 report over MCP. It couldn't find whether there's a free trial.`,
   cta: 'Open the visit →',
 }
 
 export const crmRecord = {
-  stepId: 'b-ask',
+  stepId: 'b-mcp',
   heading: 'Logged in your CRM',
   worksWith: 'Works with Salesforce or HubSpot',
   fields: [
@@ -158,9 +185,10 @@ export const crmRecord = {
     { label: 'Owner', value: seller.name },
   ],
   activities: [
-    { stepId: 'b-ask', text: 'AI agent visit: 4 min, 6 pages' },
-    { stepId: 'b-ask', text: 'Mission summary attached' },
-    { stepId: 'b-ask', text: 'Open question: “Is there a free trial?”' },
+    { stepId: 'b-mcp', text: 'AI agent visit: 4 min, 6 pages, 3 questions' },
+    { stepId: 'b-mcp', text: 'Mission summary attached' },
+    { stepId: 'b-mcp', text: 'SOC 2 report requested over MCP (NDA pending)' },
+    { stepId: 'b-mcp', text: 'Open question: “Is there a free trial?”' },
   ],
 }
 
@@ -180,8 +208,8 @@ export const sellerSteps: Step[] = [
     act: 2,
     screen: 'seller',
     label: 'After: the agent visit, live',
-    dwellMs: 9000,
-    animMs: 2200,
+    dwellMs: 9500,
+    animMs: 2800,
     seller: { mode: 'after', show: ['feed'] },
   },
   {

@@ -19,11 +19,13 @@
   --color-accent-strong: #0a5243;
   --color-accent-soft: #e0efe9;
 
-  /* Channels: web page, facts panel, ask box */
+  /* Channels: web page, facts panel, ask box, MCP */
   --color-web: #2d5b94;
   --color-web-soft: #e5edf7;
   --color-form: #8f560a;
   --color-form-soft: #f8eedb;
+  --color-ask: #0b6878;
+  --color-ask-soft: #dcf0f2;
   --color-mcp: #5a3fc0;
   --color-mcp-soft: #ece8fb;
 

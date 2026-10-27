@@ -58,7 +58,7 @@ export function BuyerView() {
     <div className="flex h-full flex-col gap-4 px-6 pt-5 pb-4">
       <PageHeader
         eyebrow={acts[1]}
-        title={`${buyer.firstName} sends her AI browser agent to find a BI tool`}
+        title={`${buyer.firstName} sends an AI browser agent to find a BI tool`}
         subtitle={`The buyer: ${buyer.person}, ${buyer.title} at ${buyer.company} (${buyer.size} people, ${buyer.industry})`}
       />
 
@@ -112,7 +112,7 @@ export function BuyerView() {
   )
 }
 
-/** Renders chat items, merging consecutive checks with the same vendor into one card. */
+/** Renders chat items, merging consecutive checks with the same vendor and channel into one card. */
 function renderChat(chat: Placed[]): ReactNode[] {
   const out: ReactNode[] = []
   for (let i = 0; i < chat.length; i++) {
@@ -122,7 +122,7 @@ function renderChat(chat: Placed[]): ReactNode[] {
       const group: Placed[] = [p]
       while (i + 1 < chat.length) {
         const nxt = chat[i + 1].item
-        if (nxt.kind !== 'check' || nxt.vendor !== item.vendor) break
+        if (nxt.kind !== 'check' || nxt.vendor !== item.vendor || nxt.channel !== item.channel) break
         group.push(chat[++i])
       }
       out.push(
@@ -163,7 +163,7 @@ function EmptyChat({ onPlay, onSkip }: { onPlay: () => void; onSkip: () => void 
   return (
     <div className="grid place-items-center py-16 text-center">
       <div className="max-w-xl">
-        <p className="text-lg font-semibold text-ink">{buyer.firstName} hasn't asked her agent anything yet.</p>
+        <p className="text-lg font-semibold text-ink">{buyer.firstName} hasn't asked the agent anything yet.</p>
         <p className="mt-1 text-md text-muted">Press → to start the story, or jump straight to the end of it.</p>
         <div className="mt-4 flex justify-center gap-2">
           <button type="button" onClick={onPlay} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-strong">

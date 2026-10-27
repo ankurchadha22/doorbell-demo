@@ -4,12 +4,12 @@
 
 This is a scripted demo for a hackathon, not a product. Every screen runs on fixed, fictional data, it makes no network or AI calls, and it works offline. Every screen carries a "Concept demo · simulated data" label.
 
-The earlier version of the demo (an MCP desk, an agent-fillable quote form and a work-email consent step) is kept on the [`demo-v1-mcp-desk`](https://github.com/ankurchadha22/doorbell-demo/tree/demo-v1-mcp-desk) branch and the `demo-v1` tag.
+The earlier version of the demo (an MCP desk, an agent-fillable quote form and a work-email consent step) is kept on the [`demo-v1-mcp-desk`](https://github.com/ankurchadha22/doorbell-demo/tree/demo-v1-mcp-desk) branch and the `demo-v1` tag. The website-tag version without the MCP step is tagged `demo-v2`.
 
 The story, in three acts:
 
-1. **What the buyer's agent does.** Maya, Head of Operations at a 40-person fintech, sends her AI browser agent to shortlist BI tools. It reads independent reviews first, then opens each vendor's website. Only the seller uses Doorbell: its pricing page has a visible "Facts for AI assistants" panel and an ask box, so the agent verifies integrations, embedding, price and SOC 2 there. It can't find whether there's a free trial, asks in the ask box, gets no approved answer (the question goes to a person) and leaves.
-2. **What the seller sees.** Before Doorbell: zero visits in analytics, a few signed log lines, no CRM record. After: the visit live, matched to MIT Capital by company network, a summary of what the agent was looking for, where it got stuck, a next step for the sales rep, a live alert in Slack or Teams and a CRM record.
+1. **What the buyer's agent does.** Julie Sharp, Head of Operations at a 40-person fintech, sends an AI browser agent to shortlist BI tools. It reads independent reviews first, then opens each vendor's website. Only the seller uses Doorbell: its pricing page has a visible "Facts for AI assistants" panel and an ask box, so the agent verifies integrations, embedding, price and SOC 2 there. It can't find whether there's a free trial; the ask box has no approved answer, so the question goes to a person. For deeper or gated questions the facts panel offers an MCP connection: with Julie's approval the agent connects, gets a cited answer on branding and sign-in, and receives an NDA link for the SOC 2 report.
+2. **What the seller sees.** Before Doorbell: zero visits in analytics, a few signed log lines, no CRM record. After: the visit live (pages, facts panel, ask box and MCP), matched to MIT Capital by company network, a summary of what the agent was looking for, where it got stuck, a next step for the sales rep, a live alert in Slack or Teams and a CRM record.
 3. **Weekly report, rules and setup.** What agents looked for across all visits and what they couldn't find (with "Add answer"), the rules that limit what Doorbell may tell agents, the one-line setup, and the roadmap: website tag today, WebMCP next, MCP later.
 
 ## Run it

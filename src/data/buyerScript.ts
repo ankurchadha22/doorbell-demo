@@ -1,7 +1,7 @@
 // Act 1: what the buyer's agent does. Each step appends chat items and timeline entries.
 // Edit the story here; the Buyer view renders whatever this file says.
 
-import { buyer, competitor1, competitor2, independentSources as src, vendor } from './config'
+import { buyer, competitor1, competitor2, independentSources as src, product, seller, vendor } from './config'
 import { estimate, money, pricing } from './policies'
 import type { Step } from './types'
 
@@ -10,7 +10,7 @@ export const buyerSteps: Step[] = [
     id: 'b-request',
     act: 1,
     screen: 'buyer',
-    label: `${buyer.firstName} asks her AI browser agent`,
+    label: `${buyer.firstName} briefs an AI browser agent`,
     dwellMs: 7000,
     chat: [
       {
@@ -109,8 +109,8 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-q1', at: '1:30', title: 'Read the integrations docs: Stripe, QuickBooks', detail: 'Confirmed in the facts panel', channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Verified' },
-      { id: 't-q2', at: '2:15', title: 'Read the embedding docs', detail: 'Growth plan; each customer sees only their own data', channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Verified' },
+      { id: 't-q1', at: '1:20', title: 'Read the integrations docs: Stripe, QuickBooks', detail: 'Confirmed in the facts panel', channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Verified' },
+      { id: 't-q2', at: '1:45', title: 'Read the embedding docs', detail: 'Growth plan; each customer sees only their own data', channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Verified' },
     ],
   },
   {
@@ -145,8 +145,8 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-q3', at: '3:05', title: `Priced Growth + embedding for ${buyer.size} users`, detail: `${money(estimate.annual)}/yr on annual terms`, channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Exact price' },
-      { id: 't-q4', at: '3:40', title: 'Opened the trust center: SOC 2 Type II', channel: 'page', source: 'vendor', status: 'gated', statusLabel: 'Report needs NDA' },
+      { id: 't-q3', at: '2:10', title: `Priced Growth + embedding for ${buyer.size} users`, detail: `${money(estimate.annual)}/yr on annual terms`, channel: 'facts', source: 'vendor', status: 'ok', statusLabel: 'Exact price' },
+      { id: 't-q4', at: '2:30', title: 'Opened the trust center: SOC 2 Type II', channel: 'page', source: 'vendor', status: 'gated', statusLabel: 'Report needs NDA' },
     ],
   },
   {
@@ -171,9 +171,65 @@ export const buyerSteps: Step[] = [
       },
     ],
     timeline: [
-      { id: 't-s1', at: '4:20', title: 'Searched the site for “free trial”', detail: 'No results', channel: 'page', source: 'vendor', status: 'warn', statusLabel: 'Not found' },
-      { id: 't-s2', at: '4:40', title: 'Asked in the ask box: “Is there a free trial?”', detail: 'No approved answer yet', channel: 'ask', source: 'vendor', status: 'escalated', statusLabel: 'Sent to a person' },
-      { id: 't-s3', at: '5:04', title: `Left ${vendor.site}`, detail: 'Free trial still unknown' },
+      { id: 't-s1', at: '2:50', title: 'Searched the site for “free trial”', detail: 'No results', channel: 'page', source: 'vendor', status: 'warn', statusLabel: 'Not found' },
+      { id: 't-s2', at: '3:05', title: 'Asked in the ask box: “Is there a free trial?”', detail: 'No approved answer yet', channel: 'ask', source: 'vendor', status: 'escalated', statusLabel: 'Sent to a person' },
+    ],
+  },
+  {
+    id: 'b-mcp-connect',
+    act: 1,
+    screen: 'buyer',
+    label: 'Facts panel offers MCP for deeper questions',
+    dwellMs: 6500,
+    chat: [
+      {
+        kind: 'agent',
+        id: 'c-mcp-offer',
+        text: `The facts panel also offers an MCP connection to ${vendor.inSentence} for deeper or gated questions. I'd like to ask about branding and get the SOC 2 report. Shall I connect?`,
+        note: product.mcpExplainer,
+      },
+      { kind: 'user', id: 'c-mcp-ok', typed: true, text: 'Yes, connect.' },
+    ],
+    timeline: [
+      { id: 't-m1', at: '3:20', title: 'Found an MCP connection in the facts panel', detail: vendor.mcpUrl, channel: 'facts', source: 'vendor' },
+      { id: 't-m2', at: '3:28', title: `Connected over MCP, with ${buyer.firstName}'s approval`, channel: 'mcp', source: 'vendor', status: 'ok', statusLabel: 'Connected' },
+    ],
+  },
+  {
+    id: 'b-mcp',
+    act: 1,
+    screen: 'buyer',
+    label: 'MCP: a deeper question and a gated document',
+    dwellMs: 6500,
+    chat: [
+      {
+        kind: 'check',
+        id: 'c-m1',
+        vendor: vendor.name,
+        channel: 'mcp',
+        source: 'vendor',
+        question: 'Can the embedded dashboards carry our own logo, and can our customers sign in with their existing accounts?',
+        answer: 'Yes. Your own branding and single sign-on are both included on the Growth plan.',
+        status: 'ok',
+        cite: { label: 'Embedding: branding and sign-in', url: `${vendor.docs}/embedding/branding` },
+      },
+      {
+        kind: 'check',
+        id: 'c-m2',
+        vendor: vendor.name,
+        channel: 'mcp',
+        source: 'vendor',
+        question: 'Can we get the SOC 2 Type II report?',
+        answer: `It's shared under NDA. ${vendor.sentenceStart} sent an NDA link; once you sign it, the report opens right away.`,
+        status: 'gated',
+        statusLabel: 'Needs your NDA signature',
+        cite: { label: 'NDA and report', url: `${vendor.site}/trust/nda` },
+      },
+    ],
+    timeline: [
+      { id: 't-m3', at: '3:45', title: 'Asked: own branding and customer sign-in?', detail: 'Answered with a citation', channel: 'mcp', source: 'vendor', status: 'ok', statusLabel: 'Verified' },
+      { id: 't-m4', at: '4:20', title: 'Requested the SOC 2 Type II report', detail: `NDA link received for ${buyer.firstName} to sign`, channel: 'mcp', source: 'vendor', status: 'gated', statusLabel: 'Needs NDA' },
+      { id: 't-m5', at: '5:04', title: `Left ${vendor.site}`, detail: `Free trial still unknown. ${seller.name} has the question.` },
     ],
   },
   {
@@ -232,14 +288,14 @@ export const buyerSteps: Step[] = [
         kind: 'final',
         id: 'c-final',
         intro: "Here's where your shortlist stands:",
-        recommendation: `${vendor.sentenceStart} is the best fit I could verify, at ${money(estimate.annual)}/yr. I couldn't find out whether it has a free trial. ${competitor1.name} and ${competitor2.name} may also fit, but each needs a sales call to confirm the details.`,
+        recommendation: `${vendor.sentenceStart} is the best fit I could verify, at ${money(estimate.annual)}/yr. Sign the NDA to see their SOC 2 report. I couldn't find out whether it has a free trial. ${competitor1.name} and ${competitor2.name} may also fit, but each needs a sales call to confirm the details.`,
       },
     ],
   },
 ]
 
 /** Final comparison shown to the buyer. `tone` drives the cell styling. */
-export const finalComparisonNote = 'Verified means the vendor states it on its website, with a source. Vendor claim means it is mentioned but not specific.'
+export const finalComparisonNote = 'Verified means the vendor confirmed it with a source, on its website or over MCP. Vendor claim means it is mentioned but not specific.'
 
 export type CellTone = 'verified' | 'claimed' | 'unknown' | 'unverified'
 
@@ -266,9 +322,17 @@ export const finalComparison: {
       ],
     },
     {
+      label: 'Own branding + sign-in',
+      cells: [
+        { text: 'Verified', tone: 'verified' },
+        { text: 'Unknown', tone: 'unknown' },
+        { text: 'Unknown', tone: 'unknown' },
+      ],
+    },
+    {
       label: 'SOC 2 Type II',
       cells: [
-        { text: 'Verified (NDA)', tone: 'verified' },
+        { text: 'Verified, NDA link', tone: 'verified' },
         { text: 'Vendor claim', tone: 'claimed' },
         { text: 'Unknown', tone: 'unknown' },
       ],

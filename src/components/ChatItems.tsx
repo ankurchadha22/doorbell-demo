@@ -1,4 +1,4 @@
-import { Bot, FileText, ListChecks, MessageCircleQuestion, Search } from 'lucide-react'
+import { Bot, FileText, Info, ListChecks, MessageCircleQuestion, Plug, Search } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { buyer, product, vendor } from '../data/config'
 import { finalComparison, finalComparisonNote, type CellTone } from '../data/buyerScript'
@@ -57,8 +57,21 @@ export function AgentMessage({ item }: { item: Of<'agent'> }) {
   return (
     <AgentTurn>
       <p className="text-md leading-relaxed text-ink">{item.text}</p>
+      {item.note && (
+        <p className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-mcp-soft px-2 py-1 text-sm font-medium text-mcp">
+          <Info aria-hidden className="size-4 shrink-0" />
+          {item.note}
+        </p>
+      )}
     </AgentTurn>
   )
+}
+
+const channelNote: Record<Of<'check'>['channel'], string> = {
+  page: 'Read on their website',
+  facts: 'From the facts panel on their site',
+  ask: 'From the ask box on their site',
+  mcp: 'Over MCP, on the roadmap',
 }
 
 /** One question checked with a vendor. Rows from the same vendor render inside one card. */
@@ -83,9 +96,7 @@ export function CheckCardHeader({ item }: { item: Of<'check'> }) {
       <span className="font-semibold text-ink">{item.vendor}</span>
       <ChannelBadge channel={item.channel} />
       <SourceBadge source={item.source} />
-      <span className="ml-auto text-sm text-muted">
-        {item.channel === 'facts' ? 'From the facts panel on their site' : 'Read on their website'}
-      </span>
+      <span className="ml-auto text-sm text-muted">{channelNote[item.channel]}</span>
     </div>
   )
 }
@@ -151,6 +162,12 @@ export function SiteCard({ item }: { item: Of<'site'> }) {
               <Search aria-hidden className="size-3" />
               Ask a question…
             </div>
+            <div className="mt-1.5 flex items-start gap-1 text-xs leading-snug text-mcp">
+              <Plug aria-hidden className="mt-px size-3 shrink-0" />
+              <span>
+                Deeper or gated questions? Connect over MCP: <span className="font-mono">{vendor.mcpUrl}</span>
+              </span>
+            </div>
             <div className="mt-1 text-right text-[0.6875rem] text-muted">by {product.name}</div>
           </div>
         </div>
@@ -163,7 +180,7 @@ export function SiteCard({ item }: { item: Of<'site'> }) {
 export function AskExchange({ item }: { item: Of<'ask'> }) {
   return (
     <AgentTurn>
-      <div className="rounded-xl border border-mcp/25 bg-surface p-3.5">
+      <div className="rounded-xl border border-ask/25 bg-surface p-3.5">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-ink">{vendor.name}</span>
           <ChannelBadge channel="ask" />
@@ -173,7 +190,7 @@ export function AskExchange({ item }: { item: Of<'ask'> }) {
           <MessageCircleQuestion aria-hidden className="mt-0.5 size-4 shrink-0 text-muted" />
           <p className="text-md font-medium text-ink">“{item.question}”</p>
         </div>
-        <blockquote className="mt-2 rounded-lg bg-mcp-soft/60 px-3 py-2 text-md leading-relaxed text-ink">“{item.reply}”</blockquote>
+        <blockquote className="mt-2 rounded-lg bg-ask-soft/60 px-3 py-2 text-md leading-relaxed text-ink">“{item.reply}”</blockquote>
         <div className="mt-2">
           <StatusLabel status={item.status} label={item.statusLabel} />
         </div>
