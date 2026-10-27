@@ -1,5 +1,5 @@
-// The seller's prices and the rules that limit what Doorbell may tell agents.
-// The buyer script, the seller view and the Policies page all read from here.
+// The vendor's prices and the rules that limit what Doorbell may tell agents.
+// The buyer script, the vendor view and the Rules page all read from here.
 
 import { buyer, vendor } from './config'
 
@@ -18,7 +18,7 @@ export const pricing = {
 const growth = pricing.plans[1]
 const seats = buyer.size
 
-/** What the agent priced on the seller's site: Growth plan, 40 users, with embedding. */
+/** What the agent priced on the vendor's site: Growth plan, 40 users, with embedding. */
 export const estimate = {
   plan: growth.name,
   seats,
@@ -45,7 +45,7 @@ export const approvedFacts = [
   { topic: 'Security', answer: 'SOC 2 Type II. The report is shared under NDA.', source: `${vendor.site}/trust` },
 ]
 
-/** The short version shown in the "Facts for AI assistants" panel on the seller's site. */
+/** The short version shown in the "Facts for AI assistants" panel on the vendor's site. */
 export const factsPanel = [
   { topic: 'Plans', text: `Starter ${money(20)}, Growth ${money(40)} per user / mo` },
   { topic: 'Embedding', text: `Growth plan, +${money(pricing.embeddingAddOn)} / mo` },
@@ -76,6 +76,6 @@ export const answerRules = [
 ]
 
 export const escalationOwner = {
-  team: `${vendor.name} sales`,
+  team: 'your sales team',
   replyWithin: 'one business day',
 }

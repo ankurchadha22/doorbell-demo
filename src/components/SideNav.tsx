@@ -33,12 +33,12 @@ export function SideNav() {
       </ul>
       <p className="mt-1 px-2.5 text-sm leading-snug text-muted">The buyer's AI browser agent</p>
 
-      <div className="mt-6 px-2.5 text-sm font-medium text-muted">Seller side</div>
+      <div className="mt-6 px-2.5 text-sm font-medium text-muted">Vendor side</div>
       <ul className="mt-1.5 space-y-0.5">
         <li>
           <NavLink to={routes.seller} className={item}>
             <LayoutDashboard aria-hidden className={icon} />
-            Seller view
+            Vendor view
           </NavLink>
         </li>
         <li>

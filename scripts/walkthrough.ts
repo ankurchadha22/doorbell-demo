@@ -6,7 +6,7 @@
 // It serves dist/ with `vite preview`, then in a real browser:
 //   1. presses → through every presenter step and screenshots each one,
 //   2. checks that the first → press finishes typing instead of advancing,
-//   3. toggles Before / After on the seller view,
+//   3. toggles Before / After on the vendor view,
 //   4. visits every nav screen,
 //   5. opens the rep alert and CRM record by button, and makes a weekly-report "Add answer" edit,
 //   6. checks Reset restores the title with all state cleared,
@@ -114,17 +114,17 @@ async function walkStory(page: Page, dir: string, vp: string) {
     await checkOverflow(page, `${vp} step ${i} (${s.id})`)
     await shot(page, dir, `${String(i).padStart(2, '0')}-${s.id}`)
 
-    // Before / After toggle, on the last seller step when everything is revealed.
+    // Before / After toggle, on the last vendor step when everything is revealed.
     if (s.id === 's-crm') {
       await page.keyboard.press('b')
       await page.waitForTimeout(450)
       const beforeOn = await page.getByRole('button', { name: 'Before Doorbell', exact: true }).getAttribute('aria-pressed')
-      if (beforeOn !== 'true') fail(`${vp}: B should switch the seller view to Before`)
+      if (beforeOn !== 'true') fail(`${vp}: B should switch the vendor view to Before`)
       await shot(page, dir, `${String(i).padStart(2, '0')}-${s.id}-toggled-before`)
       await page.keyboard.press('b')
       await page.waitForTimeout(450)
       const afterOn = await page.getByRole('button', { name: 'After', exact: true }).getAttribute('aria-pressed')
-      if (afterOn !== 'true') fail(`${vp}: B should switch the seller view back to After`)
+      if (afterOn !== 'true') fail(`${vp}: B should switch the vendor view back to After`)
       else ok(`${vp}: Before / After toggle works`)
     }
   }
@@ -137,7 +137,7 @@ async function walkStory(page: Page, dir: string, vp: string) {
 async function visitNav(page: Page, dir: string, vp: string, suffix: string) {
   // Title and closing hide the side nav; start from a screen that shows it.
   await page.goto(page.url().replace(/#.*$/, '#/buyer'))
-  const screens = ['Buyer view', 'Seller view', 'Weekly report', 'Rules', 'Setup', 'Title']
+  const screens = ['Buyer view', 'Vendor view', 'Weekly report', 'Rules', 'Setup', 'Title']
   for (const name of screens) {
     if (name !== 'Buyer view') {
       await page.getByRole('navigation', { name: 'Screens' }).getByRole('link', { name, exact: true }).click()
@@ -154,14 +154,14 @@ async function visitNav(page: Page, dir: string, vp: string, suffix: string) {
 }
 
 async function interactions(page: Page, dir: string, vp: string) {
-  // Seller view after the story: the rep alert and CRM record open from their buttons.
-  await page.goto(page.url().replace(/#.*$/, '#/seller'))
+  // Vendor view after the story: the rep alert and CRM record open from their buttons.
+  await page.goto(page.url().replace(/#.*$/, '#/vendor'))
   await page.getByRole('button', { name: 'Rep alert' }).click()
   await page.getByRole('article', { name: 'Rep alert in team chat' }).waitFor()
   await page.getByRole('button', { name: 'Close alert' }).click()
   await page.getByRole('button', { name: 'CRM record' }).click()
   await page.getByRole('article', { name: 'CRM record' }).waitFor()
-  await shot(page, dir, 'interaction-seller-crm')
+  await shot(page, dir, 'interaction-vendor-crm')
   ok(`${vp}: rep alert and CRM record open from their buttons`)
 
   // Weekly report: add an answer to something agents couldn't find.

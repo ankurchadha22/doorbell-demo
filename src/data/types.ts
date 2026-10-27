@@ -33,7 +33,7 @@ export type ChatItem =
       cite?: Citation
     }
   | { kind: 'shortlist'; id: string; vendors: string[]; note: string }
-  /** The seller's page as the agent sees it, with Doorbell's facts panel and ask box. */
+  /** The vendor's page as the agent sees it, with Doorbell's facts panel and ask box. */
   | { kind: 'site'; id: string; url: string }
   /** A question typed into Doorbell's ask box, and its reply. */
   | { kind: 'ask'; id: string; question: string; reply: string; status: Status; statusLabel: string }
@@ -51,7 +51,7 @@ export interface TimelineEntry {
   statusLabel?: string
 }
 
-/* ---------- Seller side ---------- */
+/* ---------- Vendor side ---------- */
 
 export type SellerSection = 'feed' | 'account' | 'mission' | 'stuck' | 'alert' | 'crm'
 
@@ -81,7 +81,7 @@ export interface Step {
   animMs?: number
   chat?: ChatItem[]
   timeline?: TimelineEntry[]
-  /** Seller view settings. Steps without this show the After view with everything that has happened. */
+  /** Vendor view settings. Steps without this show the After view with everything that has happened. */
   seller?: { mode: 'before' | 'after'; show?: SellerSection[] }
   /** Optional spotlight target on Act 3 screens. */
   spotlight?: string

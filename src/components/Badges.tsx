@@ -45,7 +45,7 @@ export function ChannelBadge({ channel }: { channel: Channel }) {
   )
 }
 
-/** Feed event type on the seller side. */
+/** Feed event type on the vendor side. */
 export function KindBadge({ kind }: { kind: FeedKind }) {
   const { label, Icon, cls } = kindStyle[kind]
   return (
@@ -67,7 +67,7 @@ export function SourceBadge({ source }: { source: Source }) {
       }`}
     >
       <Icon aria-hidden className="size-3.5" strokeWidth={2} />
-      {independent ? 'Independent' : 'Vendor'}
+      {independent ? 'Independent' : 'Own site'}
     </span>
   )
 }

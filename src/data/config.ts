@@ -15,15 +15,15 @@ export const product = {
 /** The software company that uses Doorbell. */
 export const vendor = {
   /** For labels, chips and table headers. */
-  name: 'Seller',
+  name: 'Vendor',
   /** For running text, mid-sentence and at the start of a sentence. */
-  inSentence: 'the seller',
-  sentenceStart: 'The seller',
+  inSentence: 'the vendor',
+  sentenceStart: 'The vendor',
   category: 'business-intelligence and embedded-analytics tool',
-  site: 'seller.example',
-  docs: 'docs.seller.example',
+  site: 'vendor.example',
+  docs: 'docs.vendor.example',
   /** The MCP connection agents find in the facts panel, for deeper or gated questions. */
-  mcpUrl: 'seller.doorbell.example/mcp',
+  mcpUrl: 'vendor.doorbell.example/mcp',
 }
 
 export const competitors = [
@@ -45,12 +45,12 @@ export const buyer = {
   budget: 25_000,
 }
 
-/** The seller's sales rep, who gets the alert and handles anything Doorbell can't answer. */
+/** The vendor's sales rep, who gets the alert and handles anything Doorbell can't answer. */
 export const seller = {
   name: 'Jordan Ellis',
   firstName: 'Jordan',
   title: 'Account Executive',
-  role: "the seller's sales rep",
+  role: "the vendor's sales rep",
   initials: 'JE',
 }
 

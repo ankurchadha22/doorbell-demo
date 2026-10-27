@@ -117,7 +117,7 @@ export function ShortlistMessage({ item }: { item: Of<'shortlist'> }) {
   )
 }
 
-/** The seller's pricing page as the agent sees it: an ordinary page plus Doorbell's visible
+/** The vendor's pricing page as the agent sees it: an ordinary page plus Doorbell's visible
  *  facts panel and ask box. Everything here is on the page for people too. */
 export function SiteCard({ item }: { item: Of<'site'> }) {
   const plans = pricing.plans.map((p) => ({ name: p.name, price: p.seatPrice ? `$${p.seatPrice}` : 'Custom' }))

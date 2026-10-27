@@ -13,7 +13,7 @@ const shortcuts: [string, string][] = [
   ['←', 'Previous'],
   ['A', 'Auto-play on / off'],
   ['R', 'Reset to the title'],
-  ['B', 'Before / After (seller view)'],
+  ['B', 'Before / After (vendor view)'],
   ['1 2 3', 'Jump to act 1, 2 or 3'],
   ['4', 'Jump to the closing slide'],
 ]

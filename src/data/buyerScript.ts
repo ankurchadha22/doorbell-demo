@@ -295,7 +295,7 @@ export const buyerSteps: Step[] = [
 ]
 
 /** Final comparison shown to the buyer. `tone` drives the cell styling. */
-export const finalComparisonNote = 'Verified means the vendor confirmed it with a source, on its website or over MCP. Vendor claim means it is mentioned but not specific.'
+export const finalComparisonNote = 'Verified means the company confirmed it with a source, on its website or over MCP. Claimed means it is mentioned but not specific.'
 
 export type CellTone = 'verified' | 'claimed' | 'unknown' | 'unverified'
 
@@ -309,7 +309,7 @@ export const finalComparison: {
       label: 'Stripe + QuickBooks',
       cells: [
         { text: 'Verified', tone: 'verified' },
-        { text: 'Vendor claim', tone: 'claimed' },
+        { text: 'Claimed', tone: 'claimed' },
         { text: 'In reviews', tone: 'claimed' },
       ],
     },
@@ -317,7 +317,7 @@ export const finalComparison: {
       label: 'Embedded dashboards',
       cells: [
         { text: 'Verified (Growth)', tone: 'verified' },
-        { text: 'Vendor claim', tone: 'claimed' },
+        { text: 'Claimed', tone: 'claimed' },
         { text: 'Unverified', tone: 'unverified' },
       ],
     },
@@ -333,7 +333,7 @@ export const finalComparison: {
       label: 'SOC 2 Type II',
       cells: [
         { text: 'Verified, NDA link', tone: 'verified' },
-        { text: 'Vendor claim', tone: 'claimed' },
+        { text: 'Claimed', tone: 'claimed' },
         { text: 'Unknown', tone: 'unknown' },
       ],
     },

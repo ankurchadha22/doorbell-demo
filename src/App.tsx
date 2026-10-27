@@ -29,6 +29,8 @@ export default function App() {
           <Route path={routes.title} element={<Title />} />
           <Route path={routes.buyer} element={<BuyerView />} />
           <Route path={routes.seller} element={<SellerView />} />
+          {/* Older links used /seller. */}
+          <Route path="/seller" element={<Navigate to={routes.seller} replace />} />
           <Route path={routes.insights} element={<Insights />} />
           <Route path={routes.policies} element={<Policies />} />
           <Route path={routes.setup} element={<Setup />} />

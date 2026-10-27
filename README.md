@@ -8,8 +8,8 @@ The earlier version of the demo (an MCP desk, an agent-fillable quote form and a
 
 The story, in three acts:
 
-1. **What the buyer's agent does.** Julie Sharp, Head of Operations at a 40-person fintech, sends an AI browser agent to shortlist BI tools. It reads independent reviews first, then opens each vendor's website. Only the seller uses Doorbell: its pricing page has a visible "Facts for AI assistants" panel and an ask box, so the agent verifies integrations, embedding, price and SOC 2 there. It can't find whether there's a free trial; the ask box has no approved answer, so the question goes to a person. For deeper or gated questions the facts panel offers an MCP connection: with Julie's approval the agent connects, gets a cited answer on branding and sign-in, and receives an NDA link for the SOC 2 report.
-2. **What the seller sees.** Before Doorbell: zero visits in analytics, a few signed log lines, no CRM record. After: the visit live (pages, facts panel, ask box and MCP), matched to MIT Capital by company network, a summary of what the agent was looking for, where it got stuck, a next step for the sales rep, a live alert in Slack or Teams and a CRM record.
+1. **What the buyer's agent does.** Julie Sharp, Head of Operations at a 40-person fintech, sends an AI browser agent to shortlist BI tools. It reads independent reviews first, then opens each vendor's website. Only the vendor uses Doorbell: its pricing page has a visible "Facts for AI assistants" panel and an ask box, so the agent verifies integrations, embedding, price and SOC 2 there. It can't find whether there's a free trial; the ask box has no approved answer, so the question goes to a person. For deeper or gated questions the facts panel offers an MCP connection: with Julie's approval the agent connects, gets a cited answer on branding and sign-in, and receives an NDA link for the SOC 2 report.
+2. **What the vendor sees.** Before Doorbell: zero visits in analytics, a few signed log lines, no CRM record. After: the visit live (pages, facts panel, ask box and MCP), matched to MIT Capital by company network, a summary of what the agent was looking for, where it got stuck, a next step for the sales rep, a live alert in Slack or Teams and a CRM record.
 3. **Weekly report, rules and setup.** What agents looked for across all visits and what they couldn't find (with "Add answer"), the rules that limit what Doorbell may tell agents, the one-line setup, and the roadmap: website tag today, WebMCP next, MCP later.
 
 ## Run it
@@ -33,7 +33,7 @@ Then open http://localhost:5173. Other scripts:
 | `npm run lint` | Runs oxlint |
 | `npm run walkthrough` | Builds, then runs the Playwright walkthrough (see below) |
 
-To deploy, upload `dist/` to any static host (Vercel, Netlify, S3). The app uses hash URLs (`/#/seller`), so no rewrite rules are needed.
+To deploy, upload `dist/` to any static host (Vercel, Netlify, S3). The app uses hash URLs (`/#/vendor`), so no rewrite rules are needed.
 
 ## Share it
 
@@ -53,11 +53,11 @@ Open the app full screen. It is designed for 1280×800 and 1920×1080 and scales
 | `←` | Previous step |
 | `A` | Auto-play on / off (the whole story takes about 3 minutes) |
 | `R` | Reset to the title, clearing all state |
-| `B` | Before / After on the seller view |
+| `B` | Before / After on the vendor view |
 | `1` `2` `3` | Jump to Act 1, 2 or 3 |
 | `4` | Jump to the closing slide |
 
-The dots on the right of the presenter bar jump to any step. Outside the presenter flow, every screen is clickable from the left nav (Buyer view, Seller view, Weekly report, Rules, Setup).
+The dots on the right of the presenter bar jump to any step. Outside the presenter flow, every screen is clickable from the left nav (Buyer view, Vendor view, Weekly report, Rules, Setup).
 
 
 ## Edit the story
@@ -66,7 +66,7 @@ Everything you see comes from typed files in [src/data/](src/data/). Components 
 
 | File | Holds |
 |---|---|
-| [config.ts](src/data/config.ts) | Every name (product, vendor, competitors, buyer, seller), domains, the closing statistic, the business model and the roadmap. Change a name here and it changes everywhere. |
+| [config.ts](src/data/config.ts) | Every name (product, vendor, competitors, buyer, sales rep), domains, the closing statistic, the business model and the roadmap. Change a name here and it changes everywhere. |
 | [policies.ts](src/data/policies.ts) | Plans and prices (the price the agent finds is computed from these), approved facts, the facts panel, escalation and answer rules |
 | [buyerScript.ts](src/data/buyerScript.ts) | Act 1: each step's chat messages and timeline entries; the final comparison table |
 | [sellerEvents.ts](src/data/sellerEvents.ts) | Act 2: the Before view, live feed events, the visit summary, rep alert, CRM record, and the Act 2 steps |
@@ -77,8 +77,8 @@ Everything you see comes from typed files in [src/data/](src/data/). Components 
 How the pieces fit:
 
 - Each step in the ordered list says which screen it belongs to, how long auto-play stays on it (`dwellMs`), and what appears.
-- Seller-side items name the buyer step at which they happen (`stepId`), so the seller view stays in sync: open the Seller view mid-way through Act 1 and you'll see exactly what the seller has seen so far.
-- Act 2 steps list which seller sections are revealed (`seller.show`), for pacing on stage.
+- Vendor-side items name the buyer step at which they happen (`stepId`), so the vendor view stays in sync: open the Vendor view mid-way through Act 1 and you'll see exactly what the vendor has seen so far.
+- Act 2 steps list which vendor sections are revealed (`seller.show`), for pacing on stage.
 - A typo in a `stepId` throws at load, and `npm run build` catches type errors.
 
 ## Verify it
@@ -94,7 +94,7 @@ This builds the app, serves it, and in Chrome (via Playwright): presses `→` th
 | Real | Mocked |
 |---|---|
 | The presenter engine, keyboard controls, auto-play, reset | Every company, person, number and document |
-| Step-synced buyer and seller views | The buyer's AI agent and its answers (scripted) |
+| Step-synced buyer and vendor views | The buyer's AI agent and its answers (scripted) |
 | Offline build with bundled fonts | Doorbell's agent detection, company matching, summaries, facts panel, ask box, CRM sync and alerts (scripted) |
 
 Only the statistic on the closing slide refers to real research, with its source. See [docs/decisions.md](docs/decisions.md) for a note on verifying them.

@@ -8,7 +8,7 @@ import { routes } from '../data/story'
 
 const explore = [
   { to: routes.buyer, label: 'Buyer view' },
-  { to: routes.seller, label: 'Seller view' },
+  { to: routes.seller, label: 'Vendor view' },
   { to: routes.insights, label: 'Weekly report' },
   { to: routes.policies, label: 'Rules' },
   { to: routes.setup, label: 'Setup' },

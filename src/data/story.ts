@@ -1,5 +1,5 @@
 // The single ordered script for the presenter flow.
-// Both the buyer and seller views derive their state from the index into this array.
+// Both the buyer and vendor views derive their state from the index into this array.
 
 import { buyerSteps } from './buyerScript'
 import { product, vendor } from './config'
@@ -28,7 +28,7 @@ export const acts: Record<Step['act'], string> = {
 export const routes: Record<Screen, string> = {
   title: '/',
   buyer: '/buyer',
-  seller: '/seller',
+  seller: '/vendor',
   insights: '/insights',
   policies: '/policies',
   setup: '/setup',
