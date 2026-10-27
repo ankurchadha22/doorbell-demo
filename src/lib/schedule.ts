@@ -7,7 +7,6 @@ export const TYPE_MS_PER_CHAR = 25
 const START = 150
 const GAP = 380
 const TIMELINE_STAGGER = 260
-const CONSENT_CONFIRM_MS = 750
 const SETTLE_PAD = 250
 
 export interface StepSchedule {
@@ -25,7 +24,7 @@ export function scheduleFor(step: Step): StepSchedule {
   const hit = cache.get(step.id)
   if (hit) return hit
 
-  let t = step.consent === 'shared' ? CONSENT_CONFIRM_MS : START
+  let t = START
   let firstTypedEnd = 0
   const chat = (step.chat ?? []).map((item) => {
     const typeMs = item.kind === 'user' && item.typed ? item.text.length * TYPE_MS_PER_CHAR : 0
@@ -35,7 +34,7 @@ export function scheduleFor(step: Step): StepSchedule {
     return entry
   })
 
-  const tlStart = firstTypedEnd || (step.consent === 'shared' ? CONSENT_CONFIRM_MS : START)
+  const tlStart = firstTypedEnd || START
   const timeline = (step.timeline ?? []).map((_, i) => tlStart + i * TIMELINE_STAGGER)
 
   const lastChat = chat.length ? chat[chat.length - 1].delay + chat[chat.length - 1].typeMs : 0
@@ -46,5 +45,3 @@ export function scheduleFor(step: Step): StepSchedule {
   cache.set(step.id, result)
   return result
 }
-
-export { CONSENT_CONFIRM_MS }

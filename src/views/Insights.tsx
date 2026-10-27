@@ -1,14 +1,14 @@
 import { Check, CircleHelp, Plus } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
-import { DoorBadge } from '../components/Badges'
+import { ChannelBadge } from '../components/Badges'
 import { PageHeader } from '../components/PageHeader'
 import { vendor } from '../data/config'
-import { agentPlatforms, contentGaps, insightsPeriod, interactionsByDoor, stageFunnel, topQuestions } from '../data/insights'
+import { agentTypes, contentGaps, headline, insightsPeriod, topMissions, usageByChannel } from '../data/insights'
 import { acts } from '../data/story'
-import type { Door } from '../data/types'
+import type { Channel } from '../data/types'
 import { useDemo } from '../presenter/useStep'
 
-const doorFill: Record<Door, string> = { website: 'bg-web', form: 'bg-form', mcp: 'bg-mcp' }
+const channelFill: Record<Channel, string> = { page: 'bg-web', facts: 'bg-form', ask: 'bg-mcp' }
 
 export function Insights() {
   const { current } = useDemo()
@@ -16,75 +16,73 @@ export function Insights() {
 
   return (
     <div className="scroll-quiet h-full overflow-y-auto px-6 pt-5 pb-6">
-      <PageHeader eyebrow={acts[3]} title={`What buyers' agents ask ${vendor.inSentence}`} subtitle={insightsPeriod} />
+      <PageHeader eyebrow={acts[3]} title={`Weekly report: AI agents on ${vendor.site}`} subtitle={insightsPeriod} />
 
       <div className="mt-5 grid grid-cols-3 gap-4">
-        <Card title="Agent interactions by door">
+        <Card title="This week">
+          <dl className="space-y-2.5">
+            {headline.map((h) => (
+              <div key={h.label} className="flex items-baseline gap-3">
+                <dd className="tnum w-14 text-[1.75rem] leading-none font-bold tracking-tight text-ink">{h.value}</dd>
+                <dt className="min-w-0">
+                  <div className="font-medium text-ink">{h.label}</div>
+                  {h.note && <div className="text-sm text-muted">{h.note}</div>}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </Card>
+
+        <Card title="What agents used">
           <Bars
-            max={Math.max(...interactionsByDoor.map((d) => d.value))}
-            rows={interactionsByDoor.map((d) => ({
-              key: d.door,
-              label: <DoorBadge door={d.door} />,
+            max={Math.max(...usageByChannel.map((d) => d.value))}
+            rows={usageByChannel.map((d) => ({
+              key: d.channel,
+              label: <ChannelBadge channel={d.channel} />,
               value: d.value,
               valueLabel: d.value.toLocaleString('en-US'),
               hint: `${d.label}: ${d.value.toLocaleString('en-US')} ${d.unit}`,
-              fill: doorFill[d.door],
+              fill: channelFill[d.channel],
             }))}
-            labelWidth="5.5rem"
+            labelWidth="6.5rem"
           />
-          <p className="mt-3 text-sm text-muted">Website reads reach every agent. MCP questions go deepest.</p>
+          <p className="mt-3 text-sm text-muted">Most agents read pages. The facts panel and ask box are where they get exact answers.</p>
         </Card>
 
-        <Card title="Agent sessions reaching each stage">
-          <Bars
-            max={stageFunnel[0].sessions}
-            rows={stageFunnel.map((s) => ({
-              key: s.stage,
-              label: <span className="text-[0.9375rem] text-ink-2">{s.stage}</span>,
-              value: s.sessions,
-              valueLabel: s.sessions.toLocaleString('en-US'),
-              hint: `${s.stage}: ${s.sessions} sessions`,
-              fill: 'bg-accent',
-            }))}
-            labelWidth="9.5rem"
-            dense
-          />
-        </Card>
-
-        <Card title="Agent platforms seen">
+        <Card title="Agents seen">
           <Bars
             max={100}
-            rows={agentPlatforms.map((p) => ({
+            rows={agentTypes.map((p) => ({
               key: p.label,
               label: <span className="text-[0.9375rem] text-ink-2">{p.label}</span>,
               value: p.share,
               valueLabel: `${p.share}%`,
-              hint: `${p.label}: ${p.share}% of sessions`,
+              hint: `${p.label}: ${p.share}% of visits`,
               fill: 'bg-ink-2',
             }))}
-            labelWidth="9rem"
+            labelWidth="9.5rem"
           />
           <p className="mt-3 text-sm text-muted">Grouped by how the agent behaves, not by brand.</p>
         </Card>
       </div>
 
       <div className="mt-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-4">
-        <Card title="Top questions agents asked">
+        <Card title="What agents were looking for">
           <ol className="space-y-1.5">
-            {topQuestions.map((q) => (
+            {topMissions.map((q) => (
               <li key={q.text} className="flex items-baseline gap-3">
                 <span className="min-w-0 flex-1 text-[0.9375rem] text-ink">{q.text}</span>
                 <span className="tnum text-[0.9375rem] font-semibold text-ink">{q.count}</span>
-                <span className="w-12 text-sm text-muted">asked</span>
+                <span className="w-12 text-sm text-muted">visits</span>
               </li>
             ))}
           </ol>
         </Card>
 
         <Card
-          title="Unanswered questions (content gaps)"
+          title="What agents couldn't find"
           highlight={spotGaps}
-          aside={<span className="text-sm text-muted">The desk said "I don't know" and offered a person</span>}
+          aside={<span className="text-sm text-muted">Add an answer and the next agent gets it</span>}
         >
           <ul className="divide-y divide-line">
             {contentGaps.map((g) => (
@@ -170,7 +168,9 @@ function GapRow({ text, asked, endedThere }: { text: string; asked: number; ende
         <div className="min-w-0 flex-1">
           <div className="font-semibold text-ink">“{text}”</div>
           <div className="tnum text-sm text-ink-2">
-            Asked {asked} times, no answer. {endedThere} sessions ended there.
+            {state === 'added'
+              ? 'Answer live in the facts panel and ask box.'
+              : `${asked} agent visits looked for this. ${endedThere} left soon after.`}
           </div>
         </div>
         {state === 'open' && (
@@ -199,14 +199,14 @@ function GapRow({ text, asked, endedThere }: { text: string; asked: number; ende
           }}
         >
           <label className="text-sm font-medium text-ink-2" htmlFor={`gap-${text}`}>
-            Answer agents will receive (cited to your source document)
+            Answer agents will see in the facts panel (cite your source page)
           </label>
           <textarea
             id={`gap-${text}`}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             rows={2}
-            placeholder="For example: Not today. A person on our team can discuss options."
+            placeholder="For example: Yes. Every plan has a 14-day free trial, no card needed."
             className="mt-1 w-full resize-none rounded-lg border border-line-strong bg-surface px-3 py-2 text-[0.9375rem] text-ink placeholder:text-muted focus:border-accent focus:outline-none"
           />
           <div className="mt-1.5 flex justify-end gap-2">

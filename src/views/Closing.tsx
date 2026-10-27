@@ -1,14 +1,16 @@
-import { BellRing, ClipboardList, Database, Globe, LayoutDashboard, Plug, RotateCcw } from 'lucide-react'
+import { BellRing, Bot, ChartColumn, Database, RotateCcw } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { DemoLabel } from '../components/DemoLabel'
 import { Logo } from '../components/Logo'
-import { businessModel, product, stats } from '../data/config'
+import { businessModel, product, roadmap, stats } from '../data/config'
 import { useDemo } from '../presenter/useStep'
 
-const doors = [
-  { name: 'Website', role: 'reach', text: 'Pages any agent can read. No setup for the buyer.', Icon: Globe, tone: 'bg-web-soft text-web' },
-  { name: 'Forms', role: 'identity', text: 'Quotes and documents, for a work email the buyer agrees to share.', Icon: ClipboardList, tone: 'bg-form-soft text-form' },
-  { name: 'MCP', role: 'depth', text: 'Cited answers to any question, for agents that connect.', Icon: Plug, tone: 'bg-mcp-soft text-mcp' },
+const does = ['Spots the agent', 'Identifies the company', 'Summarizes what it wanted', 'Helps on the spot']
+
+const outputs = [
+  { label: 'Live rep alert', detail: 'Slack or Teams', Icon: BellRing },
+  { label: 'CRM record', detail: 'Salesforce or HubSpot', Icon: Database },
+  { label: 'Weekly report', detail: "What agents couldn't find", Icon: ChartColumn },
 ]
 
 export function Closing() {
@@ -24,72 +26,71 @@ export function Closing() {
       </div>
 
       <h1 className="mt-8 text-[clamp(2.25rem,3.6vw,3.5rem)] leading-[1.05] font-bold tracking-[-0.03em] text-ink">
-        Three doors, one source of truth
+        Know which AI agents came knocking
       </h1>
 
-      {/* Diagram: three doors → one desk → the vendor's dashboard and CRM */}
+      {/* Diagram: an agent visit → Doorbell → the sales team's tools */}
       <div
         className="mt-8 grid items-center"
-        style={{ gridTemplateColumns: 'minmax(0,1.25fr) minmax(2.5rem,0.3fr) minmax(0,0.9fr) minmax(2.5rem,0.3fr) minmax(0,1fr)' }}
+        style={{ gridTemplateColumns: 'minmax(0,0.85fr) minmax(2.5rem,0.25fr) minmax(0,1fr) minmax(2.5rem,0.25fr) minmax(0,1fr)' }}
         role="img"
-        aria-label={`Website, Forms and MCP all lead to ${product.name}, which feeds the vendor's dashboard and CRM.`}
+        aria-label={`An AI agent visits your website. ${product.name} spots it, identifies the company, summarizes what it wanted and helps on the spot, then sends a rep alert, a CRM record and a weekly report.`}
       >
-        <ul className="space-y-3">
-          {doors.map((d) => (
-            <li key={d.name} className="flex items-start gap-3 rounded-2xl border border-line bg-surface p-3.5">
-              <span aria-hidden className={`grid size-10 shrink-0 place-items-center rounded-xl ${d.tone}`}>
-                <d.Icon className="size-5" />
-              </span>
-              <div className="min-w-0">
-                <div className="text-lg leading-tight font-semibold text-ink">
-                  {d.name} <span className="font-normal text-muted">({d.role})</span>
-                </div>
-                <p className="mt-0.5 text-[0.9375rem] leading-snug text-ink-2">{d.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        <svg aria-hidden viewBox="0 0 100 300" preserveAspectRatio="none" className="h-full w-full self-stretch">
-          {[50, 150, 250].map((y) => (
-            <path
-              key={y}
-              d={`M0 ${y} C 55 ${y}, 45 150, 100 150`}
-              fill="none"
-              className="stroke-line-strong"
-              strokeWidth={2}
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
-        </svg>
-
         <Node
-          strong
-          icon={<Logo className="size-9" />}
-          title={product.name}
-          text="Built from your website, docs, pricing, security files and past RFP answers. Your policies decide what it may say."
+          icon={<Bot className="size-6 text-ink-2" />}
+          title="An AI agent visits your website"
+          text="AI browsers open your pages and click through them for the buyer."
         />
 
         <Arrow />
 
-        <Node
-          icon={<LayoutDashboard className="size-6 text-ink-2" />}
-          title="Dashboard + CRM"
-          text="Named accounts, the exact questions, the buying stage and the deal value."
-          extra={
-            <div className="mt-3 flex flex-wrap gap-2 text-sm text-ink-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-sunken px-2 py-0.5">
-                <BellRing aria-hidden className="size-3.5" /> Rep alerts
+        <div className="rounded-2xl bg-accent p-5 text-white shadow-[0_20px_50px_-20px_rgba(15,107,87,0.6)]">
+          <div aria-hidden>
+            <Logo className="size-9" />
+          </div>
+          <div className="mt-3 text-xl leading-tight font-semibold tracking-tight">{product.name}</div>
+          <p className="mt-0.5 text-[0.9375rem] text-white/80">One line of code on your site</p>
+          <ol className="mt-3 space-y-1">
+            {does.map((d, i) => (
+              <li key={d} className="flex items-center gap-2 text-[0.9375rem] font-medium">
+                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-white/20 text-xs font-bold">{i + 1}</span>
+                {d}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <Arrow />
+
+        <ul className="space-y-2.5">
+          {outputs.map((o) => (
+            <li key={o.label} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3">
+              <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-xl bg-sunken text-ink-2">
+                <o.Icon className="size-4.5" />
               </span>
-              <span className="inline-flex items-center gap-1 rounded-md bg-sunken px-2 py-0.5">
-                <Database aria-hidden className="size-3.5" /> CRM sync
-              </span>
-            </div>
-          }
-        />
+              <div className="min-w-0">
+                <div className="font-semibold text-ink">{o.label}</div>
+                <div className="text-sm text-muted">{o.detail}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="mt-9 grid grid-cols-2 gap-6 border-t border-line pt-6">
+      {/* Roadmap */}
+      <ol className="mt-7 grid grid-cols-3 gap-3" aria-label="Roadmap">
+        {roadmap.map((r, i) => (
+          <li key={r.id} className={`rounded-2xl border p-3.5 ${i === 0 ? 'border-accent bg-accent-soft/60' : 'border-line bg-surface'}`}>
+            <div className="flex items-baseline gap-2">
+              <span className={`text-sm font-semibold ${i === 0 ? 'text-accent-strong' : 'text-muted'}`}>{r.when}</span>
+              <span className="text-lg font-semibold text-ink">{r.name}</span>
+            </div>
+            <p className="mt-0.5 text-[0.9375rem] leading-snug text-ink-2">{r.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-7 border-t border-line pt-5">
         {stats.map((s) => {
           const [before, after] = s.text.split(s.value)
           return (
@@ -105,7 +106,7 @@ export function Closing() {
         })}
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center gap-4 pt-8">
+      <div className="mt-auto flex flex-wrap items-center gap-4 pt-6">
         <p className="text-lg font-medium text-ink-2">{businessModel}</p>
         <button
           type="button"
@@ -120,17 +121,12 @@ export function Closing() {
   )
 }
 
-function Node({ icon, title, text, strong, extra }: { icon: ReactNode; title: string; text: string; strong?: boolean; extra?: ReactNode }) {
+function Node({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
   return (
-    <div
-      className={`rounded-2xl p-5 ${
-        strong ? 'bg-accent text-white shadow-[0_20px_50px_-20px_rgba(15,107,87,0.6)]' : 'border border-line bg-surface text-ink'
-      }`}
-    >
+    <div className="rounded-2xl border border-line bg-surface p-5 text-ink">
       <div aria-hidden>{icon}</div>
       <div className="mt-3 text-xl leading-tight font-semibold tracking-tight">{title}</div>
-      <p className={`mt-1.5 text-[0.9375rem] leading-snug ${strong ? 'text-white/85' : 'text-ink-2'}`}>{text}</p>
-      {extra}
+      <p className="mt-1.5 text-[0.9375rem] leading-snug text-ink-2">{text}</p>
     </div>
   )
 }

@@ -1,10 +1,10 @@
-import { Bot, FileText, Info, UserCheck, UserRoundCog } from 'lucide-react'
+import { Bot, FileText, ListChecks, MessageCircleQuestion, Search } from 'lucide-react'
 import type { ReactNode } from 'react'
-import { buyer } from '../data/config'
+import { buyer, product, vendor } from '../data/config'
 import { finalComparison, finalComparisonNote, type CellTone } from '../data/buyerScript'
-import { purchasePaths } from '../data/policies'
+import { factsPanel, pricing } from '../data/policies'
 import type { ChatItem, Citation } from '../data/types'
-import { DoorBadge, SourceBadge, StatusLabel } from './Badges'
+import { ChannelBadge, SourceBadge, StatusLabel } from './Badges'
 import { Typewriter } from './Typewriter'
 
 type Of<K extends ChatItem['kind']> = Extract<ChatItem, { kind: K }>
@@ -57,12 +57,6 @@ export function AgentMessage({ item }: { item: Of<'agent'> }) {
   return (
     <AgentTurn>
       <p className="text-md leading-relaxed text-ink">{item.text}</p>
-      {item.note && (
-        <p className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-mcp-soft px-2 py-1 text-sm font-medium text-mcp">
-          <Info aria-hidden className="size-4 shrink-0" />
-          {item.note}
-        </p>
-      )}
     </AgentTurn>
   )
 }
@@ -71,7 +65,7 @@ export function AgentMessage({ item }: { item: Of<'agent'> }) {
 export function CheckRow({ item }: { item: Of<'check'> }) {
   return (
     <div className="py-2.5">
-      <div className="text-sm text-muted">Asked: {item.question}</div>
+      <div className="text-sm text-muted">Checked: {item.question}</div>
       <div className="mt-0.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <span className="text-md font-medium text-ink">{item.answer}</span>
       </div>
@@ -87,10 +81,10 @@ export function CheckCardHeader({ item }: { item: Of<'check'> }) {
   return (
     <div className="flex items-center gap-2 border-b border-line pb-2">
       <span className="font-semibold text-ink">{item.vendor}</span>
-      <DoorBadge door={item.door} />
+      <ChannelBadge channel={item.channel} />
       <SourceBadge source={item.source} />
       <span className="ml-auto text-sm text-muted">
-        {item.door === 'mcp' ? 'Checked over MCP' : 'Checked on their website'}
+        {item.channel === 'facts' ? 'From the facts panel on their site' : 'Read on their website'}
       </span>
     </div>
   )
@@ -112,83 +106,78 @@ export function ShortlistMessage({ item }: { item: Of<'shortlist'> }) {
   )
 }
 
-export function ConsentResult({ item }: { item: Of<'consent-result'> }) {
+/** The seller's pricing page as the agent sees it: an ordinary page plus Doorbell's visible
+ *  facts panel and ask box. Everything here is on the page for people too. */
+export function SiteCard({ item }: { item: Of<'site'> }) {
+  const plans = pricing.plans.map((p) => ({ name: p.name, price: p.seatPrice ? `$${p.seatPrice}` : 'Custom' }))
   return (
-    <div className="flex justify-center">
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-sm font-medium text-accent-strong">
-        <UserCheck aria-hidden className="size-4" />
-        {item.text}
-      </span>
-    </div>
+    <AgentTurn>
+      <figure aria-label={`${vendor.sentenceStart}'s pricing page, as the agent sees it`} className="overflow-hidden rounded-xl border border-line-strong bg-surface">
+        <div className="flex items-center gap-2 border-b border-line bg-sunken px-3 py-1.5">
+          <span aria-hidden className="flex gap-1">
+            <span className="size-2 rounded-full bg-line-strong" />
+            <span className="size-2 rounded-full bg-line-strong" />
+            <span className="size-2 rounded-full bg-line-strong" />
+          </span>
+          <span className="min-w-0 flex-1 truncate rounded-md bg-surface px-2 py-0.5 font-mono text-xs text-ink-2">{item.url}</span>
+        </div>
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-3 p-3">
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-ink">Pricing</div>
+            <ul className="mt-1.5 space-y-1.5">
+              {plans.map((p) => (
+                <li key={p.name} className="flex items-baseline justify-between rounded-md border border-line px-2 py-1 text-sm">
+                  <span className="text-ink-2">{p.name}</span>
+                  <span className="tnum font-semibold text-ink">{p.price}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-1.5 rounded-md bg-sunken px-2 py-1 text-xs text-muted">Contact us · Docs · Trust center</div>
+          </div>
+          <div className="min-w-0 rounded-lg border-2 border-form/30 bg-form-soft/40 p-2.5">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-form">
+              <ListChecks aria-hidden className="size-4" />
+              Facts for AI assistants
+            </div>
+            <dl className="mt-1.5 space-y-0.5 text-xs leading-snug">
+              {factsPanel.map((f) => (
+                <div key={f.topic} className="flex gap-1.5">
+                  <dt className="shrink-0 font-semibold text-ink">{f.topic}:</dt>
+                  <dd className="min-w-0 text-ink-2">{f.text}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-2 flex items-center gap-1.5 rounded-md border border-line-strong bg-surface px-2 py-1 text-xs text-muted">
+              <Search aria-hidden className="size-3" />
+              Ask a question…
+            </div>
+            <div className="mt-1 text-right text-[0.6875rem] text-muted">by {product.name}</div>
+          </div>
+        </div>
+      </figure>
+    </AgentTurn>
   )
 }
 
-export function QuoteCard({ item }: { item: Of<'quote'> }) {
+/** A question the agent typed into Doorbell's ask box, and the reply. */
+export function AskExchange({ item }: { item: Of<'ask'> }) {
   return (
     <AgentTurn>
-      <div className="rounded-xl border border-line bg-surface p-3.5">
+      <div className="rounded-xl border border-mcp/25 bg-surface p-3.5">
         <div className="flex items-center gap-2">
-          <span className="font-semibold">{item.title}</span>
-          <DoorBadge door="form" />
-          <SourceBadge source="vendor" />
+          <span className="font-semibold text-ink">{vendor.name}</span>
+          <ChannelBadge channel="ask" />
+          <span className="ml-auto text-sm text-muted">On their website, by {product.name}</span>
         </div>
-        <dl className="mt-2.5 grid grid-cols-[1.5fr_0.6fr_1.1fr_1.1fr] gap-3">
-          {item.lines.map((l) => (
-            <div key={l.label} className="min-w-0">
-              <dt className="text-sm text-muted">{l.label}</dt>
-              <dd className="tnum mt-0.5 leading-snug font-semibold text-ink">{l.value}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-2.5">
-          <CiteChip cite={item.cite} />
+        <div className="mt-2.5 flex items-start gap-2">
+          <MessageCircleQuestion aria-hidden className="mt-0.5 size-4 shrink-0 text-muted" />
+          <p className="text-md font-medium text-ink">“{item.question}”</p>
+        </div>
+        <blockquote className="mt-2 rounded-lg bg-mcp-soft/60 px-3 py-2 text-md leading-relaxed text-ink">“{item.reply}”</blockquote>
+        <div className="mt-2">
+          <StatusLabel status={item.status} label={item.statusLabel} />
         </div>
       </div>
-    </AgentTurn>
-  )
-}
-
-export function PathsTable({ item }: { item: Of<'paths'> }) {
-  return (
-    <AgentTurn>
-      <p className="text-md leading-relaxed text-ink">{item.intro}</p>
-      <table className="mt-2.5 w-full overflow-hidden rounded-xl border border-line bg-surface text-left">
-        <thead className="bg-sunken text-sm text-muted">
-          <tr>
-            <th scope="col" className="px-3 py-2 font-medium">Path</th>
-            <th scope="col" className="px-3 py-2 font-medium">Price</th>
-            <th scope="col" className="px-3 py-2 font-medium">Notes</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-line">
-          {purchasePaths.map((p) => (
-            <tr key={p.id}>
-              <th scope="row" className="px-3 py-2 font-semibold text-ink">{p.path}</th>
-              <td className="tnum px-3 py-2 font-semibold whitespace-nowrap text-ink">{p.price}</td>
-              <td className="px-3 py-2 text-ink-2">{p.notes}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </AgentTurn>
-  )
-}
-
-export function DeskReply({ item }: { item: Of<'desk-reply'> }) {
-  return (
-    <AgentTurn>
-      <p className="text-md leading-relaxed text-ink">I asked. Their desk replied:</p>
-      <blockquote className="mt-2 rounded-xl border border-esc/30 bg-esc-soft/60 p-3.5">
-        <div className="flex items-center gap-2 text-sm">
-          <span className="font-semibold text-ink">{item.from}</span>
-          <DoorBadge door="mcp" />
-        </div>
-        <p className="mt-1.5 text-md leading-relaxed text-ink">“{item.text}”</p>
-        <div className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-esc">
-          <UserRoundCog aria-hidden className="size-4" />
-          Escalated to human
-        </div>
-      </blockquote>
     </AgentTurn>
   )
 }

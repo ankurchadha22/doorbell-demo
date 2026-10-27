@@ -1,9 +1,9 @@
 // Act 2: what the seller sees. Every item names the story step at which it happens (`stepId`),
 // so the seller view stays in sync with the buyer's agent on the same step.
 
-import { buyer, competitor2, competitor1, product, seller } from './config'
-import { money, quote } from './policies'
-import type { Door, FeedEvent, StageId, Step } from './types'
+import { buyer, product, seller, vendor } from './config'
+import { estimate, money } from './policies'
+import type { FeedEvent, Step } from './types'
 
 /* ---------- Before Doorbell ---------- */
 
@@ -11,180 +11,156 @@ export const before = {
   analytics: {
     label: `Visits from ${buyer.company}`,
     value: 0,
-    note: 'The AI agent fetched your pages without running your analytics script.',
+    note: "The agent's visit was filtered out as bot traffic.",
   },
   serverLog: [
-    { ip: '203.0.113.24', time: '14:02:11', request: 'GET /pricing', status: 200 },
-    { ip: '203.0.113.31', time: '14:02:12', request: 'GET /docs/embedding', status: 200 },
-    { ip: '203.0.113.24', time: '14:02:40', request: 'GET /pricing', status: 200 },
+    { ip: '198.51.100.17', time: '14:02:10', request: 'GET /pricing', status: 200 },
+    { ip: '198.51.100.17', time: '14:03:48', request: 'GET /docs/embedding', status: 200 },
+    { ip: '198.51.100.17', time: '14:05:22', request: 'GET /search?q=free+trial', status: 200 },
   ],
-  userAgent: 'Mozilla/5.0 (compatible; AI-Fetcher/2.1; +https://ai-provider.example/bot)',
-  serverLogNote: "Requests came from an AI provider's servers. No company named.",
+  signatureAgent: 'ai-provider.example',
+  serverLogNote: "A signed header says which AI company's agent came by. Nothing says who sent it, what it wanted or what it couldn't find.",
   crm: { query: buyer.company, result: `No record of ${buyer.company}.` },
-  caption: `A ${money(quote.annual)} opportunity was evaluated, and you can't see it.`,
+  caption: 'An AI agent spent four minutes on your pricing page. You can’t tell who sent it, or why it left.',
 }
 
 /* ---------- After: live activity feed ---------- */
 
 export const feedEvents: FeedEvent[] = [
   {
-    id: 'e-read',
+    id: 'e-detected',
     stepId: 'b-seller-site',
     time: '14:02',
-    kind: 'website',
-    text: 'Agent read your AI-ready pages: pricing, integrations, security',
-    detail: 'Anonymous session',
-  },
-  {
-    id: 'e-connect',
-    stepId: 'b-seller-site',
-    time: '14:02',
-    kind: 'mcp',
-    text: 'Agent connected to your desk',
-    detail: `Stated context: ${buyer.size}-person ${buyer.industry}, comparing 3 BI tools, budget under $25k`,
-  },
-  {
-    id: 'e-q1',
-    stepId: 'b-mcp-1',
-    time: '14:03',
-    kind: 'mcp',
-    text: 'Agent asked about Stripe + QuickBooks connections',
-    detail: 'Answered with a citation',
-  },
-  {
-    id: 'e-q2',
-    stepId: 'b-mcp-2',
-    time: '14:03',
-    kind: 'mcp',
-    text: 'Agent asked about embedding dashboards for its customers',
-    detail: 'Answered: Growth plan',
-  },
-  {
-    id: 'e-q3',
-    stepId: 'b-mcp-3',
-    time: '14:04',
-    kind: 'mcp',
-    text: 'Agent asked about SOC 2 Type II',
-    detail: 'Report gated: NDA required',
-  },
-  {
-    id: 'e-quote-req',
-    stepId: 'b-quote-shared',
-    time: '14:06',
-    kind: 'form',
-    text: `Quote requested: ${quote.seats} users, ${quote.plan} plan + embedding`,
+    kind: 'detected',
+    text: 'AI browser agent detected on /pricing',
+    detail: `Signed request verified: ${before.signatureAgent}`,
   },
   {
     id: 'e-identity',
-    stepId: 'b-quote-shared',
-    time: '14:06',
+    stepId: 'b-seller-site',
+    time: '14:02',
     kind: 'identity',
-    text: `Contact verified: ${buyer.person}, ${buyer.title}, ${buyer.company}`,
-    detail: 'Work email shared with consent. Earlier questions linked to this account.',
+    text: `Matched to ${buyer.company}`,
+    detail: `The agent runs in a browser on ${buyer.company}'s company network`,
   },
   {
-    id: 'e-quote-sent',
-    stepId: 'b-quote-shared',
+    id: 'e-facts-1',
+    stepId: 'b-facts-1',
+    time: '14:03',
+    kind: 'facts',
+    text: 'Read facts: Stripe + QuickBooks, embedding',
+  },
+  {
+    id: 'e-price',
+    stepId: 'b-facts-2',
+    time: '14:05',
+    kind: 'facts',
+    text: `Priced ${estimate.plan} + embedding for ${estimate.seats} users`,
+    detail: `${money(estimate.annual)}/yr on annual terms`,
+  },
+  {
+    id: 'e-trust',
+    stepId: 'b-facts-2',
+    time: '14:05',
+    kind: 'page',
+    text: 'Opened the trust center: SOC 2 Type II',
+  },
+  {
+    id: 'e-search',
+    stepId: 'b-ask',
     time: '14:06',
-    kind: 'form',
-    text: `Quote sent: ${money(quote.annual)}/yr`,
-    detail: quote.id,
+    kind: 'page',
+    text: 'Searched the site for “free trial”',
+    detail: 'No results',
   },
   {
-    id: 'e-paths',
-    stepId: 'b-paths',
-    time: '14:07',
-    kind: 'mcp',
-    text: 'Agent compared purchase paths: card, annual, marketplace',
-    detail: 'No path chosen yet',
-  },
-  {
-    id: 'e-escalation',
-    stepId: 'b-negotiate',
-    time: '14:08',
+    id: 'e-ask',
+    stepId: 'b-ask',
+    time: '14:06',
     kind: 'escalation',
-    text: 'Non-standard term requested: unlimited AI-assistant queries, 3-year deal',
-    detail: `Outside policy. Assigned to ${seller.name}, your sales rep.`,
+    text: 'Ask box: “Is there a free trial?”',
+    detail: `No approved answer. Sent to ${seller.name}, your sales rep.`,
+  },
+  {
+    id: 'e-left',
+    stepId: 'b-ask',
+    time: '14:06',
+    kind: 'left',
+    text: 'Agent left after 4 min 12 s',
+    detail: '6 pages read, 1 question asked',
   },
 ]
 
-/* ---------- After: account view ---------- */
+/* ---------- After: the visit, as one account ---------- */
 
 export const account = {
+  /** The company is matched as soon as the agent arrives. */
+  identifiedAt: 'b-seller-site',
   company: buyer.company,
-  meta: `${buyer.size} people, ${buyer.industry}`,
-  /** Before this step the session is anonymous. */
-  identifiedAt: 'b-quote-shared',
-  anonymousLabel: 'Unidentified agent session',
-  contact: {
-    name: buyer.person,
-    title: buyer.title,
-    email: buyer.email,
-    basis: 'Shared with consent at the quote step',
+  meta: `About ${buyer.size} people, ${buyer.industry}`,
+  match: {
+    method: 'Company network',
+    confidence: 'High confidence',
+    basis: `The agent ran in a browser on ${buyer.company}'s network. Visits that can't be matched stay anonymous.`,
   },
-  stageUpdates: [
-    { stepId: 'b-seller-site', stage: 'shortlist' },
-    { stepId: 'b-quote-ask', stage: 'quote' },
-    { stepId: 'b-paths', stage: 'how-to-buy' },
-    { stepId: 'b-negotiate', stage: 'how-to-buy', flagged: 'negotiate' },
-  ] as { stepId: string; stage: StageId; flagged?: StageId }[],
-  questions: [
-    { stepId: 'b-mcp-1', door: 'mcp', text: 'Do you connect to Stripe and QuickBooks?', outcome: 'Cited answer' },
-    { stepId: 'b-mcp-2', door: 'mcp', text: 'Can we embed dashboards so each customer sees only their own data?', outcome: 'Cited answer' },
-    { stepId: 'b-mcp-3', door: 'mcp', text: 'Are you SOC 2 Type II?', outcome: 'Gated: NDA' },
-    { stepId: 'b-quote-shared', door: 'form', text: `Quote for ${quote.seats} users, ${quote.plan} + embedding`, outcome: 'Quote sent' },
-    { stepId: 'b-paths', door: 'mcp', text: 'What purchase options are available?', outcome: 'Answered' },
-    { stepId: 'b-negotiate', door: 'mcp', text: 'Unlimited AI-assistant queries on a 3-year deal?', outcome: 'Escalated' },
-  ] as { stepId: string; door: Door; text: string; outcome: string }[],
-  alsoEvaluating: {
-    stepId: 'b-seller-site',
-    names: [competitor1.name, competitor2.name],
-    basis: "Inferred from the agent's questions and stated shortlist",
+  agentKind: 'AI browser agent',
+  mission: {
+    stepId: 'b-facts-2',
+    text: `Comparing BI tools for about ${buyer.size} users. Needs Stripe and QuickBooks, and embedded dashboards where each customer sees only their own data.`,
+    basis: 'Inferred from the pages it read, what it priced and what it asked.',
   },
-  quote: { stepId: 'b-quote-shared', text: `${money(quote.annual)}/yr`, detail: quote.id },
-  preferredPath: { stepId: 'b-paths', text: 'Not yet chosen', detail: 'Compared card, annual and marketplace' },
-  dealValue: {
-    stepId: 'b-quote-shared',
-    text: `${money(quote.annual)}`,
-    unit: 'per year',
-    detail: `Up to ${money(quote.threeYear)} if a 3-year deal lands`,
+  checked: [
+    { stepId: 'b-facts-1', text: 'Stripe + QuickBooks connections', found: true, note: 'Facts panel' },
+    { stepId: 'b-facts-1', text: 'Embedding, each customer sees only their own data', found: true, note: 'Facts panel' },
+    { stepId: 'b-facts-2', text: `Price: ${estimate.plan} + embedding, ${estimate.seats} users`, found: true, note: `${money(estimate.annual)}/yr` },
+    { stepId: 'b-facts-2', text: 'SOC 2 Type II', found: true, note: 'Report needs NDA' },
+    { stepId: 'b-ask', text: 'Free trial', found: false, note: 'Not found' },
+  ],
+  stuck: {
+    stepId: 'b-ask',
+    text: 'Couldn’t find whether there’s a free trial.',
+    detail: 'It searched the site, asked in the ask box, got no approved answer and left 24 seconds later.',
+  },
+  value: {
+    stepId: 'b-facts-2',
+    text: money(estimate.annual),
+    unit: 'per year, as priced',
   },
   nextBestAction: {
-    stepId: 'b-negotiate',
+    stepId: 'b-ask',
     owner: seller.name,
-    text: 'Reply to the unlimited-AI-queries request. Consider offering a capped allowance on a 2-year term.',
-    due: 'Reply promised within one business day',
+    text: `Add a free-trial answer so the next agent gets one. Then reach out to ${buyer.company}: they priced ${estimate.plan} with embedding for about ${estimate.seats} users.`,
   },
 }
 
 /* ---------- After: rep alert and CRM ---------- */
 
 export const repAlert = {
-  stepId: 'b-negotiate',
+  stepId: 'b-ask',
   channel: 'sales-alerts',
   from: product.name,
   to: seller.name,
-  time: '14:08',
-  text: `🔔 ${buyer.company} (${buyer.size} people, ${buyer.industry}) requested a quote via their AI agent. They need Stripe, QuickBooks and embedded dashboards where each customer sees only their own data, and they're asking for unlimited AI queries on a 3-year deal.`,
-  cta: 'Open in CRM →',
+  time: '14:06',
+  worksWith: 'Slack or Teams',
+  text: `🔔 An AI agent from ${buyer.company} (about ${buyer.size} people, ${buyer.industry}) spent 4 minutes on ${vendor.site}. It priced ${estimate.plan} + embedding for ${estimate.seats} users and checked SOC 2. It couldn't find whether there's a free trial.`,
+  cta: 'Open the visit →',
 }
 
 export const crmRecord = {
-  stepId: 'b-quote-shared',
-  heading: 'Synced to your CRM',
+  stepId: 'b-ask',
+  heading: 'Logged in your CRM',
   worksWith: 'Works with Salesforce or HubSpot',
   fields: [
     { label: 'Account', value: `${buyer.company} (${buyer.companyDomain})` },
-    { label: 'Contact', value: `${buyer.person}, ${buyer.title}` },
-    { label: 'Opportunity', value: `${quote.plan} plan + embedding` },
-    { label: 'Amount', value: `${money(quote.annual)} / yr` },
+    { label: 'Matched by', value: 'Company network, high confidence' },
+    { label: 'Interest', value: `${estimate.plan} + embedding, ~${estimate.seats} users` },
+    { label: 'Est. value', value: `${money(estimate.annual)} / yr` },
     { label: 'Owner', value: seller.name },
   ],
   activities: [
-    { stepId: 'b-mcp-3', text: '3 questions answered by the desk, with citations' },
-    { stepId: 'b-quote-shared', text: `Quote ${quote.id} sent` },
-    { stepId: 'b-paths', text: 'Purchase paths compared' },
-    { stepId: 'b-negotiate', text: 'Escalation: non-standard term' },
+    { stepId: 'b-ask', text: 'AI agent visit: 4 min, 6 pages' },
+    { stepId: 'b-ask', text: 'Mission summary attached' },
+    { stepId: 'b-ask', text: 'Open question: “Is there a free trial?”' },
   ],
 }
 
@@ -203,49 +179,49 @@ export const sellerSteps: Step[] = [
     id: 's-feed',
     act: 2,
     screen: 'seller',
-    label: 'After: live activity feed',
+    label: 'After: the agent visit, live',
     dwellMs: 9000,
-    animMs: 2600,
+    animMs: 2200,
     seller: { mode: 'after', show: ['feed'] },
   },
   {
     id: 's-account',
     act: 2,
     screen: 'seller',
-    label: `Account: ${buyer.company}`,
+    label: `Who sent it: ${buyer.company}`,
     dwellMs: 8000,
     seller: { mode: 'after', show: ['feed', 'account'] },
   },
   {
-    id: 's-questions',
+    id: 's-mission',
     act: 2,
     screen: 'seller',
-    label: 'Exact questions and competitors',
+    label: 'What the agent was looking for',
     dwellMs: 9000,
-    seller: { mode: 'after', show: ['feed', 'account', 'questions'] },
+    seller: { mode: 'after', show: ['feed', 'account', 'mission'] },
   },
   {
-    id: 's-next',
+    id: 's-stuck',
     act: 2,
     screen: 'seller',
-    label: 'Deal value and next best action',
-    dwellMs: 8000,
-    seller: { mode: 'after', show: ['feed', 'account', 'questions', 'next-action'] },
+    label: 'Where it got stuck, and what to do',
+    dwellMs: 8500,
+    seller: { mode: 'after', show: ['feed', 'account', 'mission', 'stuck'] },
   },
   {
     id: 's-alert',
     act: 2,
     screen: 'seller',
-    label: `Alert to ${seller.firstName}, the sales rep`,
+    label: `Live alert to ${seller.firstName}, the sales rep`,
     dwellMs: 7500,
-    seller: { mode: 'after', show: ['feed', 'account', 'questions', 'next-action', 'alert'] },
+    seller: { mode: 'after', show: ['feed', 'account', 'mission', 'stuck', 'alert'] },
   },
   {
     id: 's-crm',
     act: 2,
     screen: 'seller',
-    label: 'CRM sync',
-    dwellMs: 8500,
-    seller: { mode: 'after', show: ['feed', 'account', 'questions', 'next-action', 'alert', 'crm'] },
+    label: 'Visit logged in the CRM',
+    dwellMs: 8000,
+    seller: { mode: 'after', show: ['feed', 'account', 'mission', 'stuck', 'alert', 'crm'] },
   },
 ]

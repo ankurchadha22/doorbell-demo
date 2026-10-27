@@ -2,15 +2,13 @@
 
 export type Screen = 'title' | 'buyer' | 'seller' | 'insights' | 'policies' | 'setup' | 'closing'
 
-/** The three ways an agent reaches the desk (plus how it reads any other web page). */
-export type Door = 'website' | 'form' | 'mcp'
+/** Where on a website the agent found something: an ordinary page, Doorbell's facts panel or its ask box. */
+export type Channel = 'page' | 'facts' | 'ask'
 
 /** Who published the information the agent read. */
 export type Source = 'independent' | 'vendor'
 
-export type StageId = 'explore' | 'compare' | 'shortlist' | 'quote' | 'how-to-buy' | 'negotiate'
-
-export type Status = 'ok' | 'warn' | 'unverified' | 'escalated' | 'identity' | 'gated'
+export type Status = 'ok' | 'warn' | 'unverified' | 'escalated' | 'gated'
 
 export interface Citation {
   label: string
@@ -21,12 +19,12 @@ export interface Citation {
 
 export type ChatItem =
   | { kind: 'user'; id: string; text: string; typed?: boolean }
-  | { kind: 'agent'; id: string; text: string; note?: string }
+  | { kind: 'agent'; id: string; text: string }
   | {
       kind: 'check'
       id: string
       vendor: string
-      door: Door
+      channel: Channel
       source: Source
       question: string
       answer: string
@@ -35,10 +33,10 @@ export type ChatItem =
       cite?: Citation
     }
   | { kind: 'shortlist'; id: string; vendors: string[]; note: string }
-  | { kind: 'consent-result'; id: string; text: string }
-  | { kind: 'quote'; id: string; title: string; lines: { label: string; value: string }[]; cite: Citation }
-  | { kind: 'paths'; id: string; intro: string }
-  | { kind: 'desk-reply'; id: string; from: string; text: string }
+  /** The seller's page as the agent sees it, with Doorbell's facts panel and ask box. */
+  | { kind: 'site'; id: string; url: string }
+  /** A question typed into Doorbell's ask box, and its reply. */
+  | { kind: 'ask'; id: string; question: string; reply: string; status: Status; statusLabel: string }
   | { kind: 'final'; id: string; intro: string; recommendation: string }
 
 export interface TimelineEntry {
@@ -47,7 +45,7 @@ export interface TimelineEntry {
   at: string
   title: string
   detail?: string
-  door?: Door
+  channel?: Channel
   source?: Source
   status?: Status
   statusLabel?: string
@@ -55,9 +53,9 @@ export interface TimelineEntry {
 
 /* ---------- Seller side ---------- */
 
-export type SellerSection = 'feed' | 'account' | 'questions' | 'next-action' | 'alert' | 'crm'
+export type SellerSection = 'feed' | 'account' | 'mission' | 'stuck' | 'alert' | 'crm'
 
-export type FeedKind = Door | 'identity' | 'escalation'
+export type FeedKind = Channel | 'detected' | 'identity' | 'escalation' | 'left'
 
 export interface FeedEvent {
   id: string
@@ -81,12 +79,8 @@ export interface Step {
   dwellMs: number
   /** Minimum entrance-animation time, for steps whose animation is not derived from chat or timeline. */
   animMs?: number
-  /** Buyer's current buying stage (buyer view). */
-  stage?: StageId
   chat?: ChatItem[]
   timeline?: TimelineEntry[]
-  /** Consent dialog state on the buyer side. */
-  consent?: 'ask' | 'shared'
   /** Seller view settings. Steps without this show the After view with everything that has happened. */
   seller?: { mode: 'before' | 'after'; show?: SellerSection[] }
   /** Optional spotlight target on Act 3 screens. */

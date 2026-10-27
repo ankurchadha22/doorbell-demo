@@ -1,18 +1,31 @@
-import { Bell, Building2, Database, EyeOff, Play, Search, ServerCrash, SkipForward, Sparkles, UserCheck, UserRoundSearch } from 'lucide-react'
+import {
+  Bell,
+  Building2,
+  CircleCheck,
+  CircleX,
+  Database,
+  EyeOff,
+  Network,
+  Play,
+  Search,
+  ServerCrash,
+  SkipForward,
+  Sparkles,
+  TriangleAlert,
+} from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { DoorBadge, KindBadge } from '../components/Badges'
+import { KindBadge } from '../components/Badges'
 import { AlertCard } from '../components/AlertCard'
 import { CrmCard } from '../components/CrmCard'
 import { PageHeader } from '../components/PageHeader'
-import { StageTracker } from '../components/StageTracker'
-import { buyer, product, seller, vendor } from '../data/config'
+import { product, seller, vendor } from '../data/config'
 import { account, before, crmRecord, feedEvents, repAlert } from '../data/sellerEvents'
 import { acts, firstStepOfAct, stepIndex, steps } from '../data/story'
-import type { FeedEvent, SellerSection, StageId } from '../data/types'
+import type { FeedEvent, SellerSection } from '../data/types'
 import { useDemo } from '../presenter/useStep'
 
-const ALL: SellerSection[] = ['feed', 'account', 'questions', 'next-action', 'alert', 'crm']
+const ALL: SellerSection[] = ['feed', 'account', 'mission', 'stuck', 'alert', 'crm']
 
 export function SellerView() {
   const demo = useDemo()
@@ -46,8 +59,8 @@ export function SellerView() {
         title={sellerMode === 'before' ? `Before ${product.name}` : `With ${product.name}`}
         subtitle={
           sellerMode === 'before'
-            ? `The same buyer research, as ${vendor.inSentence}'s usual tools see it.`
-            : `The seller's dashboard: every agent question, live, as a named account.`
+            ? `The same agent visit, as ${vendor.inSentence}'s usual tools see it.`
+            : `${vendor.sentenceStart}'s dashboard: every AI agent visit, live, matched to a company where possible.`
         }
         actions={<BeforeAfterToggle mode={sellerMode} onChange={demo.setSellerMode} />}
       />
@@ -174,7 +187,7 @@ function BeforeView() {
             {before.crm.query}
           </div>
           <p className="mt-3 text-[1.375rem] font-semibold text-ink-2">{before.crm.result}</p>
-          <p className="mt-1 text-md text-muted">No contact, no opportunity, no activity.</p>
+          <p className="mt-1 text-md text-muted">No account, no activity, no open questions.</p>
         </section>
       </div>
 
@@ -188,7 +201,7 @@ function BeforeView() {
             <span key={l.time + l.request} className="block">
               <span className="text-[#8fa39c]">{l.ip}</span> [{l.time}] <span className="text-white">"{l.request}"</span> {l.status}
               {'\n'}
-              <span className="text-[#8fa39c]">{'  '}user-agent: "{before.userAgent}"</span>
+              <span className="text-[#8fa39c]">{'  '}signature-agent: "{before.signatureAgent}"</span>
             </span>
           ))}
         </pre>
@@ -196,7 +209,7 @@ function BeforeView() {
       </section>
 
       <div className="grid flex-1 place-items-center px-6">
-        <p className="max-w-[44rem] text-center text-[2.125rem] leading-tight font-semibold tracking-[-0.02em] text-ink">
+        <p className="max-w-[46rem] text-center text-[2.125rem] leading-tight font-semibold tracking-[-0.02em] text-ink">
           {before.caption}
         </p>
       </div>
@@ -219,118 +232,111 @@ interface AfterProps {
 
 function AfterView({ events, streamFeed, isShown, isFresh, happened, newEventStep, overlayButtons }: AfterProps) {
   const identified = happened(account.identifiedAt)
-  const stageUpdate = [...account.stageUpdates].reverse().find((u) => happened(u.stepId))
-  const stage: StageId | null = stageUpdate?.stage ?? null
-  const questions = account.questions.filter((q) => happened(q.stepId))
+  const checked = account.checked.filter((c) => happened(c.stepId))
+  const visitDone = happened(account.stuck.stepId)
 
   return (
     <div className="grid h-full grid-cols-[19.5rem_minmax(0,1fr)] gap-4">
-      <Panel shown={isShown('feed')} fresh={isFresh('feed')} title="Live activity" className="min-h-0">
+      <Panel shown={isShown('feed')} fresh={isFresh('feed')} title="Live agent activity" className="min-h-0">
         <Feed key={streamFeed ? 'stream' : 'static'} events={events} stream={streamFeed} newEventStep={newEventStep} />
       </Panel>
 
       <div className="flex min-h-0 flex-col gap-4">
-        {/* Account header */}
-        <Panel shown={isShown('account')} fresh={isFresh('account')} title="Account" actions={overlayButtons}>
-          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_auto] items-center gap-4">
+        {/* Who sent the agent */}
+        <Panel shown={isShown('account')} fresh={isFresh('account')} title="Who sent it" actions={overlayButtons}>
+          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_auto] items-center gap-4">
             <div className="flex min-w-0 items-center gap-2.5">
               <div aria-hidden className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-strong">
-                {identified ? <Building2 className="size-5" /> : <UserRoundSearch className="size-5" />}
+                <Building2 className="size-5" />
               </div>
               <div className="min-w-0">
                 <div className="text-[1.375rem] leading-tight font-semibold tracking-tight text-ink">
-                  {identified ? account.company : account.anonymousLabel}
+                  {identified ? account.company : 'Not matched yet'}
                 </div>
-                <div className="text-md text-muted">{identified ? account.meta : `${buyer.size} people, ${buyer.industry} (stated)`}</div>
+                <div className="text-md text-muted">{account.meta}</div>
               </div>
             </div>
-            {identified ? (
-              <div className="min-w-0 rounded-xl bg-accent-soft/60 px-3.5 py-2">
-                <div className="flex items-center gap-1.5 text-sm font-semibold text-accent-strong">
-                  <UserCheck aria-hidden className="size-4" />
-                  Verified contact
-                </div>
-                <div className="font-semibold text-ink">
-                  {account.contact.name}, {account.contact.title}
-                </div>
-                <div className="text-sm text-ink-2">{account.contact.basis}</div>
+            <div className="min-w-0 rounded-xl bg-accent-soft/60 px-3.5 py-2">
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-accent-strong">
+                <Network aria-hidden className="size-4" />
+                Matched by {account.match.method.toLowerCase()} · {account.match.confidence.toLowerCase()}
               </div>
-            ) : (
-              <p className="text-[0.9375rem] text-muted">Company not shared yet. Questions link to the account once the buyer shares a work email.</p>
-            )}
-            {isShown('next-action') && happened(account.dealValue.stepId) ? (
+              <div className="mt-0.5 text-sm leading-snug text-ink-2">{account.match.basis}</div>
+            </div>
+            {isShown('mission') && happened(account.value.stepId) ? (
               <div className="text-right">
-                <div className="text-sm text-muted">Est. deal value</div>
-                <div className="tnum text-[1.75rem] leading-tight font-bold tracking-tight text-ink">{account.dealValue.text}</div>
-                <div className="text-sm text-muted">{account.dealValue.unit}</div>
+                <div className="text-sm text-muted">Est. value</div>
+                <div className="tnum text-[1.75rem] leading-tight font-bold tracking-tight text-ink">{account.value.text}</div>
+                <div className="text-sm text-muted">{account.value.unit}</div>
               </div>
             ) : (
               <div className="w-[8rem]" aria-hidden />
             )}
           </div>
-          <StageTracker className="mt-3.5" current={stage} flagged={stageUpdate?.flagged} />
+          <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <Chip>{account.agentKind}</Chip>
+            <Chip>{visitDone ? '4 min 12 s on site' : 'On site now'}</Chip>
+            <Chip>{visitDone ? '6 pages read' : 'Reading pages'}</Chip>
+            {visitDone && <Chip>1 question asked</Chip>}
+          </div>
         </Panel>
 
         <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-4">
-          <Panel shown={isShown('questions')} fresh={isFresh('questions')} title="Exact questions asked" className="min-h-0">
-            <ol className="scroll-quiet -mr-2 min-h-0 flex-1 space-y-2 overflow-y-auto pr-2">
-              {questions.map((q) => (
-                <li key={q.text} className="grid grid-cols-[3.6rem_minmax(0,1fr)_auto] items-start gap-2.5">
-                  <DoorBadge door={q.door} />
-                  <span className="text-[0.9375rem] leading-snug text-ink">{q.text}</span>
-                  <span className={`text-sm whitespace-nowrap ${q.outcome === 'Escalated' ? 'font-semibold text-esc' : 'text-muted'}`}>
-                    {q.outcome}
+          <Panel shown={isShown('mission')} fresh={isFresh('mission')} title="What it was looking for" className="min-h-0">
+            {happened(account.mission.stepId) ? (
+              <>
+                <p className="text-[1.0625rem] leading-snug font-medium text-ink">{account.mission.text}</p>
+                <p className="mt-1 text-sm text-muted">{account.mission.basis}</p>
+              </>
+            ) : (
+              <p className="text-md text-muted">Still reading. A summary appears as the agent works.</p>
+            )}
+            <ul className="scroll-quiet -mr-2 mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto pr-2">
+              {checked.map((c) => (
+                <li key={c.text} className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-start gap-2">
+                  {c.found ? (
+                    <CircleCheck aria-hidden className="mt-0.5 size-4.5 text-accent" />
+                  ) : (
+                    <CircleX aria-hidden className="mt-0.5 size-4.5 text-esc" />
+                  )}
+                  <span className="text-[0.9375rem] leading-snug text-ink">
+                    {c.text}
+                    <span className="sr-only">{c.found ? ' (found)' : ' (not found)'}</span>
                   </span>
+                  <span className={`text-sm whitespace-nowrap ${c.found ? 'text-muted' : 'font-semibold text-esc'}`}>{c.note}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           </Panel>
 
-          <div className="flex min-h-0 flex-col gap-4">
-            <Panel shown={isShown('questions')} fresh={isFresh('questions')} title="Also evaluating">
-              {happened(account.alsoEvaluating.stepId) ? (
-                <>
-                  <ul className="flex flex-wrap gap-2">
-                    {account.alsoEvaluating.names.map((n) => (
-                      <li key={n} className="rounded-lg border border-line-strong px-2.5 py-1 font-semibold text-ink">
-                        {n}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-1.5 text-sm text-muted">{account.alsoEvaluating.basis}. Inferred, not confirmed.</p>
-                </>
-              ) : (
-                <p className="text-md text-muted">Not known yet.</p>
-              )}
-            </Panel>
-
-            <Panel shown={isShown('next-action')} fresh={isFresh('next-action')} title="Deal">
-              <dl className="grid grid-cols-2 gap-3">
-                <div>
-                  <dt className="text-sm text-muted">Quote sent</dt>
-                  <dd className="tnum font-semibold text-ink">{happened(account.quote.stepId) ? account.quote.text : 'Not yet'}</dd>
+          <Panel shown={isShown('stuck')} fresh={isFresh('stuck')} title="Where it got stuck" className="min-h-0">
+            {happened(account.stuck.stepId) ? (
+              <>
+                <div className="flex items-start gap-2">
+                  <TriangleAlert aria-hidden className="mt-0.5 size-5 shrink-0 text-esc" />
+                  <p className="text-[1.0625rem] leading-snug font-semibold text-ink">{account.stuck.text}</p>
                 </div>
-                <div>
-                  <dt className="text-sm text-muted">Preferred path</dt>
-                  <dd className="font-semibold text-ink">{happened(account.preferredPath.stepId) ? account.preferredPath.text : 'Not yet asked'}</dd>
-                </div>
-              </dl>
-              {happened(account.nextBestAction.stepId) && (
+                <p className="mt-1 text-[0.9375rem] leading-snug text-ink-2">{account.stuck.detail}</p>
                 <div className="mt-3 rounded-xl border border-accent/30 bg-accent-soft/70 p-3">
                   <div className="flex items-center gap-1.5 text-sm font-semibold text-accent-strong">
                     <Sparkles aria-hidden className="size-4" />
-                    Next best action for {seller.firstName} (sales rep)
+                    Next step for {seller.firstName} (sales rep)
                   </div>
                   <p className="mt-1 text-[0.9375rem] leading-snug font-medium text-ink">{account.nextBestAction.text}</p>
-                  <p className="mt-1 text-sm text-ink-2">{account.nextBestAction.due}</p>
                 </div>
-              )}
-            </Panel>
-          </div>
+              </>
+            ) : (
+              <p className="text-md text-muted">Nothing yet.</p>
+            )}
+          </Panel>
         </div>
       </div>
     </div>
   )
+}
+
+function Chip({ children }: { children: ReactNode }) {
+  return <span className="rounded-md border border-line bg-sunken px-2 py-0.5 text-ink-2">{children}</span>
 }
 
 function Panel({
@@ -490,9 +496,9 @@ function EmptyAfter({ onStart, onJump }: { onStart: () => void; onJump: () => vo
   return (
     <div className="grid h-full place-items-center rounded-2xl border border-dashed border-line-strong">
       <div className="max-w-xl text-center">
-        <p className="text-lg font-semibold text-ink">No agent activity yet.</p>
+        <p className="text-lg font-semibold text-ink">No agent visits yet.</p>
         <p className="mt-1 text-md text-muted">
-          When a buyer's agent reads {vendor.inSentence}'s pages, asks a question or requests a quote, it shows up here as it happens.
+          When an AI agent visits {vendor.inSentence}'s website, it shows up here as it happens: who sent it, what it read and where it got stuck.
         </p>
         <div className="mt-4 flex justify-center gap-2">
           <button type="button" onClick={onStart} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-strong">

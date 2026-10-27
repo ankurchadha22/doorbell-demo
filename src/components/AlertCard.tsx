@@ -11,9 +11,9 @@ export function AlertCard({ onClose }: { onClose?: () => void }) {
     >
       <div className="flex items-center gap-2 text-sm text-muted">
         <Bell aria-hidden className="size-4" />
-        <span>Team chat</span>
+        <span className="whitespace-nowrap">{repAlert.worksWith}</span>
         <span aria-hidden>/</span>
-        <span className="font-medium text-ink-2"># {repAlert.channel}</span>
+        <span className="font-medium whitespace-nowrap text-ink-2"># {repAlert.channel}</span>
         <span className="ml-auto tnum">{repAlert.time}</span>
         {onClose && (
           <button type="button" onClick={onClose} aria-label="Close alert" className="-mr-1 rounded p-0.5 text-muted hover:bg-sunken hover:text-ink">

@@ -1,4 +1,4 @@
-import { Bot, Building2, Users } from 'lucide-react'
+import { Bot, Building2, Globe, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { DemoLabel } from '../components/DemoLabel'
@@ -9,8 +9,8 @@ import { routes } from '../data/story'
 const explore = [
   { to: routes.buyer, label: 'Buyer view' },
   { to: routes.seller, label: 'Seller view' },
-  { to: routes.insights, label: 'Insights' },
-  { to: routes.policies, label: 'Policies' },
+  { to: routes.insights, label: 'Weekly report' },
+  { to: routes.policies, label: 'Rules' },
   { to: routes.setup, label: 'Setup' },
 ]
 
@@ -34,9 +34,11 @@ export function Title() {
         </h1>
         <p className="mt-6 max-w-[44rem] text-[1.375rem] leading-snug text-ink-2">{product.subtitle}</p>
 
-        {/* The flow in one line: buyer's agent, the desk, the sales team. */}
-        <div className="mt-12 flex max-w-[52rem] items-center" aria-label="How it works">
+        {/* The flow in one line: buyer's agent, the vendor's site with Doorbell, the sales team. */}
+        <div className="mt-12 flex max-w-[60rem] items-center" aria-label="How it works">
           <FlowNode icon={<Bot className="size-5" />} label="Buyer's AI agent" />
+          <FlowLine />
+          <FlowNode icon={<Globe className="size-5" />} label="Your website" />
           <FlowLine />
           <FlowNode icon={<Logo className="size-5" />} label={product.name} strong />
           <FlowLine />

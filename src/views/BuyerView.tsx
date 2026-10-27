@@ -1,27 +1,23 @@
 import { Bot, Play, SkipForward } from 'lucide-react'
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import {
   AgentMessage,
   AgentTurn,
+  AskExchange,
   CheckCardHeader,
   CheckRow,
-  ConsentResult,
-  DeskReply,
   FinalAnswer,
-  PathsTable,
-  QuoteCard,
   ShortlistMessage,
+  SiteCard,
   UserMessage,
 } from '../components/ChatItems'
-import { ConsentDialog } from '../components/ConsentDialog'
 import { Enter } from '../components/Enter'
 import { PageHeader } from '../components/PageHeader'
-import { StageTracker } from '../components/StageTracker'
 import { Timeline, type PlacedEntry } from '../components/Timeline'
-import { agent, buyer, product, vendor } from '../data/config'
+import { agent, buyer } from '../data/config'
 import { acts, steps } from '../data/story'
-import type { ChatItem, StageId } from '../data/types'
-import { CONSENT_CONFIRM_MS, scheduleFor } from '../lib/schedule'
+import type { ChatItem } from '../data/types'
+import { scheduleFor } from '../lib/schedule'
 import { useStickToBottom } from '../lib/useStickToBottom'
 import { useDemo } from '../presenter/useStep'
 
@@ -38,38 +34,20 @@ const lastBuyerStep = steps.findLastIndex((s) => s.act === 1)
 export function BuyerView() {
   const demo = useDemo()
   const { step, settled } = demo
-  const cur = steps[step]
 
   // Everything the agent has said and done up to the current step.
-  const { chat, timeline, stage } = useMemo(() => {
+  const { chat, timeline } = useMemo(() => {
     const chat: Placed[] = []
     const timeline: PlacedEntry[] = []
-    let stage: StageId | null = null
     for (let i = 0; i <= step; i++) {
       const s = steps[i]
       const sched = scheduleFor(s)
       const animate = i === step && !settled
       s.chat?.forEach((item, j) => chat.push({ item, animate, delay: sched.chat[j].delay, typeMs: sched.chat[j].typeMs }))
       s.timeline?.forEach((entry, j) => timeline.push({ entry, animate, delay: sched.timeline[j] }))
-      if (s.stage) stage = s.stage
     }
-    return { chat, timeline, stage }
+    return { chat, timeline }
   }, [step, settled])
-
-  // Consent dialog: open on the "ask" step; on the "shared" step it shows Share pressed, then closes.
-  // Both flags remember the step they belong to, so they reset on their own when the step changes.
-  const [declinedAt, setDeclinedAt] = useState<number | null>(null)
-  const [confirmedAt, setConfirmedAt] = useState<number | null>(null)
-  const declined = declinedAt === step
-  const confirming = cur.consent === 'shared' && !settled && confirmedAt !== step
-  useEffect(() => {
-    if (cur.consent !== 'shared' || settled) return
-    const t = window.setTimeout(() => setConfirmedAt(step), CONSENT_CONFIRM_MS - 120)
-    return () => window.clearTimeout(t)
-  }, [step, settled, cur.consent])
-
-  const dialogOpen = (cur.consent === 'ask' && !declined) || (cur.consent === 'shared' && confirming)
-  const shareNow = () => demo.goTo(step + 1, true)
 
   const chatRef = useStickToBottom<HTMLDivElement>(`${step}-${chat.length}`)
   const tlRef = useStickToBottom<HTMLDivElement>(`${step}-${timeline.length}`)
@@ -80,18 +58,17 @@ export function BuyerView() {
     <div className="flex h-full flex-col gap-4 px-6 pt-5 pb-4">
       <PageHeader
         eyebrow={acts[1]}
-        title={`${buyer.firstName} asks her AI agent to find a BI tool`}
+        title={`${buyer.firstName} sends her AI browser agent to find a BI tool`}
         subtitle={`The buyer: ${buyer.person}, ${buyer.title} at ${buyer.company} (${buyer.size} people, ${buyer.industry})`}
       />
-      <StageTracker current={stage} />
 
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-4">
         {/* Buyer's chat with their own AI agent */}
         <section aria-label={agent.label} className="relative flex min-h-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface">
           <div className="flex items-center gap-2.5 border-b border-line px-4 py-2.5">
             <Bot aria-hidden className="size-5 text-ink-2" />
-            <h2 className="font-semibold text-ink">{agent.label}</h2>
-            <span className="text-sm text-muted">Any assistant, e.g. {agent.examples}</span>
+            <h2 className="font-semibold whitespace-nowrap text-ink">{agent.label}</h2>
+            <span className="min-w-0 truncate text-sm text-muted">e.g. {agent.examples}</span>
           </div>
 
           <div ref={chatRef} className="scroll-quiet min-h-0 flex-1 overflow-y-auto px-4 py-4">
@@ -100,21 +77,6 @@ export function BuyerView() {
                 <EmptyChat onPlay={() => demo.goTo(firstBuyerStep, true)} onSkip={() => demo.goTo(lastBuyerStep)} />
               ) : (
                 renderChat(chat)
-              )}
-              <ConsentDialog open={dialogOpen} confirmed={cur.consent === 'shared'} onShare={shareNow} onNotNow={() => setDeclinedAt(step)} />
-              {cur.consent === 'ask' && declined && (
-                <AgentTurn>
-                  <p className="text-md leading-relaxed text-ink">
-                    Okay, I haven't shared anything. Without your email, {vendor.inSentence} can only show public list prices.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={shareNow}
-                    className="mt-2 rounded-lg border border-accent px-3 py-1.5 font-medium text-accent-strong hover:bg-accent-soft"
-                  >
-                    Share my email after all
-                  </button>
-                </AgentTurn>
               )}
             </div>
           </div>
@@ -130,8 +92,8 @@ export function BuyerView() {
         {/* What the agent did, step by step */}
         <section aria-label="Agent activity" className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface">
           <div className="flex items-baseline gap-2 border-b border-line px-4 py-2.5">
-            <h2 className="font-semibold text-ink">Agent activity</h2>
-            <span className="text-sm text-muted">Every page, form and question, in order</span>
+            <h2 className="font-semibold whitespace-nowrap text-ink">Agent activity</h2>
+            <span className="min-w-0 truncate text-sm text-muted">Every page and question, in order</span>
           </div>
           <div ref={tlRef} className="scroll-quiet min-h-0 flex-1 overflow-y-auto px-4 pt-3.5">
             <div>
@@ -139,7 +101,7 @@ export function BuyerView() {
                 <Timeline entries={timeline} />
               ) : (
                 <p className="pt-1 text-md text-muted">
-                  Each page read, form and MCP question appears here as the agent works. {product.mcpExplainer}
+                  Each page the agent opens and each question it asks appears here as it works.
                 </p>
               )}
             </div>
@@ -188,10 +150,8 @@ function renderChat(chat: Placed[]): ReactNode[] {
         {item.kind === 'user' && <UserMessage item={item} typing={p.animate} delay={p.delay} />}
         {item.kind === 'agent' && <AgentMessage item={item} />}
         {item.kind === 'shortlist' && <ShortlistMessage item={item} />}
-        {item.kind === 'consent-result' && <ConsentResult item={item} />}
-        {item.kind === 'quote' && <QuoteCard item={item} />}
-        {item.kind === 'paths' && <PathsTable item={item} />}
-        {item.kind === 'desk-reply' && <DeskReply item={item} />}
+        {item.kind === 'site' && <SiteCard item={item} />}
+        {item.kind === 'ask' && <AskExchange item={item} />}
         {item.kind === 'final' && <FinalAnswer item={item} />}
       </Enter>,
     )

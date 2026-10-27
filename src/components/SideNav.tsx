@@ -31,7 +31,7 @@ export function SideNav() {
           </NavLink>
         </li>
       </ul>
-      <p className="mt-1 px-2.5 text-sm leading-snug text-muted">The buyer's AI agent</p>
+      <p className="mt-1 px-2.5 text-sm leading-snug text-muted">The buyer's AI browser agent</p>
 
       <div className="mt-6 px-2.5 text-sm font-medium text-muted">Seller side</div>
       <ul className="mt-1.5 space-y-0.5">
@@ -44,13 +44,13 @@ export function SideNav() {
         <li>
           <NavLink to={routes.insights} className={item}>
             <ChartColumn aria-hidden className={icon} />
-            Insights
+            Weekly report
           </NavLink>
         </li>
         <li>
           <NavLink to={routes.policies} className={item}>
             <ShieldCheck aria-hidden className={icon} />
-            Policies
+            Rules
           </NavLink>
         </li>
         <li>

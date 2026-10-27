@@ -1,14 +1,16 @@
 # Doorbell: clickable concept demo
 
-**Doorbell: a sales rep for AI agents.** When a buyer's AI researches your product, it talks to Doorbell, and your sales team learns who's interested.
+**Doorbell: know which AI agents came knocking.** One line of code shows a software company which AI agents visited its website, who sent them, what they were looking for and what they couldn't find.
 
 This is a scripted demo for a hackathon, not a product. Every screen runs on fixed, fictional data, it makes no network or AI calls, and it works offline. Every screen carries a "Concept demo · simulated data" label.
 
+The earlier version of the demo (an MCP desk, an agent-fillable quote form and a work-email consent step) is kept on the [`demo-v1-mcp-desk`](https://github.com/ankurchadha22/doorbell-demo/tree/demo-v1-mcp-desk) branch and the `demo-v1` tag.
+
 The story, in three acts:
 
-1. **What the buyer's agent does.** Maya, Head of Operations at a 40-person fintech, asks her AI agent to shortlist BI tools. The agent compares using independent sources, then verifies facts with each vendor. Only the seller uses Doorbell: the agent gets cited answers over MCP, an exact quote through an agent-fillable form (after Maya agrees to share her work email), and a clear "how to buy" comparison. A request for non-standard terms is escalated to a human rep.
-2. **What the seller sees.** Before Doorbell: zero visits, anonymous log lines, no CRM record. After: a live feed, a named account with the exact questions, buying stage, deal value, next best action, a rep alert and a CRM record.
-3. **Insight and controls.** What agents ask across all buyers, the questions the desk couldn't answer, the policies that limit what the desk may say, and setup.
+1. **What the buyer's agent does.** Maya, Head of Operations at a 40-person fintech, sends her AI browser agent to shortlist BI tools. It reads independent reviews first, then opens each vendor's website. Only the seller uses Doorbell: its pricing page has a visible "Facts for AI assistants" panel and an ask box, so the agent verifies integrations, embedding, price and SOC 2 there. It can't find whether there's a free trial, asks in the ask box, gets no approved answer (the question goes to a person) and leaves.
+2. **What the seller sees.** Before Doorbell: zero visits in analytics, a few signed log lines, no CRM record. After: the visit live, matched to MIT Capital by company network, a summary of what the agent was looking for, where it got stuck, a next step for the sales rep, a live alert in Slack or Teams and a CRM record.
+3. **Weekly report, rules and setup.** What agents looked for across all visits and what they couldn't find (with "Add answer"), the rules that limit what Doorbell may tell agents, the one-line setup, and the roadmap: website tag today, WebMCP next, MCP later.
 
 ## Run it
 
@@ -55,7 +57,7 @@ Open the app full screen. It is designed for 1280×800 and 1920×1080 and scales
 | `1` `2` `3` | Jump to Act 1, 2 or 3 |
 | `4` | Jump to the closing slide |
 
-The dots on the right of the presenter bar jump to any step. Outside the presenter flow, every screen is clickable from the left nav (Buyer view, Seller view, Insights, Policies, Setup).
+The dots on the right of the presenter bar jump to any step. Outside the presenter flow, every screen is clickable from the left nav (Buyer view, Seller view, Weekly report, Rules, Setup).
 
 
 ## Edit the story
@@ -64,11 +66,11 @@ Everything you see comes from typed files in [src/data/](src/data/). Components 
 
 | File | Holds |
 |---|---|
-| [config.ts](src/data/config.ts) | Every name (product, vendor, competitors, buyer, seller), domains, the two closing statistics. Change a name here and it changes everywhere. |
-| [policies.ts](src/data/policies.ts) | Plans and prices (the quote is computed from these), purchase paths, price bands, gated documents, escalation and answer rules |
-| [buyerScript.ts](src/data/buyerScript.ts) | Act 1: each step's chat messages, timeline entries, buying stage, consent moment; the final comparison table |
-| [sellerEvents.ts](src/data/sellerEvents.ts) | Act 2: the Before view, live feed events, account details, rep alert, CRM record, and the Act 2 steps |
-| [insights.ts](src/data/insights.ts) | Act 3 simulated numbers |
+| [config.ts](src/data/config.ts) | Every name (product, vendor, competitors, buyer, seller), domains, the closing statistic, the business model and the roadmap. Change a name here and it changes everywhere. |
+| [policies.ts](src/data/policies.ts) | Plans and prices (the price the agent finds is computed from these), approved facts, the facts panel, escalation and answer rules |
+| [buyerScript.ts](src/data/buyerScript.ts) | Act 1: each step's chat messages and timeline entries; the final comparison table |
+| [sellerEvents.ts](src/data/sellerEvents.ts) | Act 2: the Before view, live feed events, the visit summary, rep alert, CRM record, and the Act 2 steps |
+| [insights.ts](src/data/insights.ts) | Act 3 weekly-report numbers (simulated) |
 | [setup.ts](src/data/setup.ts) | Setup page steps |
 | [story.ts](src/data/story.ts) | The single ordered list of presenter steps (title, acts, closing) |
 
@@ -85,7 +87,7 @@ How the pieces fit:
 npm run walkthrough
 ```
 
-This builds the app, serves it, and in Chrome (via Playwright): presses `→` through every step, checks that `→` finishes typing before advancing, toggles Before/After, visits every screen, tries the consent "Not now" path and an Insights edit, checks that Reset clears everything, runs auto-play to the end on a fake clock, blocks and reports any non-local request, and fails on any console error. Screenshots of every step at 1280×800 and 1920×1080 go to `screenshots/`.
+This builds the app, serves it, and in Chrome (via Playwright): presses `→` through every step, checks that `→` finishes typing before advancing, toggles Before/After, visits every screen, opens the rep alert and CRM record, adds an answer in the weekly report, checks that Reset clears everything, runs auto-play to the end on a fake clock, blocks and reports any non-local request, and fails on any console error. Screenshots of every step at 1280×800 and 1920×1080 go to `screenshots/`.
 
 ## What's real and what's mocked
 
@@ -93,9 +95,9 @@ This builds the app, serves it, and in Chrome (via Playwright): presses `→` th
 |---|---|
 | The presenter engine, keyboard controls, auto-play, reset | Every company, person, number and document |
 | Step-synced buyer and seller views | The buyer's AI agent and its answers (scripted) |
-| Offline build with bundled fonts | Doorbell's answers, quote form, CRM sync and alerts in the app (scripted) |
+| Offline build with bundled fonts | Doorbell's agent detection, company matching, summaries, facts panel, ask box, CRM sync and alerts (scripted) |
 
-Only the two statistics on the closing slide refer to real research, each with its source. See [docs/decisions.md](docs/decisions.md) for a note on verifying them.
+Only the statistic on the closing slide refers to real research, with its source. See [docs/decisions.md](docs/decisions.md) for a note on verifying them.
 
 ## Project structure
 
@@ -103,7 +105,7 @@ Only the two statistics on the closing slide refer to real research, each with i
 src/
   data/         config, story, buyerScript, sellerEvents, insights, policies, setup, types
   presenter/    DemoProvider (state, keyboard, auto-play), useStep (context hook), PresenterBar
-  components/   Badges (door, source, status), StageTracker, Timeline, ChatItems, ConsentDialog,
+  components/   Badges (channel, source, status), Timeline, ChatItems,
                 AlertCard, CrmCard, Typewriter, PageHeader, SideNav, ...
   views/        Title, BuyerView, SellerView, Insights, Policies, Setup, Closing
   lib/          step timing, scroll pinning

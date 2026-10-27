@@ -3,12 +3,10 @@
 
 export const product = {
   name: 'Doorbell',
-  headline: 'Doorbell: a sales rep for AI agents.',
-  tagline: 'Know which AI buyers came knocking.',
+  headline: 'Doorbell: know which AI agents came knocking.',
   subtitle:
-    "When a buyer's AI researches your product, it talks to Doorbell, and your sales team learns who's interested.",
+    'One line of code shows which AI agents visited your website, who sent them, what they were looking for and what they couldn’t find.',
   demoLabel: 'Concept demo · simulated data',
-  mcpExplainer: 'MCP: the standard way AI agents plug into tools.',
 }
 
 // The companies are named by their role, so the audience never has to remember who is who.
@@ -23,10 +21,6 @@ export const vendor = {
   category: 'business-intelligence and embedded-analytics tool',
   site: 'seller.example',
   docs: 'docs.seller.example',
-  aiPages: 'seller.example/ai',
-  mcpUrl: 'seller.doorbell.example/mcp',
-  /** What buyers' agents see: the seller's own desk, powered by Doorbell. */
-  deskName: "Seller's AI desk",
 }
 
 export const competitors = [
@@ -44,12 +38,11 @@ export const buyer = {
   person: 'Maya Chen',
   firstName: 'Maya',
   title: 'Head of Operations',
-  email: 'maya@mitcapital.example',
   initials: 'MC',
   budget: 25_000,
 }
 
-/** The seller's sales rep, who handles anything the desk can't approve. */
+/** The seller's sales rep, who gets the alert and handles anything Doorbell can't answer. */
 export const seller = {
   name: 'Jordan Ellis',
   firstName: 'Jordan',
@@ -58,10 +51,10 @@ export const seller = {
   initials: 'JE',
 }
 
-/** The buyer's AI is always shown generically, never as a real product. */
+/** The buyer's AI is always shown generically, never with a real product's styling. */
 export const agent = {
-  label: "Buyer's AI agent",
-  examples: 'ChatGPT, Claude or a procurement tool',
+  label: "Buyer's AI browser agent",
+  examples: 'ChatGPT Agent, Comet or Claude in Chrome',
 }
 
 /** Fictional independent sources the buyer's agent reads first. */
@@ -71,19 +64,20 @@ export const independentSources = {
   benchmark: 'databench.example',
 }
 
-/** The only two statistics in the demo, shown on the closing screen with their sources. */
+/** The one statistic in the demo, shown on the closing screen with its source. */
 export const stats = [
   {
     value: '8 in 10',
     text: '8 in 10 B2B tech buyers use AI agents as part of their purchasing process.',
-    source: 'IDC, Aug 2026, reported by MarketScale',
-  },
-  {
-    value: '93%',
-    text: "In one Aug 2026 study, 93% of ChatGPT's quick answers opened no web page at all.",
-    source: 'RESONEO',
+    source: 'IDC research, reported by MarketScale, Aug 2026',
   },
 ]
 
-export const businessModel =
-  'Free to set up. Vendors pay for buyer intelligence, CRM sync and gated quotes.'
+export const businessModel = 'Vendors pay a monthly subscription based on agent traffic, with a free tier for small sites.'
+
+/** Today the tag; next, the two standards that let agents talk to vendors directly. */
+export const roadmap = [
+  { id: 'tag', when: 'Today', name: 'Website tag', text: 'Works with any AI browser that visits your site.' },
+  { id: 'webmcp', when: 'Next', name: 'WebMCP', text: 'Agents on your site use tools the page offers. Chrome is testing it now.' },
+  { id: 'mcp', when: 'Later', name: 'MCP', text: "A buyer's AI assistant reaches you from anywhere." },
+]

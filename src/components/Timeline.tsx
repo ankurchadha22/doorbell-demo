@@ -1,5 +1,5 @@
 import type { TimelineEntry } from '../data/types'
-import { DoorBadge, SourceBadge, StatusLabel } from './Badges'
+import { ChannelBadge, SourceBadge, StatusLabel } from './Badges'
 import { Enter } from './Enter'
 
 export interface PlacedEntry {
@@ -8,7 +8,7 @@ export interface PlacedEntry {
   delay: number
 }
 
-/** The agent's activity, oldest first, each step with door and source badges. */
+/** The agent's activity, oldest first, each step with channel and source badges. */
 export function Timeline({ entries }: { entries: PlacedEntry[] }) {
   return (
     <ol className="relative">
@@ -31,9 +31,9 @@ export function Timeline({ entries }: { entries: PlacedEntry[] }) {
               {!last && <span aria-hidden className="absolute top-4 -bottom-4.5 left-[calc(0.3125rem-0.5px)] w-px bg-line" />}
               <span aria-hidden className={`absolute top-1.5 left-0 size-2.5 rounded-full ${dot}`} />
               <div className="text-[0.9375rem] leading-snug font-medium text-ink">{e.title}</div>
-              {(e.door || e.source || e.status) && (
+              {(e.channel || e.source || e.status) && (
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  {e.door && <DoorBadge door={e.door} />}
+                  {e.channel && <ChannelBadge channel={e.channel} />}
                   {e.source && <SourceBadge source={e.source} />}
                   {e.status && <StatusLabel status={e.status} label={e.statusLabel} />}
                 </div>

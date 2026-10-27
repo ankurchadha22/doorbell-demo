@@ -10,18 +10,18 @@ export const steps: Step[] = [
   { id: 'title', act: 0, screen: 'title', label: 'Press Next or → to start', dwellMs: 6000 },
   ...buyerSteps,
   ...sellerSteps,
-  { id: 'i-insights', act: 3, screen: 'insights', label: 'Insights: what agents ask', dwellMs: 9000 },
-  { id: 'i-gaps', act: 3, screen: 'insights', label: 'Insights: content gaps', dwellMs: 7000, spotlight: 'gaps' },
-  { id: 'p-policies', act: 3, screen: 'policies', label: 'Policies: what the desk may do', dwellMs: 8000 },
-  { id: 'setup', act: 3, screen: 'setup', label: 'Setup: live in minutes', dwellMs: 7000 },
-  { id: 'closing', act: 4, screen: 'closing', label: 'Three doors, one source of truth', dwellMs: 12000 },
+  { id: 'i-report', act: 3, screen: 'insights', label: 'Weekly report: what agents looked for', dwellMs: 9000 },
+  { id: 'i-gaps', act: 3, screen: 'insights', label: "Weekly report: what agents couldn't find", dwellMs: 7000, spotlight: 'gaps' },
+  { id: 'p-policies', act: 3, screen: 'policies', label: 'Rules: what Doorbell may tell agents', dwellMs: 8000 },
+  { id: 'setup', act: 3, screen: 'setup', label: 'Setup: one line of code', dwellMs: 8000 },
+  { id: 'closing', act: 4, screen: 'closing', label: 'Know which AI agents came knocking', dwellMs: 12000 },
 ]
 
 export const acts: Record<Step['act'], string> = {
   0: `${product.name} concept demo`,
   1: "Act 1 · What the buyer's agent does",
   2: `Act 2 · What ${vendor.inSentence} sees`,
-  3: 'Act 3 · Insight and controls',
+  3: 'Act 3 · Weekly report, rules and setup',
   4: 'Closing',
 }
 

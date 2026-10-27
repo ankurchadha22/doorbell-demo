@@ -8,7 +8,7 @@
 //   2. checks that the first → press finishes typing instead of advancing,
 //   3. toggles Before / After on the seller view,
 //   4. visits every nav screen,
-//   5. exercises the consent "Not now" path and an Insights "Add answer" edit,
+//   5. opens the rep alert and CRM record by button, and makes a weekly-report "Add answer" edit,
 //   6. checks Reset restores the title with all state cleared,
 //   7. runs auto-play to the end on a fake clock (minutes in seconds),
 //   8. blocks every non-localhost request and fails if the app tried one,
@@ -137,7 +137,7 @@ async function walkStory(page: Page, dir: string, vp: string) {
 async function visitNav(page: Page, dir: string, vp: string, suffix: string) {
   // Title and closing hide the side nav; start from a screen that shows it.
   await page.goto(page.url().replace(/#.*$/, '#/buyer'))
-  const screens = ['Buyer view', 'Seller view', 'Insights', 'Policies', 'Setup', 'Title']
+  const screens = ['Buyer view', 'Seller view', 'Weekly report', 'Rules', 'Setup', 'Title']
   for (const name of screens) {
     if (name !== 'Buyer view') {
       await page.getByRole('navigation', { name: 'Screens' }).getByRole('link', { name, exact: true }).click()
@@ -154,20 +154,17 @@ async function visitNav(page: Page, dir: string, vp: string, suffix: string) {
 }
 
 async function interactions(page: Page, dir: string, vp: string) {
-  // Consent: "Not now" keeps the email private, then "Share my email after all" continues the story.
-  await page.keyboard.press('r')
-  await page.getByRole('button', { name: /Go to step \d+: Quote: consent to share identity/ }).click()
-  await page.waitForTimeout(400)
-  await page.getByRole('button', { name: 'Not now' }).click()
-  await page.getByRole('button', { name: 'Share my email after all' }).waitFor()
-  await shot(page, dir, 'interaction-consent-not-now')
-  await page.getByRole('button', { name: 'Share my email after all' }).click()
-  await waitSettled(page)
-  const s = await state(page)
-  if (s.id !== 'b-quote-shared') fail(`${vp}: sharing after "Not now" should continue to the quote, got ${s.id}`)
-  else ok(`${vp}: consent "Not now" path recovers`)
+  // Seller view after the story: the rep alert and CRM record open from their buttons.
+  await page.goto(page.url().replace(/#.*$/, '#/seller'))
+  await page.getByRole('button', { name: 'Rep alert' }).click()
+  await page.getByRole('article', { name: 'Rep alert in team chat' }).waitFor()
+  await page.getByRole('button', { name: 'Close alert' }).click()
+  await page.getByRole('button', { name: 'CRM record' }).click()
+  await page.getByRole('article', { name: 'CRM record' }).waitFor()
+  await shot(page, dir, 'interaction-seller-crm')
+  ok(`${vp}: rep alert and CRM record open from their buttons`)
 
-  // Insights: add an answer to a content gap.
+  // Weekly report: add an answer to something agents couldn't find.
   await page.goto(page.url().replace(/#.*$/, '#/insights'))
   await page.getByRole('button', { name: 'Add answer' }).first().click()
   await page.getByRole('textbox').first().fill('Not today. A person on our team can discuss options.')
