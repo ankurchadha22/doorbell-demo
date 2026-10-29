@@ -99,6 +99,16 @@ This builds the app, serves it, and in Chrome (via Playwright): presses `→` th
 
 Only the statistic on the closing slide refers to real research, with its source. See [docs/decisions.md](docs/decisions.md) for a note on verifying them.
 
+## Prototype, Step 0: the detection probe
+
+The working prototype starts in [prototype/probe/](prototype/probe/README.md): a test vendor site and collector that log what real AI agents' visits look like (signed requests, user agents, browser fingerprints, input patterns, networks) and whether they use the facts panel and ask box. Unlike the demo, it runs a server and is meant to be reached over the internet.
+
+| Command | What it does |
+|---|---|
+| `npm run probe` | Starts the test vendor site (:8787) and collector (:8788) |
+| `npm run probe:test` | Runs the probe's tests, including a headless browser run |
+| `npm run probe:report` | Writes the comparison report from the log |
+
 ## Project structure
 
 ```
@@ -111,4 +121,6 @@ src/
   lib/          step timing, scroll pinning
 scripts/        walkthrough.ts (Playwright)
 docs/           decisions.md
+prototype/
+  probe/        Step 0: test vendor site, collector, tag, signature checks, report
 ```

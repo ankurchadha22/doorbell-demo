@@ -34,3 +34,6 @@ agent-desk-demo-prompt.md
 mcp-server
 docs/DEMO_SCRIPT.md
 docs/research-reviewer-feedback.md
+
+# Step 0 probe: raw logs hold IP addresses and full headers
+prototype/probe/data
