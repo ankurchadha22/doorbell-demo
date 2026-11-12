@@ -42,6 +42,14 @@ This runs the tests: signature checks (including the RFC 9421 Ed25519 test examp
 
 ## Run it for real agents
 
+The quick way, one command (needs `cloudflared`: on macOS, `brew install cloudflared`):
+
+```bash
+npm run probe:public
+```
+
+It opens two public tunnels, starts the probe behind them and prints a run sheet: one URL per run and the brief to paste. Leave it running, do the runs, then run `npm run probe:report` in a second terminal. The rest of this section explains what it does and how to do it by hand.
+
 Cloud agents can't reach localhost, so the probe needs **two public HTTPS URLs**: one for the site and one for the collector. Two different hostnames matter: they show whether an agent also signs requests to a third-party host, which is where Doorbell's tag would live. Any of these works:
 
 - **Quick tunnels**, no account needed: start the probe, then run `cloudflared tunnel --url http://localhost:8787` and `cloudflared tunnel --url http://localhost:8788` and note the two `trycloudflare.com` URLs. They last as long as the processes run.
