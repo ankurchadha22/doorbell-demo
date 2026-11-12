@@ -40,7 +40,7 @@ test('fails clearly when cloudflared exits without a URL', async () => {
 
 test('the run sheet lists every agent run with its URL and never hints at the facts panel', () => {
   const sheet = runSheet('https://calm-river-1234.trycloudflare.com')
-  assert.match(sheet, /\| c1 \| ChatGPT Agent/)
+  assert.match(sheet, /\| c1 \| ChatGPT cloud browser/)
   assert.match(sheet, /https:\/\/calm-river-1234\.trycloudflare\.com\/start\/k3/)
   assert.doesNotMatch(sheet, /\| x1 \|/)
   const brief = briefFor('https://example.com/start/c1')

@@ -79,10 +79,11 @@ Don't mention the facts panel or the ask box: we want to see whether agents find
 | Codes | Agent | How |
 |---|---|---|
 | `h1`, `h2` | You (human control) | Your normal browser, answering the brief yourself. Shows what a person looks like, so we can measure false alarms |
-| `c1`–`c3` | ChatGPT Agent | ChatGPT, agent mode |
+| `c1`–`c3` | ChatGPT cloud browser | ChatGPT with its cloud browser (agent or Work mode) |
 | `p1`–`p3` | Comet | Perplexity's Comet browser, assistant doing the task |
 | `k1`–`k3` | Claude in Chrome | The Claude in Chrome extension |
-| `a1`–`a3` | ChatGPT Atlas | OpenAI's Atlas browser, agent mode |
+| `a1`–`a3` | ChatGPT in Chrome | The ChatGPT Chrome extension's agent mode (Atlas was shut down in August 2026) |
+| `g1`–`g3` | Gemini in Chrome | Chrome's Gemini auto browse |
 | `f1`, `f2` | Assistant page fetch | A chat assistant without agent mode (ChatGPT or Claude), asked to read the link |
 
 Skip any agent you don't have access to. Three runs each is enough to see whether a behaviour is consistent.
@@ -99,7 +100,7 @@ Visits are grouped by run code and visitor cookie, and, for agents that drop coo
 
 ## What the signals mean
 
-- **Signed pages, verified:** the agent signed its request with a key published in its directory (ChatGPT Agent does this). The strongest server-side signal, but only for agents that sign.
+- **Signed pages, verified:** the agent signed its request with a key published in its directory (ChatGPT's cloud browser does this). The strongest server-side signal, but only for agents that sign.
 - **Signed tag requests:** the same signature on requests to the collector. If agents sign only the pages they open and not third-party requests, a JavaScript tag alone can't verify them, and Doorbell needs a server-side piece.
 - **Named in user agent:** fetchers like `ChatGPT-User` or `Claude-User`. They usually don't run JavaScript, so only the server sees them.
 - **navigator.webdriver, WebGL renderer, window size:** automation and cloud-browser tells. A software renderer such as SwiftShader suggests a cloud machine.
