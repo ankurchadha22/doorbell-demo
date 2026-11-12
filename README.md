@@ -32,6 +32,7 @@ Then open http://localhost:5173. Other scripts:
 | `npm run preview` | Serves `dist/` at http://localhost:4173 |
 | `npm run lint` | Runs oxlint |
 | `npm run walkthrough` | Builds, then runs the Playwright walkthrough (see below) |
+| `npm run record` | Builds, then records the auto-play as `recordings/doorbell-demo.mp4` (needs ffmpeg) |
 
 To deploy, upload `dist/` to any static host (Vercel, Netlify, S3). The app uses hash URLs (`/#/vendor`), so no rewrite rules are needed.
 
@@ -116,6 +117,7 @@ The working prototype starts in [prototype/probe/](prototype/probe/README.md): a
 | [tools/readiness/](tools/readiness/README.md) | Scans a vendor's public site the way an AI assistant researching a purchase would, and scores it | `npm run readiness:scan -- example.com`, `npm run readiness:batch -- domains.txt`, `npm run readiness:test` |
 | [tools/mystery-shop/](tools/mystery-shop/README.md) | The method for having an AI assistant answer a buyer's brief from one vendor's own website, and a renderer that turns the results into one-page reports | `npm run shop:render`, `npm run shop:test` |
 | [core/](core/) | The named AI agents and the Web Bot Auth signature check, shared by the probe and the tools | |
+| [site/](site/README.md) | A draft of the product's website under its working name: static files, no build step | `npx serve site` |
 
 Results from both tools are written under `private/`, which is kept out of this repository.
 
