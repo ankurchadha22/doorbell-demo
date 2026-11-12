@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free scan | Doorbell</title>
+<meta name="description" content="A free scan of any website: whether AI agents can read it, whether pricing is visible, and which facts buyers ask for are missing.">
+<link rel="icon" href="assets/doorbell-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/doorbell-mark.svg" alt="" width="28" height="28"><span data-name>Doorbell</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="scan.html" aria-current="page">Free scan</a></li>
+        <li><a href="method.html">Method</a></li>
+        <li><a href="index.html#join">Waiting list</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="h-top">
+    <div class="wrap">
+      <p class="eyebrow">Free scan</p>
+      <h1 id="h-top">See your site the way an AI agent does.</h1>
+      <p class="lede">The scan reads your public pages and checks the four things that decide whether an assistant can answer a buyer's questions about you.</p>
+      <form data-scan novalidate aria-label="Free scan">
+        <div class="field-row">
+          <label class="label" for="scan-domain" style="flex-basis:100%">Website to scan</label>
+          <input id="scan-domain" name="domain" type="text" inputmode="url" autocomplete="url" placeholder="yourcompany.com" required spellcheck="false" autocapitalize="off">
+          <button class="btn" type="submit">Run the scan</button>
+        </div>
+        <p data-out role="status" aria-live="polite" hidden></p>
+      </form>
+      <form id="scan-waitlist" class="join" data-waitlist novalidate hidden style="margin-top:1.5rem" aria-labelledby="h-wl">
+        <h2 id="h-wl" style="font-size:1.25rem">Scan <span data-domain-label></span> when it opens</h2>
+        <input type="hidden" name="domain" value="">
+        <div class="field-row">
+          <label class="label" for="wl-email" style="flex-basis:100%">Work email</label>
+          <input id="wl-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+          <button class="btn" type="submit">Join the list</button>
+        </div>
+        <p data-out role="status" aria-live="polite" hidden></p>
+        <p class="hint">We keep the domain and your email, nothing else. See <a href="privacy.html">privacy</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-checks">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What it checks</p>
+        <h2 id="h-checks">Four checks</h2>
+      </div>
+      <div class="two-col">
+        <div><h3>Access for AI agents</h3><p>Whether robots.txt and your server let the common assistants in, and whether key pages show their text without running JavaScript.</p></div>
+        <div><h3>Visible pricing</h3><p>Whether a buyer's assistant can find a number, or at least a starting price and what it depends on.</p></div>
+        <div><h3>The facts buyers ask for</h3><p>Integrations, security reports, trial terms, deployment and limits: stated plainly, on a page that loads.</p></div>
+        <div><h3>Machine-readable signals</h3><p>An llms.txt file, structured data, a sitemap, and clear page titles that help an assistant find the right page.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-sample">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Sample</p>
+        <h2 id="h-sample">What a scan result looks like</h2>
+        <p class="muted">The data below is made up for a fictional site. It shows the format, not a real result.</p>
+      </div>
+      <article class="card" aria-label="Sample scan result for vendor.example (fictional)">
+        <header class="card-head">
+          <span class="domain">vendor.example</span>
+          <span class="sample-flag">Sample, fictional data</span>
+        </header>
+        <ul class="checks">
+          <li><span class="what">Access for AI agents</span><span class="chip chip-part">Partly</span>
+            <p class="why">robots.txt allows the common assistants. The integrations page shows no text until JavaScript runs.</p></li>
+          <li><span class="what">Visible pricing</span><span class="chip chip-no">Missing</span>
+            <p class="why">The pricing page lists plan names only and asks visitors to contact sales.</p></li>
+          <li><span class="what">The facts buyers ask for</span><span class="chip chip-part">4 of 7</span>
+            <p class="why">Found: trial, SSO, data residency, uptime. Not found: SOC 2 report type, seat limits, API rate limits.</p></li>
+          <li><span class="what">Machine-readable signals</span><span class="chip chip-ok">Good</span>
+            <p class="why"><code>/llms.txt</code> present, sitemap present, organization structured data present.</p></li>
+        </ul>
+      </article>
+      <p class="hint" style="max-width:44rem">The scan is a quick check of one site. The <a href="method.html">AI Buyer Report</a> goes further: real assistants, real briefs, and two competitors.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span><span data-name>Doorbell</span>. No trackers on this site.</span>
+    <nav aria-label="Footer"><a href="scan.html">Free scan</a> &middot; <a href="method.html">Method</a> &middot; <a href="privacy.html">Privacy</a></nav>
+  </div>
+</footer>
+</body>
+</html>

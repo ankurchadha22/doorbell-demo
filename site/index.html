@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doorbell: find out what AI buyers can't find out about you</title>
+<meta name="description" content="When a buyer asks an AI assistant to evaluate your software, it reads your website. Doorbell shows which of the buyer's questions it could not answer, how you compare, and helps fix it.">
+<link rel="icon" href="assets/doorbell-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/doorbell-mark.svg" alt="" width="28" height="28"><span data-name>Doorbell</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="scan.html">Free scan</a></li>
+        <li><a href="method.html">Method</a></li>
+        <li><a href="#join">Waiting list</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="h-top">
+    <div class="wrap">
+      <h1 id="h-top" data-tagline>Find out what AI buyers can't find out about you.</h1>
+      <p class="lede">When a buyer asks an AI assistant to evaluate your software, the assistant reads your website. <span data-name>Doorbell</span> shows you which of the buyer's questions it could not answer, how you compare with competitors, and helps you fix it.</p>
+      <form class="scan-form" action="scan.html" method="get" aria-label="Free scan">
+        <div class="field-row">
+          <label class="label" for="hero-domain" style="flex-basis:100%">Your website</label>
+          <input id="hero-domain" name="domain" type="text" inputmode="url" autocomplete="url" placeholder="yourcompany.com" required spellcheck="false" autocapitalize="off">
+          <button class="btn" type="submit">Run a free scan</button>
+        </div>
+        <p class="hint">Reads public pages only. <a href="scan.html">What the scan checks</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Figures below are copied from site/content/evidence.json ("example" and "mysteryShop"). Update both together. -->
+  <section class="section" aria-labelledby="h-example">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">A real result</p>
+        <h2 id="h-example">What one vendor's result looked like</h2>
+        <p class="muted">An AI assistant was given a buyer's brief and asked six questions about one embedded-analytics vendor, using only the vendor's own website. The name is withheld.</p>
+      </div>
+      <article class="doc" aria-label="Worked example">
+        <header class="doc-head">
+          <div class="doc-meta"><span>Buyer brief: 40-person fintech choosing a BI tool</span><span>Run 2026-11-12</span></div>
+          <p class="doc-title">One embedded-analytics vendor (name withheld)</p>
+          <p class="doc-brief">Needs Stripe and QuickBooks connections, embedded dashboards where each customer sees only their own data, the yearly price for 40 users, SOC 2 Type II, a free trial, and own branding with customer sign-in.</p>
+        </header>
+        <ol class="doc-rows">
+          <li><span class="n">01</span><span class="q">Connects to Stripe and QuickBooks?</span><span class="chip chip-no">Not found</span><span class="d">The site describes warehouse connections only.</span></li>
+          <li><span class="n">02</span><span class="q">Each customer sees only their own data?</span><span class="chip chip-ok">Verified</span><span class="d">Documented, with a source page.</span></li>
+          <li><span class="n">03</span><span class="q">Yearly price for 40 users with embedding?</span><span class="chip chip-no">Not found</span><span class="d">The pricing page has no numbers and says to contact the team.</span></li>
+          <li><span class="n">04</span><span class="q">SOC 2 Type II?</span><span class="chip chip-part">Partly answered</span><span class="d">SOC 2 is listed; the report type is not stated.</span></li>
+          <li><span class="n">05</span><span class="q">Free trial?</span><span class="chip chip-ok">Verified</span><span class="d">Offered; length not stated.</span></li>
+          <li><span class="n">06</span><span class="q">Own branding and customer sign-in?</span><span class="chip chip-part">Partly answered</span><span class="d">Branding is documented; sign-in options are not.</span></li>
+        </ol>
+        <footer class="doc-foot">
+          <span class="muted">Assistant's verdict</span><span class="verdict">Maybe</span>
+          <span class="muted small">Not shortlisted outright. Two of six answers were missing from the site.</span>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-study">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">A small study</p>
+        <h2 id="h-study">15 vendors, the same six questions</h2>
+        <p class="muted">Business-intelligence and embedded-analytics tools, checked on 2026-11-12 against the brief above. Number of vendors whose own site let the assistant verify each answer:</p>
+      </div>
+      <div class="study">
+        <ul class="counts">
+          <li><span class="x zero">0 of 15</span><span>Yearly price for 40 users with embedding<span class="sub">4 published enough to estimate a price; 10 gave no usable number.</span></span></li>
+          <li><span class="x zero">0 of 15</span><span>Connects to Stripe and QuickBooks<span class="sub">12 never mention either.</span></span></li>
+          <li><span class="x">5 of 15</span><span>Own branding and customer sign-in</span></li>
+          <li><span class="x">9 of 15</span><span>SOC 2 Type II</span></li>
+          <li><span class="x">11 of 15</span><span>Each customer sees only their own data</span></li>
+          <li><span class="x">11 of 15</span><span>Free trial</span></li>
+        </ul>
+        <div class="aside">
+          <p><strong>How the assistant ranked them</strong></p>
+          <dl>
+            <dt>3</dt><dd>shortlisted</dd>
+            <dt>10</dt><dd>maybe</dd>
+            <dt>2</dt><dd>not shortlisted</dd>
+          </dl>
+          <p>1 site could not be loaded by the assistant at all. 11 of 15 publish an llms.txt file.</p>
+          <p class="small muted">This is a small study: 15 vendors, one AI assistant, one run each. Treat it as an illustration, not a benchmark.</p>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:2rem;max-width:44rem">For context: 94% of business buyers use AI during their buying process (Forrester, <a href="https://www.forrester.com/blogs/state-of-business-buying-2026/" rel="noopener">The State of Business Buying 2026</a>).</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-offers">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What you can get</p>
+        <h2 id="h-offers">Three ways to start</h2>
+      </div>
+      <ol class="offers">
+        <li>
+          <span class="num">01</span>
+          <h3>Free instant scan</h3>
+          <p>Enter any domain. See whether AI agents can read your site, whether your pricing is visible, and which facts buyers ask for are missing.</p>
+          <p><a href="scan.html">About the scan</a></p>
+        </li>
+        <li>
+          <span class="num">02</span>
+          <h3>AI Buyer Report</h3>
+          <p>Three buyer briefs run against your site and two competitors by real AI assistants. Every answer comes with its evidence, and you get a ranked list of fixes.</p>
+          <p><a href="method.html">How reports are made</a></p>
+        </li>
+        <li>
+          <span class="num">03</span>
+          <h3>Monthly monitoring</h3>
+          <p>The same briefs, re-run each month, so you see what changed. Includes a hosted facts page that you approve, written for assistants to read.</p>
+          <p><a href="#join">Join the waiting list</a></p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="h-how">Three steps</h2>
+      </div>
+      <ol class="steps">
+        <li><div><h3>Write the buyer's brief</h3><p>We agree on the questions a real buyer in your market asks: price, integrations, security, trial, the details that decide a shortlist.</p></div></li>
+        <li><div><h3>Ask real assistants</h3><p>The brief goes to AI assistants, which read your public site and two competitors' sites. We record each answer and the page it came from.</p></div></li>
+        <li><div><h3>Fix what was missing</h3><p>You get the gaps, ranked by how much they cost you, with the wording and the page where each fact should live.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-compare">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it differs</p>
+        <h2 id="h-compare">Not another visibility tracker</h2>
+      </div>
+      <div class="compare" role="table" aria-label="Comparison with other tools">
+        <div class="compare-row head" role="row"><span role="columnheader">Other tools</span><span role="columnheader">What they tell you</span><span role="columnheader">What <span data-name>Doorbell</span> tells you</span></div>
+        <div class="compare-row" role="row"><span class="k" role="cell">Tools that track whether assistants mention you</span><span class="them" role="cell">Whether you are in the conversation.</span><span class="us" role="cell">Whether you survive the evaluation.</span></div>
+        <div class="compare-row" role="row"><span class="k" role="cell">Analytics that show agents visited</span><span class="them" role="cell">That an agent came by.</span><span class="us" role="cell">What it needed and did not get.</span></div>
+        <div class="compare-row" role="row"><span class="k" role="cell">Visitor identification</span><span class="them" role="cell">Who visited, using a tag on your site.</span><span class="us" role="cell">Needs no tag and identifies nobody.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2 id="h-faq">Short answers</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>What does an assistant actually do when it evaluates you?</summary>
+          <div class="a"><p>It takes the buyer's request, searches, and opens a handful of pages on your site: usually the home page, pricing, integrations, security and docs. It tries to answer each question from what it finds. If a fact is not stated plainly on a page it can load, it says it could not confirm it, or guesses, and moves on to the next vendor.</p></div>
+        </details>
+        <details>
+          <summary>What do you read, and what do you never do?</summary>
+          <div class="a"><p>We read public pages only, at a polite rate, and we obey robots.txt. We never log in, never submit forms, and never contact your team or your customers.</p></div>
+        </details>
+        <details>
+          <summary>How accurate is it?</summary>
+          <div class="a"><p>A report is a snapshot: what specific assistants found on a specific day. Assistants change, and the same question can get a different answer on another run. We show the evidence for every answer so you can check it yourself. See the <a href="method.html">method</a> for the limits.</p></div>
+        </details>
+        <details data-behind hidden>
+          <summary>Who is behind this?</summary>
+          <div class="a"><p data-behind-text></p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="join" aria-labelledby="h-join">
+    <div class="wrap">
+      <div class="join">
+        <h2 id="h-join">Join the waiting list</h2>
+        <p class="muted">We are opening reports to a small number of B2B software teams first. Leave your work email and we will write when there is a place. Nothing else is asked for.</p>
+        <form data-waitlist novalidate>
+          <div class="field-row">
+            <label class="label" for="join-email" style="flex-basis:100%">Work email</label>
+            <input id="join-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+            <button class="btn" type="submit">Join the list</button>
+          </div>
+          <p data-out role="status" aria-live="polite" hidden></p>
+        </form>
+        <p class="hint">See the <a href="privacy.html">privacy page</a> for what we keep.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span><span data-name>Doorbell</span>. No trackers on this site.</span>
+    <nav aria-label="Footer"><a href="scan.html">Free scan</a> &middot; <a href="method.html">Method</a> &middot; <a href="privacy.html">Privacy</a></nav>
+  </div>
+</footer>
+</body>
+</html>

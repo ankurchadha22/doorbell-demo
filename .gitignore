@@ -40,3 +40,6 @@ prototype/probe/data
 
 # Business documents, scan data and other private working files (this repository is public)
 private
+
+# Demo recordings (npm run record)
+recordings

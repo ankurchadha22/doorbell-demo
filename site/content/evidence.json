@@ -1,0 +1,39 @@
+{
+  "_note": "Every figure on the site must come from this file. Aggregates only: no vendor is named. Update the date and numbers whenever the study is re-run.",
+  "mysteryShop": {
+    "date": "2026-11-12",
+    "category": "business-intelligence and embedded-analytics tools",
+    "vendors": 15,
+    "method": "One AI assistant was given a buyer's brief and answered six questions from each vendor's own public website, naming the page behind each answer. One run per vendor.",
+    "brief": "A 40-person fintech choosing a BI tool: Stripe and QuickBooks connections, embedded dashboards where each customer sees only their own data, the yearly price for 40 users, SOC 2 Type II, a free trial, and own branding with customer sign-in.",
+    "questions": [
+      { "label": "Yearly price for 40 users with embedding", "verified": 0, "note": "4 published enough to estimate a price; 10 gave no usable number" },
+      { "label": "Connects to Stripe and QuickBooks", "verified": 0, "note": "12 never mention either" },
+      { "label": "Each customer sees only their own data", "verified": 11 },
+      { "label": "SOC 2 Type II", "verified": 9 },
+      { "label": "Free trial", "verified": 11 },
+      { "label": "Own branding and customer sign-in", "verified": 5 }
+    ],
+    "shortlisted": 3,
+    "maybe": 10,
+    "notShortlisted": 2,
+    "couldNotLoadAtAll": 1,
+    "withLlmsTxt": 11
+  },
+  "example": {
+    "label": "One embedded-analytics vendor (name withheld)",
+    "verdict": "Maybe",
+    "rows": [
+      { "question": "Connects to Stripe and QuickBooks?", "status": "Not found", "detail": "The site describes warehouse connections only." },
+      { "question": "Each customer sees only their own data?", "status": "Verified", "detail": "Documented, with a source page." },
+      { "question": "Yearly price for 40 users with embedding?", "status": "Not found", "detail": "The pricing page has no numbers and says to contact the team." },
+      { "question": "SOC 2 Type II?", "status": "Partly answered", "detail": "SOC 2 is listed; the report type is not stated." },
+      { "question": "Free trial?", "status": "Verified", "detail": "Offered; length not stated." },
+      { "question": "Own branding and customer sign-in?", "status": "Partly answered", "detail": "Branding is documented; sign-in options are not." }
+    ]
+  },
+  "scan": null,
+  "marketStats": [
+    { "figure": "94%", "text": "of business buyers use AI during their buying process.", "source": "Forrester, The State of Business Buying 2026", "url": "https://www.forrester.com/blogs/state-of-business-buying-2026/" }
+  ]
+}

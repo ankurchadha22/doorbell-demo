@@ -31,10 +31,10 @@ export function checkHelp(input: HelpInput): CheckResult<HelpEvidence> {
     findings.push({ id: 'ai-addressed', check: 'help', severity: 'good', title: 'Your site speaks to AI assistants directly', detail: `Found: ${ai.label}.`, evidence: [{ url: ai.url, quote: ai.quote }] })
   } else {
     findings.push({
-      id: 'ai-not-addressed', check: 'help', severity: 'low', title: 'Nothing on your site is addressed to AI assistants',
-      detail: 'We found no note, page or link meant for assistants (for example a "for AI assistants" facts section or a link to llms.txt).',
+      id: 'ai-not-addressed', check: 'help', severity: 'low', title: 'No plain facts page that an assistant can quote',
+      detail: 'We found no page, section or link that gathers the facts buyers ask for in one place (for example a "quick facts" section or a link to llms.txt).',
       evidence: [{ value: `pages checked: ${all.length}` }],
-      fix: 'Add a short, factual "For AI assistants" section or page: what you sell, prices, trial, security, integrations, with links.',
+      fix: 'Add a short "Quick facts" page that people can read too: what you sell, prices, trial, security, integrations, with links. Write statements of fact, not instructions to an AI: assistants are built to distrust page text that tells them what to do.',
     })
   }
   if (!search) {
