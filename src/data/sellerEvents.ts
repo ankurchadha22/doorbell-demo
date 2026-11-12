@@ -8,20 +8,21 @@ import type { FeedEvent, Step } from './types'
 /* ---------- Before Doorbell ---------- */
 
 export const before = {
+  // The agent runs in the buyer's own browser, so ordinary tools count it as one more person.
   analytics: {
-    label: `Visits from ${buyer.company}`,
-    value: 0,
-    note: "The agent's visit was filtered out as bot traffic.",
+    label: 'anonymous visit · 4 min 12 s · source: direct',
+    value: 1,
+    note: 'It looks like any other visitor. Nothing says an AI agent was comparing vendors for a buyer.',
   },
   serverLog: [
     { ip: '198.51.100.17', time: '14:02:10', request: 'GET /pricing', status: 200 },
     { ip: '198.51.100.17', time: '14:03:48', request: 'GET /docs/embedding', status: 200 },
     { ip: '198.51.100.17', time: '14:05:22', request: 'GET /search?q=free+trial', status: 200 },
   ],
-  signatureAgent: 'ai-provider.example',
-  serverLogNote: "A signed header says which AI company's agent came by. Nothing says who sent it, what it wanted or what it couldn't find.",
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) … Chrome/142.0 Safari/537.36',
+  serverLogNote: "An ordinary Chrome browser on an ordinary office network. Nothing says an AI agent was driving it, what it wanted or what it couldn't find.",
   crm: { query: buyer.company, result: `No record of ${buyer.company}.` },
-  caption: 'An AI agent spent four minutes on your pricing page. You can’t tell who sent it, or why it left.',
+  caption: 'An AI agent spent four minutes on your pricing page. To your tools, it was one more anonymous visitor.',
 }
 
 /* ---------- After: live activity feed ---------- */
@@ -33,7 +34,7 @@ export const feedEvents: FeedEvent[] = [
     time: '14:02',
     kind: 'detected',
     text: 'AI browser agent detected on /pricing',
-    detail: `Signed request verified: ${before.signatureAgent}`,
+    detail: 'The browser is being driven by an agent, not by hand',
   },
   {
     id: 'e-identity',

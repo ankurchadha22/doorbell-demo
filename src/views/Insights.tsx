@@ -62,7 +62,7 @@ export function Insights() {
             }))}
             labelWidth="9.5rem"
           />
-          <p className="mt-3 text-sm text-muted">Grouped by how the agent behaves, not by brand.</p>
+          <p className="mt-3 text-sm text-muted">Only AI browser agents run on the buyer’s own network, so only they can be matched to a company.</p>
         </Card>
       </div>
 

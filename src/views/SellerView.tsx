@@ -201,7 +201,7 @@ function BeforeView() {
             <span key={l.time + l.request} className="block">
               <span className="text-[#8fa39c]">{l.ip}</span> [{l.time}] <span className="text-white">"{l.request}"</span> {l.status}
               {'\n'}
-              <span className="text-[#8fa39c]">{'  '}signature-agent: "{before.signatureAgent}"</span>
+              <span className="text-[#8fa39c]">{'  '}user-agent: "{before.userAgent}"</span>
             </span>
           ))}
         </pre>

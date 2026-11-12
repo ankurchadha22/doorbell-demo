@@ -70,13 +70,13 @@ export const independentSources = {
 /** The one statistic in the demo, shown on the closing screen with its source. */
 export const stats = [
   {
-    value: '8 in 10',
-    text: '8 in 10 B2B tech buyers use AI agents as part of their purchasing process.',
-    source: 'IDC research, reported by MarketScale, Aug 2026',
+    value: '94%',
+    text: '94% of business buyers use AI during their buying process.',
+    source: "Forrester, The State of Business Buying 2026 (Buyers' Journey Survey, nearly 18,000 buyers)",
   },
 ]
 
-export const businessModel = 'Vendors pay a monthly subscription based on agent traffic, with a free tier for small sites.'
+export const businessModel = 'Vendors pay a flat monthly subscription per website, with a free tier for small sites.'
 
 /** Today the tag; next, the two standards that let agents talk to vendors directly. */
 export const roadmap = [

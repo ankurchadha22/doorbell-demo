@@ -7,7 +7,7 @@ export const insightsPeriod = 'This week · simulated data'
 
 export const headline = [
   { label: 'AI agent visits', value: 214 },
-  { label: 'Matched to a company', value: 88, note: '41% of visits' },
+  { label: 'Matched to a company', value: 26, note: '12% of visits. Only agents in the buyer’s own browser can be matched.' },
   { label: 'Left without an answer', value: 37, note: 'Asked something your site doesn’t answer' },
 ]
 
@@ -18,10 +18,13 @@ export const usageByChannel: { channel: Channel; label: string; value: number; u
   { channel: 'mcp', label: 'MCP questions', value: 58, unit: 'questions' },
 ]
 
+// Most AI traffic is assistants fetching pages from the AI company's own servers. Only agents that
+// run in the buyer's own browser arrive from the buyer's network, so only those can be matched.
 export const agentTypes = [
-  { label: 'AI browser agents', share: 71 },
-  { label: 'Assistant page fetches', share: 23 },
-  { label: 'Unknown', share: 6 },
+  { label: 'Assistant page fetches', share: 62 },
+  { label: 'AI browser agents', share: 24 },
+  { label: 'Cloud agents', share: 9 },
+  { label: 'Unknown', share: 5 },
 ]
 
 /** What agents were trying to find out, by number of visits. */
