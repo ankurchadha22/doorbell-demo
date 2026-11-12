@@ -13,7 +13,12 @@
     "probe": "node prototype/probe/server.ts",
     "probe:report": "node prototype/probe/report.ts",
     "probe:test": "node --test \"prototype/probe/test/*.test.ts\"",
-    "probe:public": "node prototype/probe/public.ts"
+    "probe:public": "node prototype/probe/public.ts",
+    "readiness:scan": "node tools/readiness/scan.ts",
+    "readiness:batch": "node tools/readiness/batch.ts",
+    "readiness:test": "node --test \"tools/readiness/test/*.test.ts\"",
+    "shop:render": "node tools/mystery-shop/render.ts",
+    "shop:test": "node --test \"tools/mystery-shop/test/*.test.ts\""
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

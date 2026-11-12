@@ -109,6 +109,16 @@ The working prototype starts in [prototype/probe/](prototype/probe/README.md): a
 | `npm run probe:test` | Runs the probe's tests, including a headless browser run |
 | `npm run probe:report` | Writes the comparison report from the log |
 
+## Tools
+
+| Folder | What it is | Commands |
+|---|---|---|
+| [tools/readiness/](tools/readiness/README.md) | Scans a vendor's public site the way an AI assistant researching a purchase would, and scores it | `npm run readiness:scan -- example.com`, `npm run readiness:batch -- domains.txt`, `npm run readiness:test` |
+| [tools/mystery-shop/](tools/mystery-shop/README.md) | The method for having an AI assistant answer a buyer's brief from one vendor's own website, and a renderer that turns the results into one-page reports | `npm run shop:render`, `npm run shop:test` |
+| [core/](core/) | The named AI agents and the Web Bot Auth signature check, shared by the probe and the tools | |
+
+Results from both tools are written under `private/`, which is kept out of this repository.
+
 ## Project structure
 
 ```
