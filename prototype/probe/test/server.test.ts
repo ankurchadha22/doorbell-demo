@@ -11,7 +11,7 @@ import { after, before, test } from 'node:test'
 import { chromium } from 'playwright'
 import { groupVisits, renderReport, summarize, type LogRecord } from '../report.ts'
 import { startProbe } from '../server.ts'
-import { jwkThumbprint } from '../webBotAuth.ts'
+import { jwkThumbprint } from '../../../core/webBotAuth.ts'
 
 const { publicKey, privateKey } = generateKeyPairSync('ed25519')
 const jwk = publicKey.export({ format: 'jwk' })

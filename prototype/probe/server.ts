@@ -14,7 +14,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import type { AddressInfo } from 'node:net'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { checkUserAgent } from './agents.ts'
+import { checkUserAgent } from '../../core/agents.ts'
 import { answer } from './facts.ts'
 import { createLog } from './log.ts'
 import { isRunCode } from './runs.ts'
@@ -29,7 +29,7 @@ import {
   robotsTxt,
   sitemapXml,
 } from './site.ts'
-import { checkSignature, fetchDirectory, type KeyFetcher } from './webBotAuth.ts'
+import { checkSignature, fetchDirectory, type KeyFetcher } from '../../core/webBotAuth.ts'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const MAX_BODY = 64 * 1024

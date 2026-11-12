@@ -19,8 +19,8 @@ Nothing here uses an AI model. The ask box answers from four approved facts by k
 | [site.ts](site.ts) | The vendor's pages: home, pricing, docs, trust, contact, search, with the facts panel and ask box on every page. Also `llms.txt`, `facts.json`, `robots.txt`, `sitemap.xml` |
 | [facts.ts](facts.ts) | The approved facts (same prices as the demo's `src/data/policies.ts`) and the ask box's rule-based answers |
 | [public/tag.js](public/tag.js) | The tag: browser fingerprint, automation flags, click and typing patterns, extension traces, facts panel visibility, ask box submissions. It records counts and timing, never what is typed |
-| [webBotAuth.ts](webBotAuth.ts) | Verifies Web Bot Auth signatures: fetches the agent's key directory and checks the signature (Ed25519, ECDSA P-256, RSA-PSS) |
-| [agents.ts](agents.ts) | AI fetchers and crawlers that name themselves in the user agent |
+| [core/webBotAuth.ts](../../core/webBotAuth.ts) | Verifies Web Bot Auth signatures: fetches the agent's key directory and checks the signature (Ed25519, ECDSA P-256, RSA-PSS) |
+| [core/agents.ts](../../core/agents.ts) | AI fetchers and crawlers that name themselves in the user agent |
 | [runs.ts](runs.ts) | The run codes: each test run starts at `/start/<code>` |
 | [report.ts](report.ts) | Groups the log into visits and writes the report, with IPs masked |
 

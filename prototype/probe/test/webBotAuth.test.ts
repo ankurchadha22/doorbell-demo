@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { createPublicKey, generateKeyPairSync, sign, verify } from 'node:crypto'
 import { test } from 'node:test'
-import { checkSignature, jwkThumbprint, parseDictionary, signatureBase, type InnerList, type SignedRequest } from '../webBotAuth.ts'
+import { checkSignature, jwkThumbprint, parseDictionary, signatureBase, type InnerList, type SignedRequest } from '../../../core/webBotAuth.ts'
 
 test('rebuilds the RFC 9421 Ed25519 example (B.2.6) and verifies its signature', () => {
   const input = '("date" "@method" "@path" "@authority" "content-type" "content-length");created=1618884473;keyid="test-key-ed25519"'

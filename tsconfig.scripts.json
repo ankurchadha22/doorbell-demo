@@ -15,5 +15,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["scripts", "prototype"]
+  "include": ["scripts", "prototype", "core", "tools", "product"]
 }

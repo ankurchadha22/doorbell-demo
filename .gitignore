@@ -37,3 +37,6 @@ docs/research-reviewer-feedback.md
 
 # Step 0 probe: raw logs hold IP addresses and full headers
 prototype/probe/data
+
+# Business documents, scan data and other private working files (this repository is public)
+private
